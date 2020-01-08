@@ -13,12 +13,12 @@ const pushApiKeys = require( './dist/browser/assets/js/apiKeys.json');
 const {AppServerModuleNgFactory, LAZY_MODULE_MAP, ngExpressEngine, provideModuleMap} = require('./dist/server/main');
 
 // Fetch the service account key JSON file contents
-var serviceAccount = require("./web-rtc-peer-firebase-adminsdk-9bb9v-51935afcc1.json");
+var serviceAccount = require("./web-rtc-peer-firebase-adminsdk-9bb9v-93f85618dd.json");
 
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
-	credential: admin.credential.cert(serviceAccount),
-	databaseURL: "https://web-rtc-peer.firebaseio.com"
+	credential: admin.credential.cert(JSON.parse(serviceAccount)),
+	databaseURL: "https://web-rtc-peer.firebaseio.com" ,
 });
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules
