@@ -17,9 +17,17 @@ var serviceAccount = require("./web-rtc-peer-firebase-adminsdk-9bb9v-93f85618dd.
 
 // Initialize the app with a service account, granting admin privileges
 admin.initializeApp({
-	credential: admin.credential.cert(JSON.parse(serviceAccount)),
+	credential: admin.credential.cert(serviceAccount),
 	databaseURL: "https://web-rtc-peer.firebaseio.com" ,
 });
+
+/*admin.initializeApp({
+	credential: admin.credential.cert({
+		"private_key": process.env.FIREBASE_PRIVATE_KEY,
+		"client_email": process.env.FIREBASE_CLIENT_EMAIL,
+	}),
+	databaseURL: "https://web-rtc-peer.firebaseio.com"
+});*/
 
 // As an admin, the app has access to read and write all data, regardless of Security Rules
 var db = admin.database();
