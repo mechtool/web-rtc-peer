@@ -12,7 +12,7 @@ let version = '1.0.2';
 });*/
 
 //Обработка событина нажатия пользователем на уведомление
-/*self.addEventListener('notificationclick', function(event) {
+self.addEventListener('notificationclick', (event )=> {
 	if (event.action === 'archive') {
 		// Archive action was clicked
 		console.log('Нажата кнопка активности.')
@@ -23,4 +23,4 @@ let version = '1.0.2';
 	}
 	event.notification.close();
 	
-}, false);*/
+}, false);
