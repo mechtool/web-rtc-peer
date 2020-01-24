@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1579850046813,
+  "timestamp": 1579852425929,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -45,8 +45,8 @@
         "/common-es2015.b2ee6cceef256a9e11d4.js",
         "/common-es5.b2ee6cceef256a9e11d4.js",
         "/index.html",
-        "/main-es2015.cb9f40daf4c1bcd95ac4.js",
-        "/main-es5.cb9f40daf4c1bcd95ac4.js",
+        "/main-es2015.2eeef51c077fe9eb78e0.js",
+        "/main-es5.2eeef51c077fe9eb78e0.js",
         "/manifest.webmanifest",
         "/polyfills-es2015.0456f4164c766ebb9937.js",
         "/polyfills-es5.3b270ffd9a780ba11171.js",
@@ -253,16 +253,16 @@
     "/assets/js/stunTurnConfig.json": "5064b7243043dd50a7a10df5cd07d25117630f5f",
     "/common-es2015.b2ee6cceef256a9e11d4.js": "cf808a6bf60a15a6d2bfd84e78532bf7f33e1df2",
     "/common-es5.b2ee6cceef256a9e11d4.js": "f2219d766f36859be86f7b65a4a8fbc259c92d2e",
-    "/index.html": "84f10d0a18b4548fa4199ccce17439561759d7bb",
-    "/main-es2015.cb9f40daf4c1bcd95ac4.js": "6668ce4f9b10652819a218a546055c56d62c21a1",
-    "/main-es5.cb9f40daf4c1bcd95ac4.js": "fe7fb951a022b5f9e25d5a97417bce39b5b0a422",
+    "/index.html": "cb642f0400516c4aef9c3893a5e010fcdc7e4338",
+    "/main-es2015.2eeef51c077fe9eb78e0.js": "6668ce4f9b10652819a218a546055c56d62c21a1",
+    "/main-es5.2eeef51c077fe9eb78e0.js": "fe7fb951a022b5f9e25d5a97417bce39b5b0a422",
     "/manifest.webmanifest": "d36468b8e524a5ed6779dd8ef0b6d113d0d525f9",
     "/polyfills-es2015.0456f4164c766ebb9937.js": "23fccfa60bfe4eace219204aa59c4c192352d97b",
     "/polyfills-es5.3b270ffd9a780ba11171.js": "a58bd05de86bdc2690aad832e4b5b1d15602adcd",
     "/runtime-es2015.f2a2e78190b115aaae3f.js": "5a9b4d0c274a1cde1c2d7def82fd937f69d25973",
     "/runtime-es5.f2a2e78190b115aaae3f.js": "66f70acfa9d53ab1a5058004692765006bc419ff",
     "/scripts.6d6368f7482893f89194.js": "041d33cc5588e2de7dfb97beb9a79d3f3c563d85",
-    "/service-worker.js": "40f69010909863a6616613f19d6b2908ec50b2c4",
+    "/service-worker.js": "c70d4a7b18dd328a66a07b5505053b3670d16d7b",
     "/styles.feb11abe78f4b1b56fd3.css": "5dab46eb40c651734af1adaca93244b691774fdc"
   },
   "navigationUrls": [
