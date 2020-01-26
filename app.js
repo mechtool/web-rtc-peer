@@ -81,7 +81,7 @@ server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
 app.get('/version' , (reg, resp)=> {
-	resp.send('1.0.0');
+	resp.send({version : '1.0.0'});
 }) ;
 app.get('*.*', express.static(DIST_FOLDER, {
 	maxAge: '1y',
