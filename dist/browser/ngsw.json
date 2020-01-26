@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1580049048840,
+  "timestamp": 1580049477828,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -262,7 +262,7 @@
     "/runtime-es2015.9b47fd160e3c5085c8fc.js": "ecc3919e2e82d9c4a6693f897cfb9dd793f982a9",
     "/runtime-es5.9b47fd160e3c5085c8fc.js": "891fbd28c22d827089d15d12af54541aaca2e9c5",
     "/scripts.6d6368f7482893f89194.js": "041d33cc5588e2de7dfb97beb9a79d3f3c563d85",
-    "/service-worker.js": "f967d754ee0e58765d6572ddbaa78e224ba33d5d",
+    "/service-worker.js": "8275c86858363345b957c27bb5fa850f3919c718",
     "/styles.feb11abe78f4b1b56fd3.css": "5dab46eb40c651734af1adaca93244b691774fdc"
   },
   "navigationUrls": [
