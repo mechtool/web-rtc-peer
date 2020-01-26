@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1580050205883,
+  "timestamp": 1580051146175,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -45,8 +45,8 @@
         "/common-es2015.b2ee6cceef256a9e11d4.js",
         "/common-es5.b2ee6cceef256a9e11d4.js",
         "/index.html",
-        "/main-es2015.9b8104b16e0a2fa65624.js",
-        "/main-es5.9b8104b16e0a2fa65624.js",
+        "/main-es2015.5afff7f6e03e0aa2d297.js",
+        "/main-es5.5afff7f6e03e0aa2d297.js",
         "/manifest.webmanifest",
         "/polyfills-es2015.0456f4164c766ebb9937.js",
         "/polyfills-es5.3b270ffd9a780ba11171.js",
@@ -253,16 +253,16 @@
     "/assets/js/stunTurnConfig.json": "5064b7243043dd50a7a10df5cd07d25117630f5f",
     "/common-es2015.b2ee6cceef256a9e11d4.js": "cf808a6bf60a15a6d2bfd84e78532bf7f33e1df2",
     "/common-es5.b2ee6cceef256a9e11d4.js": "f2219d766f36859be86f7b65a4a8fbc259c92d2e",
-    "/index.html": "8c5ac5c70c60b9111e31d9e54a82a09c7fc34e53",
-    "/main-es2015.9b8104b16e0a2fa65624.js": "a2104c8981fdcae28b5ca4d9212aabf9aad53259",
-    "/main-es5.9b8104b16e0a2fa65624.js": "6f015073e5e1fdb0e443eca882a4b152e8cc4b5d",
+    "/index.html": "5ed29edf86ba87b786fb7f73fd7ac20e81163cec",
+    "/main-es2015.5afff7f6e03e0aa2d297.js": "d478dccc495ce49699894f4e65af48499643cb37",
+    "/main-es5.5afff7f6e03e0aa2d297.js": "a5dfa97930eaaee28aa0248035a8114f2f58523c",
     "/manifest.webmanifest": "d36468b8e524a5ed6779dd8ef0b6d113d0d525f9",
     "/polyfills-es2015.0456f4164c766ebb9937.js": "23fccfa60bfe4eace219204aa59c4c192352d97b",
     "/polyfills-es5.3b270ffd9a780ba11171.js": "a58bd05de86bdc2690aad832e4b5b1d15602adcd",
     "/runtime-es2015.9b47fd160e3c5085c8fc.js": "ecc3919e2e82d9c4a6693f897cfb9dd793f982a9",
     "/runtime-es5.9b47fd160e3c5085c8fc.js": "891fbd28c22d827089d15d12af54541aaca2e9c5",
     "/scripts.6d6368f7482893f89194.js": "041d33cc5588e2de7dfb97beb9a79d3f3c563d85",
-    "/service-worker.js": "eef648372ce0a53b8cb78d0dc503b3930f689e97",
+    "/service-worker.js": "ebd430bd71216e11d4cafc7c1a2ec7005b7d8eba",
     "/styles.feb11abe78f4b1b56fd3.css": "5dab46eb40c651734af1adaca93244b691774fdc"
   },
   "navigationUrls": [

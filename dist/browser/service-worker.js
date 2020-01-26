@@ -1,5 +1,5 @@
 importScripts('ngsw-worker.js');
-let version = '1.0.10';
+window.localStorage.setItem('version', '1.0.12');
 
 /*self.addEventListener('push', (event)=> {
 	const data = event.data.json();
