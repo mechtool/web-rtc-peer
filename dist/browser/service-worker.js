@@ -1,5 +1,6 @@
 importScripts('ngsw-worker.js');
-window.localStorage.setItem('version', '1.0.12');
+//Изменить версию на сервере app.get('version')
+let version = '1.0.0';
 
 /*self.addEventListener('push', (event)=> {
 	const data = event.data.json();
