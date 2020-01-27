@@ -22,15 +22,12 @@ channel.postMessage({type : 'version', version : version});
 
 //Обработка событина нажатия пользователем на уведомление
 self.addEventListener('notificationclick', (event )=> {
-	debugger;
-	if (event.action === 'archive') {
-		// Archive action was clicked
-		console.log('Нажата кнопка активности.')
-	} else {
-		// Main body of notification was clicked
-		console.log('Нажато тело сообщения.');
-		self.clients.openWindow('/application');
-	}
+	event.notification.actions.forEach(action => {
+		let act = JSON.parse(action);
+		if (act.type === 'accept') {
+			self.clients.openWindow(act.link);
+		}
+	}) ;
 	event.notification.close();
 	
 }, false);
