@@ -21,15 +21,16 @@ channel.postMessage({type : 'version', version : version});
 });*/
 
 //Обработка событина нажатия пользователем на уведомление
-/*self.addEventListener('notificationclick', (event )=> {
+self.addEventListener('notificationclick', (event )=> {
+	debugger;
 	if (event.action === 'archive') {
 		// Archive action was clicked
 		console.log('Нажата кнопка активности.')
 	} else {
 		// Main body of notification was clicked
 		console.log('Нажато тело сообщения.');
-		self.clients.openWindow('/application/announcements');
+		self.clients.openWindow('/application');
 	}
 	event.notification.close();
 	
-}, false);*/
+}, false);
