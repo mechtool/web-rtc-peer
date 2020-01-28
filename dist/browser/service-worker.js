@@ -1,6 +1,6 @@
 importScripts('ngsw-worker.js');
 
-let version = '1.0.3';
+let version = '1.0.00';
 let channel = new BroadcastChannel('sw-messages');
 channel.addEventListener('message', event => {
 	if(event.data.type === 'version'){
@@ -22,12 +22,15 @@ channel.postMessage({type : 'version', version : version});
 
 //Обработка событина нажатия пользователем на уведомление
 self.addEventListener('notificationclick', (event )=> {
-	event.notification.actions.forEach(action => {
-		let act = JSON.parse(action);
-		if (act.type === 'accept') {
-			self.clients.openWindow(act.link);
-		}
-	}) ;
+	//Обработка активности пользователя на текущем сообщении
+	console.log('Нажатие на сообщение.');
+	let data = event.notification.data;
+	if(event.action === 'accept'){
+		self.clients.openWindow(data[event.action].link);
+	}else if(event.action === 'denied'){
+		//Сообщение не принято - снять активность предложения и установить статус предложения в 'denied'
+		//this.database.setDescriptorOptions({descriptor: action.offer, data: {active: false, action : 'denied'}}).catch(this.onError);
+	}
 	event.notification.close();
 	
 }, false);
