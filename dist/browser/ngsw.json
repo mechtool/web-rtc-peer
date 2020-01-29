@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1580291497050,
+  "timestamp": 1580291939244,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -261,7 +261,7 @@
     "/assets/js/stunTurnConfig.json": "5064b7243043dd50a7a10df5cd07d25117630f5f",
     "/common-es2015.b2ee6cceef256a9e11d4.js": "cf808a6bf60a15a6d2bfd84e78532bf7f33e1df2",
     "/common-es5.b2ee6cceef256a9e11d4.js": "f2219d766f36859be86f7b65a4a8fbc259c92d2e",
-    "/index.html": "ea4b55da594336d798d9bd58849dff46663acfe8",
+    "/index.html": "7b543f11be724ce93479cd9eb1753b2944c5a073",
     "/main-es2015.2c8a3b3f18ab152c570c.js": "5e416f351de8c449b823b5158f3722d6c390bdbe",
     "/main-es5.2c8a3b3f18ab152c570c.js": "fc6facb82567b2b64c423e6b6af3ecbaf7882c02",
     "/manifest.webmanifest": "d36468b8e524a5ed6779dd8ef0b6d113d0d525f9",
@@ -270,7 +270,7 @@
     "/runtime-es2015.35cdd80ae6f9261c48ea.js": "299cbc0741379042fc909f12820ee0993763f42d",
     "/runtime-es5.35cdd80ae6f9261c48ea.js": "5f8196df95bb7d9b826a9e814dab6e2eb0b885af",
     "/scripts.6d6368f7482893f89194.js": "041d33cc5588e2de7dfb97beb9a79d3f3c563d85",
-    "/service-worker.js": "46f7bbc385bacf671db88fc64a3e4104ea469e6e",
+    "/service-worker.js": "493ce58b0a793f76529a3918b1c8b7175e97ab89",
     "/styles.feb11abe78f4b1b56fd3.css": "5dab46eb40c651734af1adaca93244b691774fdc"
   },
   "navigationUrls": [
