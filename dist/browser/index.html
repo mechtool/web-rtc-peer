@@ -10,6 +10,13 @@
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#1976d2">
+	<script>
+		window.addEventListener("beforeinstallprompt", function(e) {
+			// log the platforms provided as options in an install prompt
+			debugger;
+			console.log(e.platforms); // e.g., ["web", "android", "windows"]
+		});
+	</script>
 <link rel="stylesheet" href="styles.feb11abe78f4b1b56fd3.css"></head>
 <body>
   <app-root>
