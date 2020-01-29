@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1580312161853,
+  "timestamp": 1580314098092,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -45,8 +45,8 @@
         "/common-es2015.b2ee6cceef256a9e11d4.js",
         "/common-es5.b2ee6cceef256a9e11d4.js",
         "/index.html",
-        "/main-es2015.0f6b8a2a2de48cdab921.js",
-        "/main-es5.0f6b8a2a2de48cdab921.js",
+        "/main-es2015.4ddd515c565e872f8bd1.js",
+        "/main-es5.4ddd515c565e872f8bd1.js",
         "/manifest.webmanifest",
         "/polyfills-es2015.0456f4164c766ebb9937.js",
         "/polyfills-es5.3b270ffd9a780ba11171.js",
@@ -259,16 +259,16 @@
     "/assets/js/stunTurnConfig.json": "5064b7243043dd50a7a10df5cd07d25117630f5f",
     "/common-es2015.b2ee6cceef256a9e11d4.js": "cf808a6bf60a15a6d2bfd84e78532bf7f33e1df2",
     "/common-es5.b2ee6cceef256a9e11d4.js": "f2219d766f36859be86f7b65a4a8fbc259c92d2e",
-    "/index.html": "455797563119d9544389cc2af8c089415a260632",
-    "/main-es2015.0f6b8a2a2de48cdab921.js": "e026f36214fe3880d03076fb8bf26f57c254d075",
-    "/main-es5.0f6b8a2a2de48cdab921.js": "9a6bc5503ced307e153bd93932f8f269772f96c1",
+    "/index.html": "f62485ac9e1c5bc40304fa425b6c90c3aa5dcac9",
+    "/main-es2015.4ddd515c565e872f8bd1.js": "4f4b194324feb6393d023b244c1537521edff781",
+    "/main-es5.4ddd515c565e872f8bd1.js": "9e3a34093cf94aee9492111d44deb46ea9da307c",
     "/manifest.webmanifest": "d36468b8e524a5ed6779dd8ef0b6d113d0d525f9",
     "/polyfills-es2015.0456f4164c766ebb9937.js": "23fccfa60bfe4eace219204aa59c4c192352d97b",
     "/polyfills-es5.3b270ffd9a780ba11171.js": "a58bd05de86bdc2690aad832e4b5b1d15602adcd",
     "/runtime-es2015.ac1a9ccebb8cc909db8b.js": "6f95ff0f8e2b0a24520c73c3a4b4765f7b3ed654",
     "/runtime-es5.ac1a9ccebb8cc909db8b.js": "fee86fceb7d384051ee2f7a0773bc8db4d7bc056",
     "/scripts.6d6368f7482893f89194.js": "041d33cc5588e2de7dfb97beb9a79d3f3c563d85",
-    "/service-worker.js": "1481b830cc6afe7db16e221eae01faef4adc6ac8",
+    "/service-worker.js": "493ce58b0a793f76529a3918b1c8b7175e97ab89",
     "/styles.feb11abe78f4b1b56fd3.css": "5dab46eb40c651734af1adaca93244b691774fdc"
   },
   "navigationUrls": [
