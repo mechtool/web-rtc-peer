@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1580290292186,
+  "timestamp": 1580291497050,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -45,14 +45,14 @@
         "/common-es2015.b2ee6cceef256a9e11d4.js",
         "/common-es5.b2ee6cceef256a9e11d4.js",
         "/index.html",
-        "/main-es2015.b659ef140e4b4135cf1c.js",
-        "/main-es5.b659ef140e4b4135cf1c.js",
+        "/main-es2015.2c8a3b3f18ab152c570c.js",
+        "/main-es5.2c8a3b3f18ab152c570c.js",
         "/manifest.webmanifest",
         "/polyfills-es2015.0456f4164c766ebb9937.js",
         "/polyfills-es5.3b270ffd9a780ba11171.js",
         "/runtime-es2015.35cdd80ae6f9261c48ea.js",
         "/runtime-es5.35cdd80ae6f9261c48ea.js",
-        "/scripts.05be4bd93959707036dd.js",
+        "/scripts.6d6368f7482893f89194.js",
         "/service-worker.js",
         "/styles.feb11abe78f4b1b56fd3.css"
       ],
@@ -261,16 +261,16 @@
     "/assets/js/stunTurnConfig.json": "5064b7243043dd50a7a10df5cd07d25117630f5f",
     "/common-es2015.b2ee6cceef256a9e11d4.js": "cf808a6bf60a15a6d2bfd84e78532bf7f33e1df2",
     "/common-es5.b2ee6cceef256a9e11d4.js": "f2219d766f36859be86f7b65a4a8fbc259c92d2e",
-    "/index.html": "3d6c03556a8fe7b0927fc6b3f82517e3beeb0311",
-    "/main-es2015.b659ef140e4b4135cf1c.js": "5e416f351de8c449b823b5158f3722d6c390bdbe",
-    "/main-es5.b659ef140e4b4135cf1c.js": "fc6facb82567b2b64c423e6b6af3ecbaf7882c02",
+    "/index.html": "ea4b55da594336d798d9bd58849dff46663acfe8",
+    "/main-es2015.2c8a3b3f18ab152c570c.js": "5e416f351de8c449b823b5158f3722d6c390bdbe",
+    "/main-es5.2c8a3b3f18ab152c570c.js": "fc6facb82567b2b64c423e6b6af3ecbaf7882c02",
     "/manifest.webmanifest": "d36468b8e524a5ed6779dd8ef0b6d113d0d525f9",
     "/polyfills-es2015.0456f4164c766ebb9937.js": "23fccfa60bfe4eace219204aa59c4c192352d97b",
     "/polyfills-es5.3b270ffd9a780ba11171.js": "a58bd05de86bdc2690aad832e4b5b1d15602adcd",
     "/runtime-es2015.35cdd80ae6f9261c48ea.js": "299cbc0741379042fc909f12820ee0993763f42d",
     "/runtime-es5.35cdd80ae6f9261c48ea.js": "5f8196df95bb7d9b826a9e814dab6e2eb0b885af",
-    "/scripts.05be4bd93959707036dd.js": "c1b04bd236d60fc14336c5c9f9b1c5d78e820276",
-    "/service-worker.js": "4f957888832ea83c2fb8ddd2365b411b5160e37d",
+    "/scripts.6d6368f7482893f89194.js": "041d33cc5588e2de7dfb97beb9a79d3f3c563d85",
+    "/service-worker.js": "46f7bbc385bacf671db88fc64a3e4104ea469e6e",
     "/styles.feb11abe78f4b1b56fd3.css": "5dab46eb40c651734af1adaca93244b691774fdc"
   },
   "navigationUrls": [
