@@ -1,6 +1,6 @@
 importScripts('ngsw-worker.js');
 
-let version = '1.0.5';
+let version = '1.0.11';
 let channel = new BroadcastChannel('sw-messages');
 channel.addEventListener('message', event => {
 	if(event.data.type === 'version'){
@@ -29,7 +29,7 @@ self.addEventListener('notificationclick', (event )=> {
 		self.clients.openWindow(data[event.action].link);
 	}else if(event.action === 'denied'){
 		//Сообщение не принято - снять активность предложения и установить статус предложения в 'denied'
-		this.database.setDescriptorOptions({descriptor: data.offer, data: {active: false, action : 'denied'}}).catch(this.onError);
+		this.database.setDescriptorOptions({descriptor: JSON.parse(data[event.action].offer), data: {active: false, action : 'denied'}}).catch(this.onError);
 	}
 	event.notification.close();
 	
