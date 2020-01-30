@@ -1,6 +1,6 @@
 importScripts('ngsw-worker.js');
 
-let version = '1.0.12';
+let version = '1.0.15';
 let channel = new BroadcastChannel('sw-messages');
 channel.addEventListener('message', event => {
 	if(event.data.type === 'version'){
@@ -23,15 +23,22 @@ channel.postMessage({type : 'version', version : version});
 //Обработка событина нажатия пользователем на уведомление
 self.addEventListener('notificationclick', (event )=> {
 	//Обработка активности пользователя на текущем сообщении
-	console.log('Нажатие на сообщение.');
-	let data = JSON.parse(event.notification.data);
-	if(event.action === 'accept'){
-		self.clients.openWindow(data[event.action].link);
-	}else if(event.action === 'denied'){
-		let d = data[event.action];
-		//Сообщение не принято - снять активность предложения и установить статус предложения в 'denied'
-		this.database.setDescriptorOptions({descriptor: {type : 'offers/implicit/', contact : {uid : d.uid}, messId : d.messId}, data: {active: false, action : 'denied'}}).catch(this.onError);
-	}
+	const rootUrl = new URL('/', location).href;
 	event.notification.close();
-	
+	// Enumerate windows, and call window.focus(), or open a new one.
+	if(event.action === 'accept' || event.action === ''){
+		console.log('Сообщение принято.');
+		event.waitUntil(
+			self.clients.matchAll().then(matchedClients => {
+				for (let client of matchedClients) {
+					if (client.url === rootUrl) {
+						return client.focus();
+					}
+				}
+				return self.clients.openWindow("/");
+			})
+		);
+	}else if(event.action === 'denied'){
+		console.log('Сообщение не принято.');
+	}
 }, false);
