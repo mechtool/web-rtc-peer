@@ -1,6 +1,6 @@
 importScripts('ngsw-worker.js');
 
-let version = '1.0.04';
+let version = '1.0.24';
 let channel = new BroadcastChannel('sw-messages');
 channel.addEventListener('message', event => {
 	if(event.data.type === 'version'){
@@ -35,8 +35,8 @@ self.addEventListener('notificationclick', (event )=> {
 			
 			let currentClient;
 			for (const client of allClients) {
+				currentClient = client;
 				if(!client.focused) {
-					currentClient = client;
 					return client.focus();
 				}
 			}
