@@ -1,6 +1,6 @@
 importScripts('ngsw-worker.js');
 
-let version = '1.0.2';
+let version = '1.0.3';
 let channel = new BroadcastChannel('sw-messages');
 channel.addEventListener('message', event => {
 	if(event.data.type === 'version'){
@@ -34,7 +34,7 @@ self.addEventListener('notificationclick', (event )=> {
 					if (client.url.indexOf(rootUrl) > -1) {
 						if(!client.focused) {
 							return client.focus();
-						}else self.clients.openWindow(rootUrl) ;
+						}else return self.clients.openWindow(rootUrl) ;
 					}
 				}
 			//	return self.clients.openWindow("/application");
