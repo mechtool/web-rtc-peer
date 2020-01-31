@@ -31,11 +31,11 @@ self.addEventListener('notificationclick', (event )=> {
 		event.waitUntil(
 			self.clients.matchAll().then(matchedClients => {
 				for (let client of matchedClients) {
-					if (client.url === rootUrl) {
-						return client.focus();
+					if (client.url.indexOf(rootUrl) > -1) {
+						if(client.focused) return client.focus();
 					}
 				}
-				return self.clients.openWindow("/application");
+			//	return self.clients.openWindow("/application");
 			})
 		);
 	}else if(event.action === 'denied'){
