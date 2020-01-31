@@ -1,6 +1,6 @@
 importScripts('ngsw-worker.js');
 
-let version = '1.0.3';
+let version = '1.0.54';
 let channel = new BroadcastChannel('sw-messages');
 channel.addEventListener('message', event => {
 	if(event.data.type === 'version'){
@@ -28,19 +28,21 @@ self.addEventListener('notificationclick', (event )=> {
 	// Enumerate windows, and call window.focus(), or open a new one.
 	if(event.action === 'accept' || event.action === ''){
 		console.log('Сообщение принято.');
-		event.waitUntil(
-			self.clients.matchAll().then(matchedClients => {
-				for (let client of matchedClients) {
-					if (client.url.indexOf(rootUrl) > -1) {
-						if(!client.focused) {
-							return client.focus();
-						}else return client.navigate(client.url) ;
-					}
+		event.waitUntil(async ()=> {
+			const allClients = await self.clients.matchAll({
+				includeUncontrolled: false
+			});
+			
+			let currentClient;
+			for (const client of allClients) {
+				if(!client.focused) {
+					currentClient = client;
+					return client.focus();
 				}
-			//	return self.clients.openWindow("/application");
-			})
-		);
-	}else if(event.action === 'denied'){
-		console.log('Сообщение не принято.');
+			}
+			if (!currentClient) {
+				return self.clients.openWindow(rootUrl); //https://web-rtc-peer.herokuapp.com/
+			}
+		})
 	}
-}, false);
+}) ;
