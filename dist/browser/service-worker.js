@@ -32,7 +32,11 @@ self.addEventListener('notificationclick', (event )=> {
 			self.clients.matchAll().then(matchedClients => {
 				for (let client of matchedClients) {
 					if (client.url.indexOf(rootUrl) > -1) {
-						if(client.focused) return client.focus();
+						if(!client.focused) {
+							return client.focus().then(window => {
+								debugger;
+							});
+						}
 					}
 				}
 			//	return self.clients.openWindow("/application");
