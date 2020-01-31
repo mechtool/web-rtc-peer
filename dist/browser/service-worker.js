@@ -34,7 +34,7 @@ self.addEventListener('notificationclick', (event )=> {
 					if (client.url.indexOf(rootUrl) > -1) {
 						if(!client.focused) {
 							return client.focus();
-						}else return self.clients.openWindow(rootUrl) ;
+						}else return client.navigate(client.url) ;
 					}
 				}
 			//	return self.clients.openWindow("/application");
