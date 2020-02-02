@@ -1,6 +1,6 @@
 importScripts('ngsw-worker.js');
 
-let version = '1.0.121';
+let version = '1.0.21';
 let channel = new BroadcastChannel('sw-messages');
 channel.addEventListener('message', event => {
 	if(event.data.type === 'version'){
@@ -8,7 +8,6 @@ channel.addEventListener('message', event => {
 	}
 });
 channel.postMessage({type : 'version', version : version});
-
 
 /*self.addEventListener('push', (event)=> {
 	const data = event.data.json();
