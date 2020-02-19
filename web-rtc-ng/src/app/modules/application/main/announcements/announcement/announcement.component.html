@@ -1,0 +1,12 @@
+<div class="base-announcement" [ngSwitch]="context.type">
+	<div class="announcement-container" >
+		<div class="activated-mark" [style.backgroundColor]="activatedMarkColor"></div>
+		<div class="zero-announcement  any-announce" *ngSwitchCase="0">
+			<div class="date-block">{{context.date | date :'short' : '' : 'ru'}}</div>
+			<div class="contains" [innerHTML]="this.sanitizer.bypassSecurityTrustHtml(context.content)"></div>
+		</div>
+		<app-incoming-call-announcement *ngSwitchCase="1" [context]="context"></app-incoming-call-announcement>
+		<app-no-answer *ngSwitchCase="2" [context]="context"></app-no-answer>
+		<app-update-announcement *ngSwitchCase="3" [context]="context"></app-update-announcement>
+	</div>
+</div>

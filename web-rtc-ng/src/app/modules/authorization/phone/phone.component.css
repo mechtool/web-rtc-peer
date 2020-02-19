@@ -1,0 +1,40 @@
+div.phone-container{
+    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: 0 0 10px -8px;
+    padding: 20px 40px 40px 40px;
+}
+.phone-toolbar{
+    box-shadow: 0 0 10px -8px;
+}
+.phone-form-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+mat-form-field{
+    line-height: 1;
+}
+mat-select-trigger > *{
+    margin-right: 4px;
+}
+mat-select-trigger{
+    display: flex;
+    align-items: center;
+}
+.state-img{
+    height: 18px;
+}
+.button-group{
+    width: 100%;
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-between;
+}
+.button-group button{
+    height: 40px;
+}
+.state-img,.location,.state-code{
+    margin-right: 4px;
+}

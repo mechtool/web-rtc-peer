@@ -1,0 +1,69 @@
+:host{
+    position: static;
+}
+.permissions-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 0;
+    height: 0;
+    position: absolute;
+    opacity: 0;
+}
+.permissions-container.active{
+    height: 100%;
+    width: 100%;
+    background: #3e3e3e91;
+    z-index: 10;
+    opacity: 1;
+}
+.base-block{
+    position: relative;
+    display: flex;
+    justify-content: center;
+}
+.permission-block{
+    background-color: #fff;
+    box-shadow: 0 0 10px -5px;
+    width: 80%;
+    max-width: 400px;
+}
+.permission-block.iconSelection{
+    width: initial;
+}
+.permission-block:first-child{
+   position: relative;
+}
+.permission-block:not(:first-child){
+    position: absolute;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+.text-block{
+    padding: 0 30px 30px 30px;
+    display: flex;
+    flex-direction: column;
+}
+p.par-text{
+    text-align: justify
+}
+.startScreen{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
+.permission-content.prompt{
+    color : #00006a;
+}
+.permission-content.denied,
+.permission-content.no-push,
+.permission-content.no-hardware{
+    color: #770000;
+}

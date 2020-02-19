@@ -1,0 +1,6 @@
+<div class="startScreen" *ngIf="progress">
+	<mat-progress-spinner color="primary" mode="indeterminate"></mat-progress-spinner>
+</div>
+<div class="web-rtc-component-container" *ngIf="!this.progress"  [ngStyle]="{'flex-direction': this.flexDirection}">
+	<app-web-rtc-context *ngFor="let webRtcContext of this.appContext.webRtcContexts.contexts | async" [context]="webRtcContext"></app-web-rtc-context>
+</div>

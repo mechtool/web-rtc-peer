@@ -1,0 +1,27 @@
+<mat-toolbar [color]="'primary'">
+	<span class="new-message-header">{{newMessageHeader}}</span>
+	<span class="new-message-header add-header" *ngIf="this.search" > : добавление контакта</span>
+	<span class="example-spacer"></span>
+	<button mat-icon-button [ngClass]="{active : search}" class="toolbar-button search-trigger" matTooltip="Поиск" (click)="triggerSearch()">
+		<mat-icon [svgIcon]="buttons[0]"></mat-icon>
+	</button>
+	<button mat-icon-button class="toolbar-button delete-contact" matTooltip="Удалить" (click)="onDeleteItems()" [disabled]="activateEdit">
+		<mat-icon [svgIcon]="buttons[1]"></mat-icon>
+	</button>
+</mat-toolbar>
+<div class="new-message-container">
+	<div class="choose-contacts-container">
+		<div class="contacts-container">
+			<div class="element-control-container" *ngIf="search" [ngSwitch]="callModel">
+				<app-phone-control class="smsCall" *ngSwitchCase="0" ></app-phone-control>
+				<app-contact-search class="pushCall" *ngSwitchCase="1" [collection]="messageContacts" [baseCollection]="this.appContext.contacts" (selectedOption)="onOptionSelect($event)"></app-contact-search>
+			</div>
+			<app-contact-table class="new-message-table" [context]="messageContacts" (activatedContact)="onActivatedContact($event)"></app-contact-table>
+		</div>
+		<div class="button-call-block" [style.backgroundColor]="this.colorThemeService.getThemeColor('light')">
+			<button mat-fab [color]="'accent'" [disabled]="!messageContacts.value.length" (click)="onStartCall()" >
+				<mat-icon >call</mat-icon>
+			</button>
+		</div>
+	</div>
+</div>

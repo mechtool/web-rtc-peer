@@ -1,0 +1,52 @@
+:host{
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    height: 100%;
+}
+.contacts-not{
+    color: #bebebe;
+}
+.contacts-header{
+    font-size: 18px!important;
+}
+.added-contacts-container{
+    margin-top: 16px;
+}
+mat-card.contacts-container{
+    position: relative;
+    box-sizing: border-box;
+    overflow-y: auto!important;
+    flex: 1 1 0!important;
+
+}
+button.toolbar-button.active{
+    background: rgba(255, 255, 255, 0.15);
+}
+mat-icon{
+    position: relative;
+    top: -2px;
+}
+.element-control-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+
+div.contacts-block{
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    height: 100%;
+}
+.contact-table-container{
+    flex : 1 1 0;
+}
+@media (max-width: 400px) {
+    .contacts-search-header{
+        display: none;
+    }
+}
+

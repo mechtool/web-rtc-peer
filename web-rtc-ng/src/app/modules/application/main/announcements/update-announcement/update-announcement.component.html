@@ -1,0 +1,13 @@
+<div class="update-container">
+	<mat-icon class="contact-img" [svgIcon]="'attention'" color="primary" ></mat-icon>
+	<div class="main-text">
+			<div class="call-date">{{context.date | date :'short' : '' : 'ru'}}</div>
+			<div class="call-text" >{{context.text}}</div>
+	</div>
+	<div class="example-spacer"></div>
+	<ng-container *ngIf="context.desc.update">
+		<button mat-icon-button [disabled]="!context.active" *ngFor="let button of buttons" (click)="button.listener()"  [style.color]="button.color" [matTooltip]="button.tip">
+			<mat-icon>{{button.icon}}</mat-icon>
+		</button>
+	</ng-container>
+</div>

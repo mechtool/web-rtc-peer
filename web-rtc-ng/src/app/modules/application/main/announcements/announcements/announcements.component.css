@@ -1,0 +1,17 @@
+.announcement-block{
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    height: 100%;
+}
+.announcement-base{
+    overflow-y: auto;
+    flex : 1 1 0;
+}
+.announcement-header{
+    font-size: 18px!important;
+}
+mat-icon{
+    position: relative;
+    top: -2px;
+}

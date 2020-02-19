@@ -1,0 +1,23 @@
+.web-rtc-context-container{
+    height: 100%;
+    display: flex;
+    justify-content: stretch;
+    align-items: stretch;
+}
+app-video-channel{
+    flex: 1 1 0;
+}
+app-video-channel.local{
+    flex: 0 0 0;
+}
+
+@media  (orientation: landscape) {
+    .web-rtc-context-container{
+        flex-direction: row;
+    }
+}
+@media  (orientation: portrait) {
+    .web-rtc-context-container{
+        flex-direction: column;
+    }
+}

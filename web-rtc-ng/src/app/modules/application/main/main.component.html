@@ -1,0 +1,20 @@
+<div class="main-component-container">
+	<mat-toolbar class="main-toolbar" [color]="'primary'">
+		<div class="flat-button-block" fxShow.xs="false" fxShow="true">
+			<button class="flat-button" mat-flat-button [color]="'primary'" [routerLink]="button.link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngFor="let button of this.toolbarButtons.left" [matTooltip]="button.tip">{{button.text}}</button>
+		</div>
+		<div class="img-button-block" fxShow.xs="true" fxShow="false">
+			<button mat-icon-button [routerLink]="button.link" routerLinkActive="active" [routerLinkActiveOptions]="{exact : true}" *ngFor="let button of this.toolbarButtons.left" [matTooltip]="button.tip">
+				<mat-icon [svgIcon]="button.icon"></mat-icon>
+			</button>
+		</div>
+		<span class="expander" style="flex : 1 1 0"></span>
+		<app-contact class="toolbar-contact" [context]="this.appContext.user | async"></app-contact>
+		<button mat-icon-button [routerLink]="button.link" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" *ngFor="let button of this.toolbarButtons.right" [matTooltip]="button.tip">
+			<mat-icon [svgIcon]="button.icon" [matBadge]="button.badge > 0 ? button.badge + '' : '' " [matBadgeColor]="'accent'" [hidden]="!button.badge" matBadgeSize="small"></mat-icon>
+		</button>
+	</mat-toolbar>
+	<div class="router-container" [@routerTransition]="getState(mainOutlet)">
+		<router-outlet #mainOutlet="outlet"></router-outlet>
+	</div>
+</div>

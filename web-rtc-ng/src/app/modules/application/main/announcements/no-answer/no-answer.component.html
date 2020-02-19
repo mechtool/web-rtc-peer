@@ -1,0 +1,8 @@
+<div class="offer-status-container">
+	<mat-icon color="primary" *ngIf="context.extra.icon" class="contact-img" alt="Изображение контакта" [svgIcon]="context.extra.icon" (error)="onErrorContactImg($event)" [style.backgroundColor]="context.contact.imgColor" ></mat-icon>
+	<img class="contact-img" alt="Изображение контакта" *ngIf="!context.extra.icon" [src]="context.contact.photoURL" (error)="onErrorContactImg($event)" [style.backgroundColor]="context.contact.imgColor" >
+	<div class="main-text">
+		<div class="contact-name">{{contactName}}</div>
+		<div class="offer-status-text" >{{context.text}}</div>
+	</div>
+</div>

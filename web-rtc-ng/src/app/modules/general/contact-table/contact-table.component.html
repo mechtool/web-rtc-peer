@@ -1,0 +1,8 @@
+<div class="added-row-container">
+	<span class="note-text" *ngIf="!context.value.length">Контакты пока не выбраны...</span>
+	<div class="table-row" *ngFor="let contact of context | async ; let index = index" [style.backgroundColor]="getNeededColor(index)" >
+		<div class="table-contact" (click)="onClickTableRow($event, index, contact)">
+			<app-contact [context]="contact" ></app-contact>
+		</div>
+	</div>
+</div>

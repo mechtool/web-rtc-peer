@@ -1,0 +1,8 @@
+<app-permissions></app-permissions>
+<div class="popup-container" [@notificationAppearance]="this.appContext.popups.value.length">
+	<app-popup-notifications *ngFor="let context of this.appContext.popups | async" [context]="context"></app-popup-notifications>
+</div>
+<div class="application-container" >
+	<router-outlet #applicationOutlet="outlet"></router-outlet>
+</div>
+

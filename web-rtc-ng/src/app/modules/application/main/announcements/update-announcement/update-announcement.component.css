@@ -1,0 +1,14 @@
+:host{
+    width: 100%;
+}
+.update-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+.contact-img{
+    width: 36px;
+    height: 36px;
+    margin-right: 8px;
+}

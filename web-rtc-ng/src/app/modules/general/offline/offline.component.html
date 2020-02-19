@@ -1,0 +1,13 @@
+<div class="permission-content offline">
+	<mat-toolbar [color]="'warn'">Нет сети.</mat-toolbar>
+	<div class="text-block" >
+		<p class="par-text">К сожалению, устройство не подключено к сети. Подключите устройство и перезагрузите приложение <span *ngIf="this.appContext.offline.autonomously">или работайте автономно</span></p>
+		<div class="buttons-block">
+			<button mat-raised-button [color]="'warn'" [disabled]="false" (click)="onClick()">Перезагрузить</button>
+			<ng-container  *ngIf="this.appContext.offline.autonomously">
+				<span class="example-spacer"></span>
+				<button mat-raised-button [color]="'warn'" [disabled]="false" (click)="onAutonomously()">Автономно</button>
+			</ng-container>
+		</div>
+	</div>
+</div>

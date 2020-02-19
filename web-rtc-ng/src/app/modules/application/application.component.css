@@ -1,0 +1,15 @@
+.application-container{
+    height: 100%;
+}
+div.popup-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 0;
+    overflow: visible;
+    width: 100%;
+    position: absolute;
+    top: 50%;
+    z-index: 8;
+}

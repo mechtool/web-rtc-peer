@@ -1,0 +1,36 @@
+<div class="permissions-container" [ngClass]="{active : !!this.appContext.notifications.length}" (click)="onClickOverlay($event)">
+	<div class="base-block" [@notificationAppearance]="this.appContext.notifications.length">
+		<div class="permission-block" *ngFor="let item of this.appContext.notifications" [ngSwitch]="item.state" [ngClass]="item.className" >
+			<div class="permission-content prompt" *ngSwitchCase="'prompt'">
+				<mat-toolbar [color]="'primary'">Запрос использования</mat-toolbar>
+				<div class="text-block">
+					<p class="par-text">Для работы приложения необходимо запросить пользовательское разрешение {{item.name === 'camera' ? 'на доступ к камере и микрофону' : 'для получения уведомлений'}}. Это разрешение будет запрошено один раз, и в дальнейшем будет использованно автоматически.</p>
+					<button mat-raised-button [color]="'primary'" [disabled]="item.disabled" (click)="onClickPermission(item)">Запросить разрешение</button>
+				</div>
+			</div>
+			<div class="permission-content denied" *ngSwitchCase="'denied'">
+				<mat-toolbar [color]="'warn'">Запрет использования</mat-toolbar>
+				<div class="text-block" >
+					<p class="par-text">К сожалению, пользователь отклонил запрос разрешения {{item.name === 'camera' ? 'на доступ к камере и микрофону' : 'для отправки уведомлений'}}. Дальнейшее использование приложения невозможно. Снимите запрет и повторите вход в приложение.</p>
+					<button mat-raised-button [color]="'warn'" [disabled]="item.disabled" (click)="onClickDenied()">Ok</button>
+				</div>
+			</div>
+			<div class="permission-content no-push" *ngSwitchCase="'noPush'">
+				<mat-toolbar [color]="'warn'">Нет поддержки</mat-toolbar>
+				<div class="text-block" >
+					<p class="par-text">К сожалению, Ваш браузер не поддерживает функциональность уведомлений пользователя. Дальнейшее использование приложения невозможно. Обновите браузер и повторите вход в приложение.</p>
+					<button mat-raised-button [color]="'warn'" [disabled]="item.disabled" (click)="onClickDenied()">Ok</button>
+				</div>
+			</div>
+			<div class="permission-content no-hardware" *ngSwitchCase="'noHardware'">
+				<mat-toolbar [color]="'warn'">Нет аппаратных средств</mat-toolbar>
+				<div class="text-block" >
+					<p class="par-text">К сожалению, в оперрационной системе, отсутствует или отключены аппаратные средства. Проверте подключение видеовхода, аудиовхода, аудиовыхода и перезагрузите приложение.</p>
+					<button mat-raised-button [color]="'warn'" [disabled]="item.disabled" (click)="item.listener()">Перезагрузить</button>
+				</div>
+			</div>
+			<app-icons-selection *ngSwitchCase="'iconSelection'" [context]="item.context" ></app-icons-selection>
+		</div>
+	</div>
+</div>
+

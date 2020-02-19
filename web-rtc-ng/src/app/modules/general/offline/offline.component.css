@@ -1,0 +1,32 @@
+:host{
+    position: absolute;
+    z-index: 5;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: #73737391;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.offline{
+    color: #770000;
+    background-color: #fff;
+    min-width: 250px;
+    max-width: 500px;
+    width: 70%;
+}
+.text-block{
+    margin: 0 20px 20px 20px;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    flex-direction: column;
+}
+.buttons-block{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+

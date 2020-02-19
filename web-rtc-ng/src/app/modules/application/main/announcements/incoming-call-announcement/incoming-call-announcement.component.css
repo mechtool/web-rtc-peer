@@ -1,0 +1,33 @@
+:host-context(.base-announcement) .incoming-call-container{
+    background-color: initial;
+    margin: 0;
+    z-index: initial;
+    padding: 0;
+}
+.incoming-call-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    padding : 12px;
+    background-color: #e9e9e9;
+}
+
+.main-text{
+    display: flex;
+    flex-direction: column;
+    justify-items: center;
+    align-items: flex-start;
+}
+.incoming-call-container div{
+    margin-right: 8px;
+    white-space: nowrap;
+}
+
+.contact-img{
+    width: 36px;
+    height: 36px;
+    margin-right: 8px;
+}
+
+

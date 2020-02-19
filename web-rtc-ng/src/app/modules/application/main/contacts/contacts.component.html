@@ -1,0 +1,21 @@
+<mat-toolbar [color]="'primary'">
+	<span class="contacts-header">{{contactsHeader}}</span>
+	<span class="contacts-header contacts-search-header" *ngIf="this.search" > : поиск контакта</span>
+	<span class="example-spacer"></span>
+	<button mat-icon-button [ngClass]="{active : this.search}" class="toolbar-button search-trigger" matTooltip="Поиск" (click)="triggerSearch()">
+		<mat-icon [svgIcon]="buttons[0]"></mat-icon>
+	</button>
+	<button mat-icon-button class="toolbar-button delete-contact" matTooltip="Удалить" (click)="onDeleteContacts()" [disabled]="activateEdit">
+		<mat-icon [svgIcon]="buttons[1]" ></mat-icon>
+	</button>
+</mat-toolbar>
+<mat-card class="contacts-container">
+	<div class="contacts-block">
+		<div class="element-control-container">
+			<app-contact-search *ngIf="search" [baseCollection]="this.appContext.appUsers" [collection]="this.appContext.contacts" (selectedOption)="onOptionSelected($event)"></app-contact-search>
+		</div>
+		<div class="contact-table-container">
+			<app-contact-table class="inner-contact-table" [context]="this.appContext.contacts" (activatedContact)="onActivatedContact($event)"></app-contact-table>
+		</div>
+	</div>
+</mat-card>

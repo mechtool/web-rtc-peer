@@ -1,0 +1,95 @@
+.video-container {
+    position: relative;
+    flex: 1 1 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+.main-video-container{
+    top: 0;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+.top-toolbar{
+    position: absolute;
+    top: 0;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.bottom-local-block{
+    width: 160px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.bottom-peer-video,.bottom-peer-audio{
+    background-color: transparent!important;
+}
+
+video.video-element{
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+    border: 0px solid #cecece;
+}
+.phone-hangup{
+    background-color: #c60000!important;
+}
+mat-icon{
+    color : #fff!important;
+}
+.bottom-toolbar.local{
+    background: transparent;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+}
+.bottom-toolbar.local{
+    bottom: 0;
+}
+.bottom-toolbar.remote{
+    position: absolute;
+    background: transparent;
+    display: flex;
+    justify-content: center;
+}
+.img-pulse{
+    position: absolute;
+    transform: scale(0.9) rotate(-45deg);
+    transform-origin: 13px 88px;
+    display: none;
+}
+div.video-container.active.pulse .img-pulse{
+    display: initial;
+}
+div.video-container.local.active{
+    position: absolute;
+    top: 0;
+    left : 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+    transition:  500ms;
+}
+
+div.video-container.local.active.fixed{
+    bottom: 0;
+    left : 0;
+    width: 200px;
+    height: 200px;
+    top: unset;
+}

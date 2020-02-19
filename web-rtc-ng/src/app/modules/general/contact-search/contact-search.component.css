@@ -1,0 +1,11 @@
+:host{
+    width: 100%;
+    max-width: 400px;
+}
+
+.contact-search-field{
+    width: 100%;
+}
+.contact-search{
+    top: 1px;
+}

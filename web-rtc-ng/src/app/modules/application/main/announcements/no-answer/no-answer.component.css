@@ -1,0 +1,19 @@
+:host-context(.popup-container) .offer-status-container{
+   background-color: #e9e9e9;
+    padding: 12px;
+}
+:host{
+    flex: 1 1 0;
+}
+.offer-status-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    min-width: 250px;
+}
+.contact-img{
+    width: 36px;
+    height: 36px;
+    margin-right: 8px;
+}

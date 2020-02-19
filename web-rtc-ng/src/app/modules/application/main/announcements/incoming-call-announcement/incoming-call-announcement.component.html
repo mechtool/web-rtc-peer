@@ -1,0 +1,7 @@
+<div class="incoming-call-container" >
+	<img class="contact-img" alt="Изображение контакта" [src]="context.contact.photoURL" (error)="onErrorContactImg($event)" [style.backgroundColor]="context.contact.imgColor"  >
+	<div class="main-text">
+		<div class="contact-name">{{contactName}}</div>
+		<div class="status-text" >{{context.text}}</div>
+	</div>
+</div>

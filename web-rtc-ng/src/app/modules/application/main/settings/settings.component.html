@@ -1,0 +1,25 @@
+<div class="settings-base">
+	<mat-toolbar [color]="'primary'">
+		<span class="settings-header">Настройки</span>
+	</mat-toolbar>
+	<mat-tab-group mat-stretch-tabs class="settings-group">
+		<mat-tab label="Общие">
+				<div class="container-setting">
+					<app-contact [context]="user"></app-contact>
+					<app-setting-item *ngFor="let context of settings.general" [context]="context"></app-setting-item>
+				</div>
+		</mat-tab>
+		<mat-tab label="Дополнительно">
+			<div class="container-setting">
+				<app-setting-item *ngFor="let context of settings.additional" [context]="context"></app-setting-item>
+			</div>
+		</mat-tab>
+		<mat-tab label="Служебные">
+			<div class="container-setting">
+				<app-setting-item *ngFor="let context of settings.service" [context]="context"></app-setting-item>
+			</div>
+		</mat-tab>
+	</mat-tab-group>
+</div>
+
+

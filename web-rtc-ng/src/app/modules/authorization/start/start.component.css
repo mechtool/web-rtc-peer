@@ -1,0 +1,48 @@
+.start-authorisation-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+.app-logo-img{
+    max-width: 500px;
+    width: 70%;
+    transition: width 300ms;
+}
+.app-social-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.app-logo-container{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+.social-img{
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    margin: 4px;
+}
+.progress-container{
+    width: 50%;
+    margin-top: 16px;
+}
+@media (max-height: 500px)  {
+    .app-logo-img{
+        width: 60%;
+    }
+}
+@media (max-height: 400px)  {
+    .app-logo-img{
+        width: 50%;
+    }
+}
+@media (max-height: 350px)  {
+    .app-logo-img{
+        width: 40%;
+    }
+}

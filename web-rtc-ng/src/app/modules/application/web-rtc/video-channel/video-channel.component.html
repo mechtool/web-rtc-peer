@@ -1,0 +1,34 @@
+<div class="video-container" [ngClass]="videoContext.className">
+	<mat-toolbar class="top-toolbar">
+		<app-contact [context]="videoContext.contact | async"></app-contact>
+		<div class="example-spacer"></div>
+		<mat-icon svgIcon="notifications" *ngIf="videoContext.local" [matBadge]="this.localBadge" [matBadgeColor]="'accent'" matBadgeSize="small"></mat-icon>
+		<ng-container class="top-peer-block" *ngIf="!videoContext.local">
+			<mat-icon  [svgIcon]="this.buttons[0][this.videoContext.settings.video]" class="video-peer-img" ></mat-icon>
+			<mat-icon [svgIcon]="this.buttons[1][this.videoContext.settings.audio]" class="microphone-peer-img" ></mat-icon>
+		</ng-container>
+	</mat-toolbar>
+	<div class="main-video-container">
+		<mat-spinner *ngIf="!this.videoContext.className.active"></mat-spinner>
+		<video #videoElement class="video-element" (loadeddata)="onLoadedData()" [ngClass]="videoContext.className" (ended)="onEnded()" [srcObject]="videoContext.stream | async"  autoplay playsinline ></video>
+	</div>
+	<mat-toolbar class="bottom-toolbar" [ngClass]="videoContext.className">
+		<div class="bottom-peer-block" *ngIf="!videoContext.local">
+			<button mat-fab class="phone-hangup"  (click)="clickIcon(2)" >
+				<mat-icon svgIcon="phone-hangup"></mat-icon>
+			</button>
+		</div>
+		<div class="bottom-local-block" *ngIf="videoContext.local">
+			<img *ngIf="videoContext.className.pulse" class="img-pulse" src="/assets/app-shell/Radio-1s-200px.svg">
+			<button mat-mini-fab class="bottom-peer-video" (click)="clickIcon(0)">
+				<mat-icon  [svgIcon]="this.buttons[0][this.videoContext.settings.video]" class="video-img" ></mat-icon>
+			</button>
+			<button mat-mini-fab class="phone-hangup" (click)="clickIcon(2)">
+				<mat-icon  svgIcon="phone-hangup"></mat-icon>
+			</button>
+			<button mat-mini-fab class="bottom-peer-audio" (click)="clickIcon(1)">
+				<mat-icon [svgIcon]="this.buttons[1][this.videoContext.settings.audio]" class="microphone-img" ></mat-icon>
+			</button>
+		</div>
+	</mat-toolbar>
+</div>

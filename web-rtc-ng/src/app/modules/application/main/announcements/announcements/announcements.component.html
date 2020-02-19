@@ -1,0 +1,16 @@
+<div class="announcement-block">
+	<mat-toolbar [color]="'primary'">
+		<span class="announcement-header">{{header}}</span>
+		<span class="example-spacer"></span>
+		<button mat-icon-button class="toolbar-button open-announce" matTooltip="Открыть" (click)="onOpenAnnouncement()">
+			<mat-icon [svgIcon]="buttons[0]"></mat-icon>
+		</button>
+		<button mat-icon-button class="toolbar-button delete-message" matTooltip="Удалить">
+			<mat-icon [svgIcon]="buttons[1]"></mat-icon>
+		</button>
+	</mat-toolbar>
+	<div class="announcement-base" >
+		<app-announcement *ngFor="let item of this.appContext.announcements | async" [context]="item"></app-announcement>
+	</div>
+</div>
+

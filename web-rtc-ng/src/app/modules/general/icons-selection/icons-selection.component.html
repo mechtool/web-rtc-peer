@@ -1,0 +1,17 @@
+<div class="img-contact-block">
+	<mat-toolbar color="primary">
+		<span>Выбор иконки контакта</span>
+	</mat-toolbar>
+	<mat-card class="contact-img-card" >
+		<div class="contact-img-container">
+			<div class="icons-block">
+				<img *ngFor="let icon of icons; let inx = index"  [src]="icon.icon" [style.backgroundColor]="iconBackColor" (click)="onImgClick(inx)">
+			</div>
+			<div class="color-icons-block">
+				<div class="icon-color"  *ngFor="let block of colorBlocks; let inx = index" [style.backgroundColor]="block.color" (click)="onClickColorTheme(inx)"></div>
+			</div>
+		</div>
+		<input #imgFile  type="file" onclick="this.value=null" accept="image/jpeg,image/png" (change)="fileInputChange($event)" hidden>
+	</mat-card>
+</div>
+

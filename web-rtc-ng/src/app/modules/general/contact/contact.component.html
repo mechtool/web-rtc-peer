@@ -1,0 +1,9 @@
+<div class="contact-block" *ngIf="this.context.uid">
+	<div class="contact-container" >
+		<div class="web-indicator" [style.backgroundColor]="this.local ? (this.appContext.statusColor | async) : this.context.statusColor"></div>
+		<div class="contact-body">
+			<img class="contact-img" alt="Изображение контакта" [src]="context.photoURL" (error)="onError($event)" [style.backgroundColor]="context.imgColor" (click)="onEditIcon($event)" >
+			<div class="contact-name" >{{context.name || context.displayName || context.phoneNumber || context.email}}</div>
+		</div>
+	</div>
+</div>

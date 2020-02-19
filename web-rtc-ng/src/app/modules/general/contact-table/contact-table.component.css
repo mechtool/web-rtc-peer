@@ -1,0 +1,30 @@
+:host-context(.new-message-container) .contact-menu-panel{
+  visibility: hidden;
+}
+:host /deep/ app-contact img{
+    width: 40px!important;
+    height: 40px!important;
+}
+:hover /deep/ app-contact button.mat-icon-button.edit-button{
+    height: initial;
+}
+
+:host /deep/ app-contact .contact-block{
+    padding-left: 0;
+}
+mat-icon{
+    position: relative;
+    top: -2px;
+}
+.table-row{
+    margin: 4px 0;
+}
+.note-text{
+    color: #c1c1c1;
+}
+.table-contact{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    cursor: pointer;
+}

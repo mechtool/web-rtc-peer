@@ -1,0 +1,32 @@
+:host /deep/ app-contact img{
+    width: 32px!important;
+    height: 32px!important;
+}
+.settings-group{
+    flex : 1 1 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+}
+div.settings-base{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    align-items: stretch;
+    height: 100%;
+}
+
+div.container-setting{
+    flex : 1 1 0 !important;
+    padding: 16px;
+}
+.settings-header{
+    font-size: 18px!important;
+}
+.mat-tab-body-wrapper{
+    height: 100%!important;
+}
+
+

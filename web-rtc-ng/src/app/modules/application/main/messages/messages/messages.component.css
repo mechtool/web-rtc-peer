@@ -1,0 +1,15 @@
+:host{
+    flex: 1 1 0;
+}
+.messages-container{
+   display: flex;
+    flex-direction: column;
+    justify-content: stretch;
+    height: 100%;
+}
+.messages-container-tabs{
+    flex : 1 1 0;
+}
+.messages-header{
+    font-size: 18px!important;
+}

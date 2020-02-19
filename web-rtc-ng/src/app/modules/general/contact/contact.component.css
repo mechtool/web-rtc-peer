@@ -1,0 +1,48 @@
+:host-context(.contact-table-container) .web-indicator,
+:host-context(mat-option) .web-indicator,
+:host-context(.table-row) .web-indicator,
+:host-context(.container-setting) .web-indicator,
+:host-context(.incoming-call-body) .web-indicator{
+    display: none;
+}
+:host-context(.video-context) .contact-name{
+    color: #fff;
+}
+:host-context(.local.video-context.active.fixed) .contact-name{
+    display: none;
+}
+:host-context(.container-setting) .contact-img{
+    cursor : pointer!important;
+}
+
+.contact-container{
+    position: relative;
+}
+.contact-body{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.contact-img{
+    width: 30px;
+    height: 30px;
+}
+.contact-name{
+    margin-left: 8px;
+ }
+ .web-indicator{
+     width: 12px;
+     height: 12px;
+     position: absolute;
+     top: -5px;
+     left: -5px;
+ }
+
+@media (max-width: 400px) {
+    :host-context(.main-toolbar) .contact-name,
+    :host-context(.top-toolbar) .contact-name{
+         display: none;
+    }
+}
