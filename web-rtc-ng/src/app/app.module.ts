@@ -30,7 +30,7 @@ import {GlobalErrorHandler} from "./services/error-handler.service";
 	AppRoutingModule,
 	HttpClientModule,
 	BrowserAnimationsModule,
-	ServiceWorkerModule.register('service-worker.js', {enabled: true }/*{enabled: environment.production}*/),
+	ServiceWorkerModule.register('service-worker.js', {enabled: true, scope: '/'  }/*{enabled: environment.production}*/),
 	MaterialModule,
 	GeneralModule,
     ],
