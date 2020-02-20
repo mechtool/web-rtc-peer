@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1582183869536,
+  "timestamp": 1582188339239,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -258,7 +258,7 @@
     "/assets/fonts/Material-icons-outlined.woff2": "2b550e6751ca0031b894819ee2db09d0dd163cdf",
     "/assets/fonts/Oswald-Light.ttf": "f894b10386357e900844513e235dc044c5f5f8c3",
     "/assets/js/adapter.js": "aa63617cea2ebcf6c6e6cb6e417340a6881094f9",
-    "/assets/js/apiKeys.json": "272d7c3948a9adaef5f886b8d18af580bc5b0746",
+    "/assets/js/apiKeys.json": "da7284af8e9b89e7adc734c4d5b056b2e5ac463c",
     "/assets/js/simplepeer.min.js": "a2a7b52300fab9b9ce048579bd740801aa376735",
     "/assets/js/stunTurnConfig.json": "5064b7243043dd50a7a10df5cd07d25117630f5f",
     "/common-es2015.js": "6aee16a8de3249da1e97faed1a504af8ad7b3db9",
