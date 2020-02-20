@@ -70,8 +70,21 @@ export class PushNotificationService implements OnDestroy{
     }
     
     async requestSubscription() {
+        if('serviceWorker' in navigator && this.appContext.apiKey && this.appContext.apiKey.publicKey){
+               return await navigator.serviceWorker.ready.then(reg =>{
+                    reg.pushManager.subscribe({userVisibleOnly : true, applicationServerKey : this.appContext.apiKey.publicKey}).then(async sub => {
+			//Сохранение объекта подписки на сервере, в элементе пользователя приложением
+			await this.database.sendSubscription(sub).then(res =>
+			    console.log('Объект подписки успешно сохранен на сервере.')).catch(err => console.error('Ошибка при сохранении объекта подписки на сервере. '+ err));
+		    } ).catch(err => {
+		        console.log(err);
+		    })
+		})
+	    }else{
+		console.log('Браузер не поддерживает PushNotification.');
+	    }
 	    //Проверка разрешения пользователя и получения объекта подписки по заранее сгенерированному открытому ключу
-	    if(this.swPush.isEnabled && this.appContext.apiKey && this.appContext.apiKey.publicKey) {
+/*	    if(this.swPush.isEnabled && this.appContext.apiKey && this.appContext.apiKey.publicKey) {
 	        return await this.swPush.requestSubscription({
 		    serverPublicKey : this.appContext.apiKey.publicKey,
 		}).then(async subscription => {
@@ -82,6 +95,6 @@ export class PushNotificationService implements OnDestroy{
 		}).catch(err => {
 		    return false ;
 		});
-	    }else console.log('Браузер не поддерживает PushNotification.')
+	    }else console.log('Браузер не поддерживает PushNotification.')*/
     }
 }

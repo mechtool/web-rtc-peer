@@ -109,7 +109,7 @@ export class PermissionsComponent implements OnInit {
 		}); }
 		break;
 	    case 'notifications' :  {
-		this.pushService.requestSubscription().then((res: boolean) =>{
+		this.pushService.requestSubscription().then((res) =>{
 		}).catch(err=> console.log('Пользователь отклонил разрешение на использование PushNotification.'));
 	    }
 	}
