@@ -76,7 +76,9 @@ div.mat-tab-body-wrapper{
 span.mat-badge-content.mat-badge-active{
     font-size: 10px!important;
 }
-
+div.mat-form-field-subscript-wrapper{
+    padding: 0!important;
+}
 
 /*start-authentication*/
 mat-option.state-code-option span.mat-option-text{

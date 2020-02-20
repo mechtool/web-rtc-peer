@@ -2,7 +2,12 @@
 	<mat-toolbar class="top-toolbar">
 		<app-contact [context]="videoContext.contact | async"></app-contact>
 		<div class="example-spacer"></div>
-		<mat-icon svgIcon="notifications" *ngIf="videoContext.local" [matBadge]="this.localBadge" [matBadgeColor]="'accent'" matBadgeSize="small"></mat-icon>
+		<ng-container *ngIf="videoContext.local">
+<!--			<mat-icon svgIcon="notifications"  [matBadge]="this.localBadge" [matBadgeColor]="'accent'" matBadgeSize="small"></mat-icon>-->
+			<button mat-mini-fab class="close-view"  (click)="onCloseView()" >
+				<mat-icon svgIcon="close-view" ></mat-icon>
+			</button>
+		</ng-container>
 		<ng-container class="top-peer-block" *ngIf="!videoContext.local">
 			<mat-icon  [svgIcon]="this.buttons[0][this.videoContext.settings.video]" class="video-peer-img" ></mat-icon>
 			<mat-icon [svgIcon]="this.buttons[1][this.videoContext.settings.audio]" class="microphone-peer-img" ></mat-icon>

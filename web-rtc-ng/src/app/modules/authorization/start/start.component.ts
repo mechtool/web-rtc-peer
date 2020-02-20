@@ -9,7 +9,7 @@ import {isPlatformBrowser} from "@angular/common";
 })
 export class StartComponent  {
     
-    public isProgress = false;
+    public isProgress = true;
     public subscribers = [];
     public images = [
 	{src : '/assets/app-shell/mail.svg', tip : 'Mail', link : '/authorization/password', alt : 'Email провайдер'},
@@ -21,9 +21,12 @@ export class StartComponent  {
 	@Inject(PLATFORM_ID) private platformId: Object) {
 	
 	if(isPlatformBrowser(this.platformId)) {
-	    this.subscribers.push(this.appContext.user.subscribe(user => {
-		this.isProgress = !!user.uid;
-	    }));
+
+	    let t = setTimeout(()=>{
+	        clearTimeout(t);
+		this.isProgress = false;
+		this.appContext.appChangeRef.markForCheck();
+	    }, 3000);
 	}
     }
     ngOnDestroy(){

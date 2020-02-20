@@ -76,6 +76,10 @@ export class VideoChannelComponent implements OnInit, OnDestroy {
 	}
     }
     
+    onCloseView(){
+    
+    }
+    
     onLoadedData(){
       //Делаем текущий контекст активным
 	this.videoContext.className.active = true;

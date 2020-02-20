@@ -53,7 +53,7 @@ export class PhoneComponent implements OnInit, OnDestroy{
 	    if(res === 'VALID') {
 		this.cursor = 'pointer';
 		this.activeStage = false;
-		this.appContext.recaptchaVerifier = this.appContext.recaptchaVerifier || new this.firebaseService.firebase.auth.RecaptchaVerifier('phone-ready', {
+		this.appContext.recaptchaVerifier =  new this.firebaseService.firebase.auth.RecaptchaVerifier('phone-ready', {
 		    'size': 'invisible',
 		    'callback': this.onClickPhoneButton,
 		    'expired-callback': function (err) {
@@ -68,21 +68,33 @@ export class PhoneComponent implements OnInit, OnDestroy{
 		}) ;
 		this.appContext.recaptchaVerifier.render().then(res => {
 		    console.log('***');
-		})
-		    .catch(err=> {
+		}).catch(err=> {
 			console.error(err);
+			this.clearRecaptcha();
 			this.phoneCodeError = this.errors[err.code] || 'Ошибка работы рекапчи.'
 		    });
 	    }else if(res === 'INVALID'){
 		this.cursor = 'not-allowed';
 		this.activeStage = true;
 	    }
-	    //this.changeDetectorRef.markForCheck();
+	    this.changeDetectorRef.markForCheck();
 	}));
+    }
+    
+    clearRecaptcha(){
+	this.appContext.recaptchaVerifier.clear();
+	this.appContext.recaptchaVerifier = null;
     }
     
     ngOnDestroy(): void {
 	this.subscriptions.forEach(sub => sub.unsubscribe());
+    }
+    
+    onKeyDown($event){
+	if(/Backspace|[0-9]/i.test($event.key)){
+	
+	}else $event.preventDefault();
+    
     }
     
     onClickPhoneButton() {
@@ -90,7 +102,7 @@ export class PhoneComponent implements OnInit, OnDestroy{
 	if (this.phoneGroup.valid) {
 	    this.activeStage = true;
 	    this.cursor = 'not-allowed';
-	   this.changeDetectorRef.detectChanges();
+	   this.changeDetectorRef.markForCheck();
 	    this.firebaseService.auth.signInWithPhoneNumber(this.phoneGroup.get('codeControl').value.code + this.phoneGroup.get('phoneControl').value, this.appContext.recaptchaVerifier).then((confirmation) => {
 		//Sms отправлено. Выдать оповещение пользователю о необходимости
 		// ввести код из полученного сообщения в форму проверки sms кода
@@ -98,23 +110,29 @@ export class PhoneComponent implements OnInit, OnDestroy{
 		this.appContext.confirmation = confirmation;
 		this.ngZone.run(() => {
 		    this.router.navigateByUrl('/authorization/sms').then(res => {
-			this.appContext.recaptchaVerifier.clear();
-		    }).catch(err => console.error(err))
+			this.clearRecaptcha();
+		    }).catch(err => {
+		        debugger;
+		        console.error(err)
+		    })
 		});
 	    }).catch(function (err) {
 		console.error(err);
 		that.phoneCodeError = that.errors[err.code] || 'Ошибка входа в приложение.';
 		//sms не отправлено
-		that.activeStage = false;
-		that.cursor = 'pointer';
-		that.phoneGroup.setValue({phoneControl: ''});
+		that.activeStage = true;
+		that.cursor = 'not-allowed';
+		that.phoneGroup.get('phoneControl').setValue('');
+		that.changeDetectorRef.markForCheck();
 	    })
 	}
     }
     
     onCancelButton(){
 	//Переход на страницу выбора провайдера
-	this.router.navigateByUrl('/authorization').then();
+	this.router.navigateByUrl('/authorization').then(()=>{
+	this.clearRecaptcha();
+	});
     }
 
 }
