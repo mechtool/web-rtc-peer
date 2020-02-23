@@ -8,7 +8,8 @@
 :host-context(.video-context) .contact-name{
     color: #fff;
 }
-:host-context(.local.video-context.active.fixed) .contact-name{
+:host-context(.local.video-context.active.fixed) .contact-name,
+:host-context(.outer-toolbar-block) .contact-name{
     display: none;
 }
 :host-context(.container-setting) .contact-img{

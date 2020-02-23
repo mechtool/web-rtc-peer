@@ -4,7 +4,8 @@
     height: 100%;
     display: flex;
     justify-content: center;
-    align-items: center
+    align-items: center;
+    overflow: hidden;
 }
 .main-video-container{
     top: 0;
@@ -92,4 +93,8 @@ div.video-container.local.active.fixed{
     width: 200px;
     height: 200px;
     top: unset;
+}
+div.video-container.local.active.fixed.closed{
+    width: 0;
+    height: 0;
 }

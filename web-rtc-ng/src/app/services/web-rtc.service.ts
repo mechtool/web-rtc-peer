@@ -89,6 +89,8 @@ export class WebRtcService implements OnDestroy{
 	    if(!conUid){
 		//Очистить коллекцию контекстов
 		this.appContext.webRtcContexts.deleteAllContexts();
+		//Очистить локальные настройки
+		this.appContext.localVideoAudio = {type : 'settings', video : 1, audio : 1};
 		//Переход на другую страницу
 		this.ngZone.run(() => {
 		    this.router.navigateByUrl('/application/main/new-message');

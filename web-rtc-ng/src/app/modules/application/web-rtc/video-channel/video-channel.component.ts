@@ -3,6 +3,7 @@ import {VideoContext} from "../../../../Classes/Classes";
 import {AppContextService} from "../../../../services/app-context.service";
 import {WebRtcService} from "../../../../services/web-rtc.service";
 import {StatusColorsService} from "../../../../services/status-colors.service";
+import {WebRtcContextComponent} from "../web-rtc-context/web-rtc-context.component";
 
 @Component({
   selector: 'app-video-channel',
@@ -20,7 +21,8 @@ export class VideoChannelComponent implements OnInit, OnDestroy {
       public appContext : AppContextService,
       public webRtcService : WebRtcService,
       public statusColor : StatusColorsService,
-      public changeRef : ChangeDetectorRef) {
+      public changeRef : ChangeDetectorRef,
+      public webRtcContext : WebRtcContextComponent) {
   }
 
   ngOnInit() {
@@ -77,7 +79,7 @@ export class VideoChannelComponent implements OnInit, OnDestroy {
     }
     
     onCloseView(){
-    
+        this.webRtcContext.handleView(true);
     }
     
     onLoadedData(){

@@ -98,8 +98,7 @@ export class AppComponent implements OnInit, OnDestroy{
 		{name : 'check-update', link: '/assets/app-shell/save_alt-24px.svg'},
 		{name : 'check-permissions', link: '/assets/app-shell/perms.svg'},
 		{name : 'exit', link: '/assets/app-shell/exit-to-app.svg'},
-		{name : 'close-view', link: '/assets/app-shell/exit-to-app.svg'},
-		{name : 'open-view', link: '/assets/app-shell/logout-variant.svg'},
+		{name : 'close-view', link: '/assets/app-shell/view-disabled.svg'},
 		{name : 'install_device', link: '/assets/app-shell/tumblr-reblog.svg'},
 		
 	    ].forEach(item => {

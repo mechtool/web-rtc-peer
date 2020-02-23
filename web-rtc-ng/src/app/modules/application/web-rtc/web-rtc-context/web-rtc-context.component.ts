@@ -8,6 +8,7 @@ import {WebRtcContext} from "../../../../Classes/Classes";
 })
 export class WebRtcContextComponent implements OnInit {
 
+    public localToolbar = false;
     @Input() public context : WebRtcContext;
     
     constructor() { }
@@ -15,6 +16,9 @@ export class WebRtcContextComponent implements OnInit {
   ngOnInit() {
   }
 
+  handleView(type){
+       this.context.videoCollection.find(view => view.local).className.closed = this.localToolbar = type;
+  }
   
   
 }

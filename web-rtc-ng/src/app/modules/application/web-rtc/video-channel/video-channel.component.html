@@ -3,8 +3,8 @@
 		<app-contact [context]="videoContext.contact | async"></app-contact>
 		<div class="example-spacer"></div>
 		<ng-container *ngIf="videoContext.local">
-<!--			<mat-icon svgIcon="notifications"  [matBadge]="this.localBadge" [matBadgeColor]="'accent'" matBadgeSize="small"></mat-icon>-->
-			<button mat-mini-fab class="close-view"  (click)="onCloseView()" >
+			<mat-icon svgIcon="notifications"  [matBadge]="this.localBadge" [matBadgeColor]="'accent'" matBadgeSize="small"></mat-icon>
+			<button mat-mini-fab class="close-view" (click)="onCloseView()" >
 				<mat-icon svgIcon="close-view" ></mat-icon>
 			</button>
 		</ng-container>

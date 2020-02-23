@@ -148,6 +148,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 			  [contact.uid + ' local video-context']: true,
 			  active: false,
 			  fixed: false,
+			  closed : false,
 			  pulse: initiator
 		      } : {[contact.uid + ' remote video-context']: true, active: false},
 		      stream: new BehaviorSubject(local ? webRtcContext.localStream : undefined),
@@ -337,26 +338,26 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
       let that = this;
 	return  new Promise((res, rej)=> {
 	    if(desc.optimize){
-		setCandidates.bind(this, desc.candidates, res, rej)() ;
+		setCandidates.bind(this, desc.candidates, res)() ;
 	    }else {
 		this.requestCandidates(desc).then(r => {
 		    let val = r.val();
-		    val && setCandidates.bind(this, Object.values(val),res, rej)()
+		    val && setCandidates.bind(this, Object.values(val),res)()
 		}).catch(this.onError);
 	    }
 	});
-	function setCandidates(candidates, res, rej){
+	function setCandidates(candidates, res){
+	    let that = this;
 	    candidates.forEach(candidate => {
 		pcConnection.signal({candidate : candidate.desc});
 		//Снятие активности дескриптора
-		that.database.setDescriptorOptions({descriptor: candidate, data: {active: false}}).then(res => {
+		that.database.setDescriptorOptions({descriptor: candidate, data: {active: false}}).then(async res => {
 		    //Удаление кандидата из базы после его получения
-		    //await this.database.deleteDescriptor({descriptor : candidate});
-		}).catch(err => this.onError(err));
+		    await that.database.deleteDescriptor({descriptor : candidate});
+		}).catch(err => that.onError(err));
 	    }) ;
 	    res();
 	}
-	//todo Обязательно! Реализовать функциональность снятие обработчиков получения кандидатов после завершения вызова
     }
     
     //Установка уведомления на страницу Announcement.component
