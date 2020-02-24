@@ -16,7 +16,7 @@ export class VideoChannelComponent implements OnInit, OnDestroy {
     public toolbarVisibility = false;
     public subscriptions = [];
     public buttons = [['video-off', 'video'], ['audio-off', 'audio']];
-    public static t = undefined;
+    public t = undefined;
     @Input() public videoContext : VideoContext;
   constructor(
       public appContext : AppContextService,
@@ -83,11 +83,11 @@ export class VideoChannelComponent implements OnInit, OnDestroy {
     onMoveElementVideo($event){
 	$event.stopImmediatePropagation();
 	    this.toolbarVisibility = true;
-	    VideoChannelComponent.t && clearTimeout(VideoChannelComponent.t);
-	    VideoChannelComponent.t = setTimeout(()=>{
+	    this.t && clearTimeout(this.t);
+	    this.t = setTimeout(()=>{
 		this.toolbarVisibility = false;
-		clearTimeout(VideoChannelComponent.t);
-		VideoChannelComponent.t = undefined;
+		clearTimeout(this.t);
+		this.t = undefined;
 		this.changeRef.detectChanges();
 	    },4000)
     }

@@ -5,19 +5,11 @@
     align-items: center;
     justify-content: flex-start;
 }
-.base-announcement app-incoming-call-notification{
-    flex : 1 1 0;
-}
 .date-block{
     margin-right: 8px;
     white-space: nowrap;
 }
-.activated-mark{
-    height: 10px;
-    margin-right: 10px;
-    flex: 0 0 10px;
-    border-radius: 50%;
-}
+
 .announcement-container:hover{
     background-color: #ececec;;
 }

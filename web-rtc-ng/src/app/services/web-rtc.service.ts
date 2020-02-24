@@ -13,9 +13,7 @@ const uuid = require('uuid/v1');
 })
 export class WebRtcService implements OnDestroy{
 
-    public collections = [
-	{ first : '/web-rtc/offers/explicit/'}
-	];
+    public collections = [{ first : '/web-rtc/offers/explicit/'}];
   constructor(
       public router : Router,
       public appContext : AppContextService,
@@ -24,8 +22,16 @@ export class WebRtcService implements OnDestroy{
       private ngZone : NgZone,
       public pushNotificationService : PushNotificationService,) {
   }
-  
-  initialize(){
+    ngOnDestroy(): void {
+	this.collections.forEach(element => {
+	    if(this.database){
+		let ref = this.database.getRef(element.first);
+		ref && ref.off();
+	    }
+	})
+    }
+    
+    initialize(){
         this.collections.forEach(element => {
 	    this.database.getRef(element.first + this.appContext.appUser.uid).orderByChild("action").equalTo('offered').on('child_added', this.setPopup.bind(this));
 	})
@@ -141,15 +147,6 @@ export class WebRtcService implements OnDestroy{
 	    
 	}
     }
-    
-  ngOnDestroy(): void {
-      this.collections.forEach(element => {
-	  if(this.database){
-	     let ref = this.database.getRef(element.first + this.appContext.appUser.uid);
-	     ref && ref.off();
-	  }
-      })
-  }
   
     onError(error){
 	console.log(error);

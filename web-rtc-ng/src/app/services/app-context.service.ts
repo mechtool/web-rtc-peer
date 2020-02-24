@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Inject, Injectable, PLATFORM_ID} from '@angular/core';
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {isPlatformBrowser} from "@angular/common";
 import {AnnouncementContext, Contact, PopupContext, WebRtcContext, WebRtcContexts} from "../Classes/Classes";
 import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";

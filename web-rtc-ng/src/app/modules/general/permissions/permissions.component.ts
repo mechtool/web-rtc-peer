@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {ChangeDetectorRef, Component, Inject, OnDestroy, OnInit, PLATFORM_ID} from '@angular/core';
 import {notificationAppearance} from "../../../animations/animations";
 import {SwPush} from "@angular/service-worker";
 import {PushNotificationService} from "../../../services/push-notification.service";
@@ -14,8 +14,9 @@ import {AppContextService} from "../../../services/app-context.service";
         notificationAppearance
     ],
 })
-export class PermissionsComponent implements OnInit {
+export class PermissionsComponent implements OnInit, OnDestroy {
     
+    public subscriptions = [];
     constructor(
         public swPush : SwPush,
         public appContext : AppContextService,
@@ -24,6 +25,10 @@ export class PermissionsComponent implements OnInit {
         public location : Location,
         public changeRef : ChangeDetectorRef,
 	@Inject(PLATFORM_ID) private platformId: Object) { }
+ 
+	ngOnDestroy(): void {
+        	this.subscriptions.forEach(sub => sub.unsubscribe());
+	}
     
     queryPermissions(){
        return Promise.all([
@@ -79,11 +84,11 @@ export class PermissionsComponent implements OnInit {
     
     ngOnInit() {
         //Установка заставки
-	 this.appContext.checkPermissions.subscribe(res => {
+	this.subscriptions.push(this.appContext.checkPermissions.subscribe(res => {
 	     if(res){
 	         this.initialize();
 	     }
-	 })
+	 }));
     }
     
     onError(err){

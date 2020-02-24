@@ -50,14 +50,8 @@ export class ContactsComponent implements OnInit, OnDestroy {
     onActivatedContact(option : {contact : Contact, add : boolean}){
 	//При активации контакта, проверять ограничение на количество контактов
 	if(option.add) {
-	    //Если условия соблюдены
-	    if((this.contactRestriction == '0' && Object.keys(this.appContext.activeContacts).length < 1) || this.contactRestriction == '1'){
 		//Добавить контакт
 		this.appContext.activeContacts[option.contact.uid] = option.contact ;
-	    }else{
-		//Выдать уведомление о невозможности добавления контакта
-		console.log('Невозможно добавить контакт. Превышает ограничение добавления контактов.')  ;
-	    }
 	}
 	else delete this.appContext.activeContacts[option.contact.uid];
 	this.activateEdit = !Object.keys(this.appContext.activeContacts).length;

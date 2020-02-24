@@ -15,6 +15,7 @@ import {AuthFirebaseService} from "./services/auth-firebase.service";
 import {MatIconRegistry} from "@angular/material/icon";
 import {DomSanitizer} from "@angular/platform-browser";
 import {DatabaseService} from "./services/database.service";
+import {WebRtcService} from "./services/web-rtc.service";
 //Регистрация русской локали
 registerLocaleData(localeRu, 'ru');
 
@@ -49,6 +50,7 @@ export class AppComponent implements OnInit, OnDestroy{
         public authService : AuthFirebaseService,
 	public iconRegistry : MatIconRegistry,
 	public sanitizer : DomSanitizer,
+	public webRtcService : WebRtcService,
 	@Inject(PLATFORM_ID) private platformId: Object) {
     }
 

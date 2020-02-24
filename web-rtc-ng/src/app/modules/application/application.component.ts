@@ -18,7 +18,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     
   constructor(
       public appContext : AppContextService,
-      private route : ActivatedRoute) { }
+      private route : ActivatedRoute){}
     
     ngOnInit() {
 	this.route.data.subscribe((data: { serverData: any[] }) => {
@@ -30,6 +30,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
     }
     ngOnDestroy(){
 	this.subscribes.forEach(sub => sub.unsubscribe());
+
     }
   
 }

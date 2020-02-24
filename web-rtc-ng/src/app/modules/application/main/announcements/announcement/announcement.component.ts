@@ -8,7 +8,7 @@ import {AnnouncementContext} from "../../../../../Classes/Classes";
   templateUrl: './announcement.component.html',
   styleUrls: ['./announcement.component.css']
 })
-export class AnnouncementComponent implements OnInit {
+export class AnnouncementComponent  {
 
     public activatedMarkColor = '#cdcdcd';
     @Input() public context : AnnouncementContext ;
@@ -18,9 +18,6 @@ export class AnnouncementComponent implements OnInit {
 	public colorThemeService : ColorThemeService) {
     
     }
-
-  ngOnInit() {
-      this.activatedMarkColor = this.context.active ? this.colorThemeService.getThemeColor('backgroundColor') : this.activatedMarkColor;
-  }
+    
 
 }
