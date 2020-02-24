@@ -13,9 +13,10 @@ import {WebRtcContextComponent} from "../web-rtc-context/web-rtc-context.compone
 export class VideoChannelComponent implements OnInit, OnDestroy {
     
     public localBadge = '';
+    public toolbarVisibility = false;
     public subscriptions = [];
     public buttons = [['video-off', 'video'], ['audio-off', 'audio']];
-    
+    public static t = undefined;
     @Input() public videoContext : VideoContext;
   constructor(
       public appContext : AppContextService,
@@ -54,8 +55,9 @@ export class VideoChannelComponent implements OnInit, OnDestroy {
        this.subscriptions.forEach(sub => sub.unsubscribe());
    }
     
-    clickIcon(inx){
+    clickIcon(inx, $event){
       let message;
+      $event.stopImmediatePropagation();
         switch (inx) { //Изменение видеорежима
 	    case 0 :
 		let videoTrack = this.videoContext.stream.value.getVideoTracks()[0];
@@ -78,8 +80,21 @@ export class VideoChannelComponent implements OnInit, OnDestroy {
 	}
     }
     
-    onCloseView(){
+    onMoveElementVideo($event){
+	$event.stopImmediatePropagation();
+	    this.toolbarVisibility = true;
+	    VideoChannelComponent.t && clearTimeout(VideoChannelComponent.t);
+	    VideoChannelComponent.t = setTimeout(()=>{
+		this.toolbarVisibility = false;
+		clearTimeout(VideoChannelComponent.t);
+		VideoChannelComponent.t = undefined;
+		this.changeRef.detectChanges();
+	    },4000)
+    }
+    
+    onCloseView($event){
         this.webRtcContext.handleView(true);
+	$event.stopImmediatePropagation();
     }
     
     onLoadedData(){

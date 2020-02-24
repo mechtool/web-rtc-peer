@@ -1,10 +1,10 @@
-<div class="video-container" [ngClass]="videoContext.className">
-	<mat-toolbar class="top-toolbar">
+<div class="video-container" [ngClass]="videoContext.className"  (mousemove)="onMoveElementVideo($event)">
+	<mat-toolbar class="top-toolbar" *ngIf="this.toolbarVisibility">
 		<app-contact [context]="videoContext.contact | async"></app-contact>
 		<div class="example-spacer"></div>
 		<ng-container *ngIf="videoContext.local">
-			<mat-icon svgIcon="notifications"  [matBadge]="this.localBadge" [matBadgeColor]="'accent'" matBadgeSize="small"></mat-icon>
-			<button mat-mini-fab class="close-view" (click)="onCloseView()" >
+			<mat-icon svgIcon="notifications" [matBadge]="this.localBadge" [matBadgeColor]="'accent'" matBadgeSize="small"></mat-icon>
+			<button mat-mini-fab class="close-view" *ngIf="videoContext.className.fixed" (click)="onCloseView($event)" >
 				<mat-icon svgIcon="close-view" ></mat-icon>
 			</button>
 		</ng-container>
@@ -17,21 +17,21 @@
 		<mat-spinner *ngIf="!this.videoContext.className.active"></mat-spinner>
 		<video #videoElement class="video-element" (loadeddata)="onLoadedData()" [ngClass]="videoContext.className" (ended)="onEnded()" [srcObject]="videoContext.stream | async"  autoplay playsinline ></video>
 	</div>
-	<mat-toolbar class="bottom-toolbar" [ngClass]="videoContext.className">
+	<mat-toolbar class="bottom-toolbar" [ngClass]="videoContext.className" *ngIf="this.toolbarVisibility">
 		<div class="bottom-peer-block" *ngIf="!videoContext.local">
-			<button mat-fab class="phone-hangup"  (click)="clickIcon(2)" >
+			<button mat-fab class="phone-hangup"  (click)="clickIcon(2, $event)" >
 				<mat-icon svgIcon="phone-hangup"></mat-icon>
 			</button>
 		</div>
 		<div class="bottom-local-block" *ngIf="videoContext.local">
 			<img *ngIf="videoContext.className.pulse" class="img-pulse" src="/assets/app-shell/Radio-1s-200px.svg">
-			<button mat-mini-fab class="bottom-peer-video" (click)="clickIcon(0)">
+			<button mat-mini-fab class="bottom-peer-video" (click)="clickIcon(0, $event)">
 				<mat-icon  [svgIcon]="this.buttons[0][this.videoContext.settings.video]" class="video-img" ></mat-icon>
 			</button>
-			<button mat-mini-fab class="phone-hangup" (click)="clickIcon(2)">
+			<button mat-mini-fab class="phone-hangup" (click)="clickIcon(2, $event)">
 				<mat-icon  svgIcon="phone-hangup"></mat-icon>
 			</button>
-			<button mat-mini-fab class="bottom-peer-audio" (click)="clickIcon(1)">
+			<button mat-mini-fab class="bottom-peer-audio" (click)="clickIcon(1, $event)">
 				<mat-icon [svgIcon]="this.buttons[1][this.videoContext.settings.audio]" class="microphone-img" ></mat-icon>
 			</button>
 		</div>

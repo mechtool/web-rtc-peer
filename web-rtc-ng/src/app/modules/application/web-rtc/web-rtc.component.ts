@@ -28,7 +28,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
     public flexDirection = 'column';
     //Установка ограничений
     public constraints = {
-	audio: {deviceId: (this.audio && this.audio.deviceId ? this.audio.deviceId : false) , volume : 0.5, echoCancellation : true, autoGainControl : true},
+	audio: {deviceId: (this.audio && this.audio.deviceId ? this.audio.deviceId : false) , echoCancellation : true, autoGainControl : true, noiseSuppression: true},
 	video: {deviceId: (this.video && this.video.deviceId  ? this.video.deviceId : false)}
     };
 
