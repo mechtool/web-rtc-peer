@@ -87,9 +87,14 @@ export class AuthFirebaseService {
 	this.database.subscribeContacts(this.appContext.appUser.uid).subscribe(conts => {
 	    this.appContext.contacts.next(conts)
 	});
-	//Получение всех сообщений пользователя
-	this.database.subscribeMessages(this.appContext.appUser.uid).subscribe(mess => {
-	    this.appContext.messages.next(mess)
+	//Получение всех входящих сообщений пользователя
+	this.database.subscribeInnerMessages(this.appContext.appUser.uid).subscribe(mess => {
+	    this.appContext.innerMessages.next(mess)
+	}) ;
+	//Получение всех исходящих сообщений пользователя
+	//Получение всех входящих сообщений пользователя
+	this.database.subscribeOuterMessages(this.appContext.appUser.uid).subscribe(mess => {
+	    this.appContext.outerMessages.next(mess)
 	}) ;
 	//Инициализация сервиса web-rtc после проверки разрешений
 	this.webRtcService.initialize();

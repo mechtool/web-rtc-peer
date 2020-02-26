@@ -13,3 +13,6 @@
 .messages-header{
     font-size: 18px!important;
 }
+.outer,.accepted,.skipped{
+    margin: 12px;
+}

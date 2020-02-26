@@ -3,8 +3,20 @@
 		<span class="messages-header">Сообщения</span>
 	</mat-toolbar>
 	<mat-tab-group mat-stretch-tabs class="messages-container-tabs">
-		<mat-tab label="Исходящие"> Исходящие </mat-tab>
-		<mat-tab label="Входящие"> Входящие </mat-tab>
-		<mat-tab label="Пропущенные"> Пропущенные </mat-tab>
+		<mat-tab label="Исходящие">
+			<div class="outer">
+				<app-message *ngFor="let message of this.appContext.outerMessages | async" [context]="message"></app-message>
+			</div>
+		</mat-tab>
+		<mat-tab label="Принятые">
+			<div class="accepted">
+				<app-message  *ngFor="let message of this.appContext.innerMessages | async" [context]="message"></app-message>
+			</div>
+		</mat-tab>
+		<mat-tab label="Пропущенные">
+			<div class="skipped">
+				<app-message  *ngFor="let message of this.appContext.innerMessages | async" [context]="message"></app-message>
+			</div>
+		</mat-tab>
 	</mat-tab-group>
 </div>

@@ -102,6 +102,9 @@ export class AppComponent implements OnInit, OnDestroy{
 		{name : 'exit', link: '/assets/app-shell/exit-to-app.svg'},
 		{name : 'close-view', link: '/assets/app-shell/view-disabled.svg'},
 		{name : 'install_device', link: '/assets/app-shell/tumblr-reblog.svg'},
+		{name : 'outgoing', link: '/assets/app-shell/message-processing-outline.svg'},
+		{name : 'accepted', link: '/assets/app-shell/message-plus-outline.svg'},
+		{name : 'missing', link: '/assets/app-shell/message-minus-outline.svg'},
 		
 	    ].forEach(item => {
 		this.iconRegistry.addSvgIcon(item.name, this.sanitizer.bypassSecurityTrustResourceUrl(item.link));

@@ -85,6 +85,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 	     that.database.sendDescriptor(desc);
 	 }else {
 	     that.webRtcService.sendOffer(webRtcConnectionContext) ;
+	     that.database.sendOuterMessage(that.appContext.appUser.uid, {data : Date.now(), to : desc.contact.uid,  messId : desc.messId});
 	 }
 	 if(desc.type.indexOf('offers') > -1){
 	     that.setAnswerListener(webRtcConnectionContext);
@@ -316,8 +317,16 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
     setDescriptor(pcConnection, desc){
       //Установить предложение / ответ
       pcConnection.signal(desc.desc);
-      this.database.setDescriptorOptions({descriptor: desc, data :  /answers/.test(desc.type) ? {active: false} : {active: false, action: 'accepted'}}).then(res => {
-      }).catch(err => this.onError(err));
+      if(/answers/.test(desc.type)){
+	  //Удаление принятого ответа из базы после его получения
+	  this.database.deleteDescriptor({descriptor : desc}).then(()=>{}).catch(err =>  this.onError(err));
+      }else{
+          //Снятие признака активности принятого предложения
+	  this.database.setDescriptorOptions({descriptor: desc, data : {active: false, action: 'accepted'}}).then(res => {}).catch(err => this.onError(err));
+      }
+      /*          //Снятие признака активности принятого предложения/ответа
+	  this.database.setDescriptorOptions({descriptor: desc, data :  /answers/.test(desc.type) ? {active: false} : {active: false, action: 'accepted'}}).then(res => {}).catch(err => this.onError(err));
+      * */
       
       (async ()=> {
 	  //Проверить кандидаты
@@ -347,14 +356,14 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 	    }
 	});
 	function setCandidates(candidates, res){
-	    let that = this;
 	    candidates.forEach(candidate => {
 		pcConnection.signal({candidate : candidate.desc});
+		//Удаление кандидата из базы после его получения
+		that.database.deleteDescriptor({descriptor : candidate}).then(()=>{}).catch(err =>  that.onError(err));
 		//Снятие активности дескриптора
-		that.database.setDescriptorOptions({descriptor: candidate, data: {active: false}}).then(async res => {
-		    //Удаление кандидата из базы после его получения
-		    await that.database.deleteDescriptor({descriptor : candidate});
-		}).catch(err => that.onError(err));
+/*		that.database.setDescriptorOptions({descriptor: candidate, data: {active: false}}).then(async res => {
+
+		}).catch(err => that.onError(err));*/
 	    }) ;
 	    res();
 	}

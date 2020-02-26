@@ -32,7 +32,7 @@ export class IncomingCallPopupComponent implements OnInit {
         //Удаление обработчика, если признаки отказа
 	if(/denied|ignored/.test(action)){this.context.listener = undefined}
 	this.removeTimeOut();
-	//Снятие признака активности предложение в базе данных
+	//Снятие признака активности предложения в базе данных
 	this.context.desc && this.database.setDescriptorOptions({descriptor : this.context.desc, data : {active : false,  action : action}} ) ;
 	this.popupComponent.onCancel(this.context);
     }

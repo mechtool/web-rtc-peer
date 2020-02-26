@@ -89,7 +89,7 @@ export class VideoChannelComponent implements OnInit, OnDestroy {
 		clearTimeout(this.t);
 		this.t = undefined;
 		this.changeRef.detectChanges();
-	    },4000)
+	    },5000)
     }
     
     onCloseView($event){

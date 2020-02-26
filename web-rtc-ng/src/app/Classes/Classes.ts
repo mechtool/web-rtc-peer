@@ -127,8 +127,9 @@ export class Message  {
     messageType  : string  = '';// video/ text/ audio
     ext : string = ''; //расширение файла сообщения
     sourceUrl : string = '';//адрес ресурса если он кудато записан
-    text : string = ''; //текст сообщения, если оно текстовое
-    messageId  : string = '';
+    acton : string = ''; //результат действия
+    text : string = '';
+    messId  : string = '';
     sender : any;
     receivers : any;
     
@@ -137,9 +138,10 @@ export class Message  {
 	this.messageType = message.messageType;
 	this.ext = message.ext;
 	this.sourceUrl = message.sourceUrl;
-	this.text = message.text;
-	this.messageId = message.messageId;
+	this.acton = message.action;
+	this.messId = message.messId;
 	this.sender = message.sender;
+	this.text = message.text;
 	this.receivers = message.receivers;
     }
 }

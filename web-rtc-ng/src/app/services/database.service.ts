@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {AppContextService} from "./app-context.service";
 import {FirebaseService} from "./firebase.service";
 import {Contact} from "../Classes/Classes";
@@ -8,7 +8,7 @@ import {map} from "rxjs/operators";
 @Injectable({
   providedIn: 'root'
 })
-export class DatabaseService {
+export class DatabaseService implements OnDestroy{
     
     public database;
     public storage;
@@ -18,6 +18,13 @@ export class DatabaseService {
 	public firebaseService : FirebaseService,
     ) {}
   
+    ngOnDestroy(): void {
+        //Снятие всех обработчиков предложений (входящих/исходящих)
+	this.database.ref('/web-rtc/offers/explicit/').off();
+        //Снятие обработчиков события входящих предложений
+	//this.database.ref('/web-rtc/offers/explicit/' + this.appContext.appUser.uid).off();
+    }
+    
     initialize(){
 	this.database = this.firebaseService.database;
 	this.storage = this.firebaseService.storage;
@@ -126,12 +133,34 @@ export class DatabaseService {
 	//Удаление или запись новых или измененных
 	return this.database.ref(options.contactURL).update(options.value);
     }
+    sendOuterMessage(uid, outer){
+	this.database.ref('web-rtc/offers/outers/' + uid +'/'+ outer.messId).set(outer);
+    }
     
-    subscribeMessages(uid): Observable<any>{
+    subscribeInnerMessages(uid): Observable<any>{
 	return new Observable(observer => {
-	    this.database.ref('/messages/' + uid).on('value', messages => {
+	    this.database.ref('web-rtc/offers/explicit/' + uid).on('value', messages => {
 		let mess = messages.val() || {};
 		observer.next(Object.values(mess));
+	    })
+	});
+    }
+    
+    subscribeOuterMessages(uid): Observable<any>{
+	return new Observable(observer => {
+	    this.database.ref('web-rtc/offers/outers/' + uid).on('value', messages => {
+		let mess = Object.values(messages.val() || {});
+		if(mess.length){
+		    Promise.all(mess.map(async (m : any) => {
+			return await this.database.ref('web-rtc/offers/explicit/'+ m.to +'/'+m.messId).once('value').then(messages => {
+			    return messages.val();
+			})
+		    })).then(res => {
+			observer.next(res) ;
+		    });
+		}else{
+		    observer.next(mess);
+		}
 	    })
 	});
     }
