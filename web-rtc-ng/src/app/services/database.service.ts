@@ -20,7 +20,7 @@ export class DatabaseService implements OnDestroy{
   
     ngOnDestroy(): void {
         //Снятие всех обработчиков предложений (входящих/исходящих)
-	this.database.ref('/web-rtc/offers/explicit/').off();
+	this.database && this.database.ref('/web-rtc/offers/explicit/').off();
         //Снятие обработчиков события входящих предложений
 	//this.database.ref('/web-rtc/offers/explicit/' + this.appContext.appUser.uid).off();
     }
