@@ -88,7 +88,8 @@ app.get('*.*', express.static(DIST_FOLDER, {
 }));
 //Уведомление о принятом платеже
 app.post('/payment-notification', (req, resp)=>{
-	  console.log('payment');
+	  console.log(req.body);
+	  resp.status(200).end();
 });
 app.post('/notification', (req, resp)=>{
 	db.ref('/users/' + req.body.contact.uid + '/pushSubscription').once('value').then(res => {
