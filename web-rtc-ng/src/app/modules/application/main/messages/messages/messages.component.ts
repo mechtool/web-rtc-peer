@@ -10,6 +10,7 @@ import {ColorThemeService} from "../../../../../services/color-theme.service";
 })
 export class MessagesComponent implements OnInit {
 
+    public activeMessages = [];
     public buttons = [];
     constructor(
         public colorThemeService : ColorThemeService,
@@ -22,6 +23,16 @@ export class MessagesComponent implements OnInit {
 	  this.buttons = [{icon : 'play', disabled : true}, {icon : "base_clear", disabled : true}];
       }
   }
+onClickMessage(prop){
+    let active,
+	target = prop.event.currentTarget;
+    target.classList.toggle('active');
+    target.style.backgroundColor = (active = target.classList.contains('active')) ?
+        this.colorThemeService.getThemeColor('highlight')
+    : this.getNeededColor(prop.index);
+    active && this.activeMessages.push();
+}
+  
     getNeededColor(index){
 	return 0 === index % 2 ? this.colorThemeService.getThemeColor('even') : this.colorThemeService.getThemeColor('odd')
     }

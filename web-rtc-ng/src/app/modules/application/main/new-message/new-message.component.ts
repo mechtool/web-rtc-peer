@@ -20,6 +20,7 @@ export class NewMessageComponent implements OnInit {
     public activateEdit = true;
     public newMessageHeader = 'Новое сообщение';
     public subscribers = [];
+    public contactRestriction ;
     public webRtcContext : any = new WebRtcContext({uid : 'Unknown'});
     //Контакты одного конкретного сообщения - контакты с которыми пользователь ведет сообщение
     public messageContacts : BehaviorSubject<Contact[]> = new BehaviorSubject([]);
@@ -51,6 +52,14 @@ export class NewMessageComponent implements OnInit {
     
     onOptionSelect(contact){
 	let contacts = this.messageContacts.value;
+	this.contactRestriction = window.localStorage.getItem('contactRestriction'); //0 - 1 ; 1 - auto
+	//Если условия соблюдены
+	if((this.contactRestriction == '0' && Object.keys(contacts).length < 1) || this.contactRestriction == '1'){
+	}else{
+	    //Выдать уведомление о невозможности добавления контакта
+	    console.log('Невозможно добавить контакт. Превышает ограничение добавления контактов.')  ;
+	    return false;
+	}
 	contacts.push(contact);
 	this.messageContacts.next(contacts);
     }

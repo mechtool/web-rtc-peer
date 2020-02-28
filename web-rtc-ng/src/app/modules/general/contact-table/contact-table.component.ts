@@ -1,8 +1,7 @@
-import {Component, EventEmitter, Input, OnInit, Output, QueryList, ViewChildren} from '@angular/core';
+import {Component, EventEmitter, Input,  Output} from '@angular/core';
 import {ColorThemeService} from "../../../services/color-theme.service";
 import {BehaviorSubject} from "rxjs";
 import {Contact} from "../../../Classes/Classes";
-import {MatButton} from "@angular/material/button";
 import {AppContextService} from "../../../services/app-context.service";
 
 @Component({
@@ -10,7 +9,7 @@ import {AppContextService} from "../../../services/app-context.service";
   templateUrl: './contact-table.component.html',
   styleUrls: ['./contact-table.component.css']
 })
-export class ContactTableComponent implements OnInit {
+export class ContactTableComponent {
     
     public contactRestriction ;
     @Input() public context :  BehaviorSubject<Contact[]> ;
@@ -18,11 +17,6 @@ export class ContactTableComponent implements OnInit {
   constructor(
       public appContext : AppContextService,
       public colorThemeService : ColorThemeService) {
-
-  }
-
-  ngOnInit() {
-      this.contactRestriction = window.localStorage.getItem('contactRestriction'); //0 - 1 ; 1 - auto
   }
     
     getNeededColor(index){
@@ -31,15 +25,20 @@ export class ContactTableComponent implements OnInit {
     
     onClickTableRow($event, index, contact){
       let target = $event.currentTarget;
+      this.contactRestriction = window.localStorage.getItem('contactRestriction'); //0 - 1 ; 1 - auto
       target.classList.toggle('active');
       let active =  target.classList.contains('active');
       if(active){
 	  //Если условия соблюдены
 	  if((this.contactRestriction == '0' && Object.keys(this.appContext.activeContacts).length < 1) || this.contactRestriction == '1'){
 	  }else{
+	      document.querySelectorAll('div.table-contact').forEach((cont :HTMLElement, inx) => {
+	          cont.style.backgroundColor = this.getNeededColor(inx);
+	      });
+	      this.appContext.activeContacts = {};
 	      //Выдать уведомление о невозможности добавления контакта
-	      console.log('Невозможно добавить контакт. Превышает ограничение добавления контактов.')  ;
-	      return false;
+/*	      console.log('Невозможно добавить контакт. Превышает ограничение добавления контактов.')  ;
+	      return false;*/
 	  }
       }
 	target.style.backgroundColor = active ? this.colorThemeService.getThemeColor('highlight') : this.getNeededColor(index);

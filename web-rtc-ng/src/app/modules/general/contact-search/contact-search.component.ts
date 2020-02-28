@@ -26,8 +26,6 @@ export class ContactSearchComponent implements OnInit {
   ngOnInit() {
   }
     optionSelected(selected){
-/*	this.collection.value.push(selected);
-	this.collection.next(this.collection.value) ;*/
 	this.selectedOption.emit(selected);
 	//Отчистка коллекции autocomplete от выбранного элемента
 	this.autocompleteCollection = this.autocompleteCollection.pipe(map((conts: Contact[]) => {

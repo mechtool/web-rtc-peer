@@ -12,17 +12,17 @@
 	<mat-tab-group mat-stretch-tabs class="messages-container-tabs">
 		<mat-tab label="Исходящие">
 			<div class="outer">
-				<app-message *ngFor="let message of this.appContext.outerMessages | async ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message"></app-message>
+				<app-message *ngFor="let message of this.appContext.outerMessages | async ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index})"></app-message>
 			</div>
 		</mat-tab>
 		<mat-tab label="Принятые">
 			<div class="accepted">
-				<app-message  *ngFor="let message of this.appContext.innerMessages | async  ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message"></app-message>
+				<app-message  *ngFor="let message of this.appContext.innerMessages | async  ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index})"></app-message>
 			</div>
 		</mat-tab>
 		<mat-tab label="Пропущенные">
 			<div class="skipped">
-				<app-message  *ngFor="let message of this.appContext.innerMessages | async  ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message"></app-message>
+				<app-message  *ngFor="let message of this.appContext.innerMessages | async  ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index})"></app-message>
 			</div>
 		</mat-tab>
 	</mat-tab-group>
