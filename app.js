@@ -88,12 +88,12 @@ app.get('*.*', express.static(DIST_FOLDER, {
 }));
 //Уведомление о принятом платеже
 app.post('/payment-notification', (req, resp)=>{
-	  if(!req.body['test_notification']){
+/*	  if(!req.body['test_notification']){
 	  	let mess = req.body['label'].split('/'),
 			add = parseFloat(mess[1]) + parseFloat(mess[2]);
 	  	//uid/sum/current/date(milliseconds)
 	  	  db.ref(`/sms/${mess[0]/mess[3]}`).set(add);
-	  }
+	  }*/
 	  console.log(req.body);
 	  resp.status(200).end();
 });
