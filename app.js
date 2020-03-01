@@ -92,7 +92,8 @@ app.post('/payment-notification', (req, resp)=>{
 	  	let mess = req.body['label'].split('/'),
 			add = parseFloat(mess[1]) + parseFloat(mess[2]);
 	  	//uid/sum/current/date(milliseconds)
-	  	  db.ref(`/sms/${mess[0]/mess[3]}`).set(add);
+		  console.log(mess);
+	  	  //db.ref(`/sms/${mess[0]/mess[3]}`).set(add);
 	  }
 	  console.log(req.body);
 	  resp.status(200).end();
