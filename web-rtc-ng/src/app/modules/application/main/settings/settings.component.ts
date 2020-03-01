@@ -186,7 +186,7 @@ export class SettingsComponent implements OnInit,  OnDestroy {
 		  },
 		  {
 		      type: 4, optionName: 'Настройка SMS', icon: 'outgoing', text: 'Настройка SMS', disabled : false ,  listener: () => {
-			this.router.navigate(['application','main','sms']);
+			this.router.navigate(['application','main','sms']).catch(err => console.log(err));
 		      }
 		  },
 		  {
