@@ -20,6 +20,7 @@ import {SwUpdateService} from "./services/sw-update.service";
 import {AppResolverService} from "./services/app-resolver.service";
 import {WebRtcService} from "./services/web-rtc.service";
 import {GlobalErrorHandler} from "./services/error-handler.service";
+import {DatePipe} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -47,7 +48,9 @@ import {GlobalErrorHandler} from "./services/error-handler.service";
       SwUpdateService,
       AppResolverService,
       WebRtcService,
-      {provide: ErrorHandler, useClass: GlobalErrorHandler},
+      DatePipe,
+    
+    {provide: ErrorHandler, useClass: GlobalErrorHandler},
   ],
   bootstrap: [AppComponent]
 })

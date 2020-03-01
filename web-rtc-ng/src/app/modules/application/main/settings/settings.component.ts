@@ -9,6 +9,7 @@ import {isPlatformBrowser} from "@angular/common";
 import {PushNotificationService} from "../../../../services/push-notification.service";
 import {AuthFirebaseService} from "../../../../services/auth-firebase.service";
 import {BehaviorSubject} from "rxjs";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-settings',
@@ -29,6 +30,7 @@ export class SettingsComponent implements OnInit,  OnDestroy {
       public settingsDef : SettingDefaultService,
       public pushService : PushNotificationService,
       public authService : AuthFirebaseService,
+      public router : Router,
       @Inject(PLATFORM_ID) public platformId: Object,
       ) {
  
@@ -178,17 +180,22 @@ export class SettingsComponent implements OnInit,  OnDestroy {
 		      }
 		  },
 		  {
-		      type: 4, optionName: 'Перезагрузить', icon: 'reload', text: 'Перезагрузить', disabled : new BehaviorSubject(false),  listener: (option) => {
+		      type: 4, optionName: 'Перезагрузить', icon: 'reload', text: 'Перезагрузить', disabled : new BehaviorSubject(false),  listener: () => {
 			  window.location.reload();
 		      }
 		  },
 		  {
-		      type: 4, optionName: 'Проверить обновление', icon: 'check-update', text: 'Проверить обновление', disabled : new BehaviorSubject(false), listener: (option) => {
+		      type: 4, optionName: 'Настройка SMS', icon: 'outgoing', text: 'Настройка SMS', disabled : false ,  listener: () => {
+			this.router.navigate(['application','main','sms']);
+		      }
+		  },
+		  {
+		      type: 4, optionName: 'Проверить обновление', icon: 'check-update', text: 'Проверить обновление', disabled : new BehaviorSubject(false), listener: () => {
 			  this.swUpdate.checkForUpdate();
 		      }
 		  },
 		  {
-		      type: 4, optionName: 'Проверить разрешения', icon: 'check-permissions', text: 'Проверить разрешения', disabled : new BehaviorSubject(false), listener: async (option) => {
+		      type: 4, optionName: 'Проверить разрешения', icon: 'check-permissions', text: 'Проверить разрешения', disabled : new BehaviorSubject(false), listener: async () => {
 			  await this.pushService.checkSubscription();
 			  await navigator.mediaDevices.getUserMedia({audio: true, video: true})
 			      .then(stream => {

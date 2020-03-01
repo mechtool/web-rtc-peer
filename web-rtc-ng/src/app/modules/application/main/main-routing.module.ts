@@ -9,6 +9,7 @@ const routes: Routes = [
 	    {path : 'new-message', loadChildren :  () => import('./new-message/new-message.module').then(m => m.NewMessageModule), data : {type : 'new-message'}},
 	    {path : 'announcements', loadChildren :  () => import('./announcements/announcements.module').then(m => m.AnnouncementsModule), data : {type : 'announcements'}},
 	    {path : 'settings', loadChildren :  () => import('./settings/settings.module').then(m => m.SettingsModule), data : {type : 'settings'}},
+	    {path : 'sms', loadChildren :  () => import('./sms/sms.module').then(m => m.SmsModule), data : {type : 'sms'}},
 	    {path : '', pathMatch :'full', redirectTo : 'contacts'} ,
 	]}
 ];
