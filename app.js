@@ -6,6 +6,7 @@ var bodyParser = require('body-parser') ;
 var compression = require('compression');
 var debug = require('debug')('stun-turn-heroku:server');
 var https = require('https');
+var http = require('http');
 var Turn = require('node-turn');
 var cors = require('cors');
 var querystring = require('querystring');
