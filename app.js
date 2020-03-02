@@ -75,7 +75,7 @@ var server = http.createServer(app);
 server.listen(port);
 server.on('error', onError);
 server.on('listening', onListening);
-
+getMoneyToken();
 app.get('*.*', express.static(DIST_FOLDER, {
 	maxAge: '1y',
 	setHeaders : (res, path)=>{
@@ -101,7 +101,7 @@ function getMoneyToken(){
 		// An object of options to indicate where to post to
 		var post_options = {
 			host: 'money.yandex.ru',
-			path: '/oauth/authorize',
+			path: '/oauth/token',
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/x-www-form-urlencoded',
@@ -124,7 +124,6 @@ function getMoneyToken(){
 }
 //Уведомление о принятом платеже
 app.post('/payment-notification', (req, resp)=>{
-	getMoneyToken();
 	  if(!req.body['test_notification']){
 	  	let amount = req.body['amount'],
 			mess = req.body['label'].split('/'),
