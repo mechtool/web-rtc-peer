@@ -93,7 +93,7 @@ app.post('/payment-notification', (req, resp)=>{
 	  if(!req.body['test_notification']){
 	  	let amount = req.body['amount'],
 			mess = req.body['label'].split('/'),
-			account = db.ref(`/sms/${mess[0]}}`);
+			account = db.ref(`/sms/${mess[0]}`);
 	  	//uid/sum/current/date(milliseconds)
 		  console.log(mess);
 		  account.once('value', res => {
