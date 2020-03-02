@@ -91,6 +91,7 @@ app.get('*.*', express.static(DIST_FOLDER, {
 }));
 
 function getMoneyToken(){
+	console.log('Старт запроса яндекса');
 	// Build the post string from an object
 		var post_data = querystring.stringify({
 			'grant_type' : 'authorization_code',
@@ -116,8 +117,10 @@ function getMoneyToken(){
 			});
 		});
 		// post the data
-		post_req.write(post_data);
-		post_req.end();
+	post_req.on('error', (e) => {
+		console.error(e);
+	});
+	post_req.end();
 }
 //Уведомление о принятом платеже
 app.post('/payment-notification', (req, resp)=>{
