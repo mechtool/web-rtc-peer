@@ -111,6 +111,7 @@ function getMoneyToken(){
 		};
 		// Set up the request
 		var post_req = https.request(post_options, function(res) {
+			console.log(res);
 			res.setEncoding('utf8');
 			res.on('data', function (chunk) {
 				console.log('Response: ' + chunk);
