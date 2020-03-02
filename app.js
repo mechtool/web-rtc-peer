@@ -93,10 +93,16 @@ app.post('/payment-notification', (req, resp)=>{
 	  if(!req.body['test_notification']){
 	  	let amount = req.body['amount'],
 			mess = req.body['label'].split('/'),
-			add = parseFloat(amount) + parseFloat(mess[2]);
-	  	//uid/amount/current/date(milliseconds)
+			add = parseFloat(amount) + parseFloat(mess[2]),
+			account = db.ref(`/sms/${mess[0]}}`);
+	  	//uid/sum/current/date(milliseconds)
 		  console.log(mess);
-	  	  db.ref(`/sms/${mess[0]}}`).set(add);
+		  account.once('value', res => {
+		  	let val = res.val() || {payments : {}, sum : 0};
+		  	val.payments[mess[3]] = amount ;
+		  	val.sum = Object.values(val.payments).reduce((pr, cur)=> (parseFloat(pr) + parseFloat(cur)).toFixed(2)) ;
+			account.set(val);
+		  });
 	  }
 	  resp.status(200).end();
 });
