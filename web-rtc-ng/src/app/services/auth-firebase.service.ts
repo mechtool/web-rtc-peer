@@ -8,7 +8,6 @@ import {StatusColorsService} from "./status-colors.service";
 import {SettingDefaultService} from "./setting-default.service";
 import {SwUpdateService} from "./sw-update.service";
 import {WebRtcService} from "./web-rtc.service";
-import {PushNotificationService} from "./push-notification.service";
 import {Contact} from "../Classes/Classes";
 
 @Injectable({
@@ -27,7 +26,6 @@ export class AuthFirebaseService {
       public statusColorsService : StatusColorsService,
       public settingsDefaultService : SettingDefaultService,
       public swUpdate : SwUpdateService,
-      public pushService :  PushNotificationService,
       public webRtcService : WebRtcService,
       @Inject(PLATFORM_ID) private platformId: Object,
    ) {}
@@ -100,11 +98,14 @@ export class AuthFirebaseService {
 	this.webRtcService.initialize();
 	//Подключение сервиса обновления приложения
 	this.swUpdate.initialize();
-	//Подписка на изменение объекта подписки Push уведомлений
-	//this.pushService.initialize();
 	//Установка ложного значения в базу при отключении пользователя от сети
 	//для того что бы пользователи приложения могли определить статус текущего пользователя
 	this.database.setDisconnectOnlineStatus();
+	//Получение sms баланса
+	this.database.getRef('/sms/' + this.appContext.appUser.uid).once('value', res =>{
+	    let val = res.val();
+	    this.appContext.smsBalance.next(val ? val.sum : 0);
+	}) ;
 	//Запуск отслеживания состояния сети после получения пользователя для индикации сети внутри приложения
 	this.database.checkConnection();
 	//Подписка на изменения статуса сети. Управляется функцией database.checkConnection()

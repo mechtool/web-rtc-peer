@@ -40,6 +40,8 @@ export class AppContextService {
     public statusColor  : BehaviorSubject<string> = new BehaviorSubject<string>('#8d8d8d');
     //контакты помеченные пользователем как активные
     public activeContacts = {};
+    //Баланс SMS пользователя
+    public smsBalance = new BehaviorSubject(0);
     //Настройки только локального контекста для передачи удаленным контекстам
     public localVideoAudio = {type : 'settings', video : 1, audio : 1};
     //Коллекция контактов для текущего пользователя
