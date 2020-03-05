@@ -21,6 +21,7 @@ import {AppResolverService} from "./services/app-resolver.service";
 import {WebRtcService} from "./services/web-rtc.service";
 import {GlobalErrorHandler} from "./services/error-handler.service";
 import {DatePipe} from "@angular/common";
+import {SmsService} from "./services/sms.service";
 
 @NgModule({
   declarations: [
@@ -49,6 +50,7 @@ import {DatePipe} from "@angular/common";
       AppResolverService,
       WebRtcService,
       DatePipe,
+      SmsService,
     
     {provide: ErrorHandler, useClass: GlobalErrorHandler},
   ],

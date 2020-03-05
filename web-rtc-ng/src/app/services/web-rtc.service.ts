@@ -6,13 +6,14 @@ import {Router} from "@angular/router";
 import {PushNotificationService} from "./push-notification.service";
 import {BehaviorSubject} from "rxjs";
 import {StatusColorsService} from "./status-colors.service";
+import {SmsService} from "./sms.service";
 const uuid = require('uuid/v1');
 
 @Injectable({
   providedIn: 'root'
 })
 export class WebRtcService implements OnDestroy{
-
+    
     public collections = [{ first : '/web-rtc/offers/explicit/'}];
   constructor(
       public router : Router,
@@ -20,7 +21,8 @@ export class WebRtcService implements OnDestroy{
       public database : DatabaseService,
       public statusColor : StatusColorsService,
       private ngZone : NgZone,
-      public pushNotificationService : PushNotificationService,) {
+      public pushNotificationService : PushNotificationService,
+      public sms : SmsService,) {
   }
     ngOnDestroy(): void {
 	this.collections.forEach(element => {
@@ -182,10 +184,21 @@ export class WebRtcService implements OnDestroy{
 	    })
 	}
 	
-	
 	async function send(online){
 	    //Если контакт не находиться в сети - отправляем ему push уведомление
-	    online || that.pushNotificationService.sendNotification(offer);
+	    if(!online){
+	        let contact = offer.contact;
+	        switch (window.localStorage.getItem('callModel')) {
+		    case '0' : { //зежим отправки sms
+		        // Если контакт присутствует в списке контактов пользователя
+			that.appContext.contacts.value.some(cont => cont.uid === contact.uid) ? that.pushNotificationService.sendNotification(offer) : that.sms.sendSms(offer);
+		    	}
+			break;
+		    case '1' : {
+			that.pushNotificationService.sendNotification(offer);
+		    }
+		} //'0' -sms '1'-push
+	    }
 	    //Отправка самого дескриптора
 	    await that.database.sendDescriptor(offer).then(res => {
 		console.log('Предложение отправлено контакту '+ offer.contact.uid);
@@ -227,6 +240,7 @@ export class WebRtcService implements OnDestroy{
 				desc : offer,
 				text : text,
 				type : 2,
+				active : true,
 				contact : that.appContext.searchMessageContacts([offer.contact])[0]
 			    }));
 			    //Обновление интерфейса

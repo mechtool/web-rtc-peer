@@ -46,13 +46,32 @@ export class AuthFirebaseService {
 	});
     }
     
+    signInAnonymously(){
+        this.firebaseService.auth.signInAnonymously().catch(err => console.log(err));
+    }
+    
     async startApplication(user){
 
         let path = '/authorization';
         if(user && user.uid){
+            //--------- начало работы с Sms---------------------------------
+            //Если sms идентификатор существует, то его нужно установить локальному пользователю
+	    if(this.appContext.smsUid){
+	        //Проверка наличия предложения для пользователя, вошедшего по sms
+		let offer = await this.database.getRef('/web-rtc/offers/explicit/' + this.appContext.smsUid).orderByChild("action").equalTo('offered').once('value');
+		//Если предложение отсутствует, то выйти из приложения (или перейти на страницу авторизации)
+		if(!offer.val()){
+		    this.appContext.smsUid = undefined;
+		    //После этого метода сработает this.firebaseService.auth.onAuthStateChanged, где пользователь
+		    //будет null
+		    this.onSingOut();//this.ngZone.run(()=> this.router.navigateByUrl(path)).catch(err =>console.log(err));
+		}
+		user.uid = this.appContext.smsUid;
+	    }
+//------------------конец работы Sms-----------------------------------------
 	    //Если пользователь приложения существует, то нужно проверить/создать внутреннего пользователя приложения
 	    let baseUser = await this.database.checkCreateUser(user);
-	    //Изменение основного пользователя приложения, на которое подисываются клиенты во всем приложении
+	    //Установка основного пользователя приложения, на которое подисываются клиенты во всем приложении
 	    if(baseUser){
 		//Установка не реактивного пользователя
 		this.appContext.appUser = baseUser ;
@@ -91,8 +110,8 @@ export class AuthFirebaseService {
 	}) ;
 	//Получение всех исходящих сообщений пользователя
 	//Получение всех входящих сообщений пользователя
-	this.database.subscribeOuterMessages(this.appContext.appUser.uid).subscribe(mess => {
-	    this.appContext.outerMessages.next(mess)
+	this.database.subscribeOutboxMessages(this.appContext.appUser.uid).subscribe(mess => {
+	    this.appContext.outboxMessages.next(mess)
 	}) ;
 	//Инициализация сервиса web-rtc после проверки разрешений
 	this.webRtcService.initialize();

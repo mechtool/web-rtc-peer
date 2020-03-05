@@ -53,14 +53,12 @@ export class AppComponent implements OnInit, OnDestroy{
 	public webRtcService : WebRtcService,
 	@Inject(PLATFORM_ID) private platformId: Object) {
     }
-
     
     sendActiveStatus(status){
 	this.appContext.appUser && this.appContext.appUser.uid && this.database.setContacts({contactURL : '/users/' + this.appContext.appUser.uid, value : {online : status}});
     }
     
     ngOnInit() {
-    
 	//Если браузер
 	if (isPlatformBrowser(this.platformId)) {
 	    //Передача детектора изменений приложения в общий контекст

@@ -133,8 +133,8 @@ export class DatabaseService implements OnDestroy{
 	//Удаление или запись новых или измененных
 	return this.database.ref(options.contactURL).update(options.value);
     }
-    sendOuterMessage(uid, outer){
-	this.database.ref('web-rtc/offers/outers/' + uid +'/'+ outer.messId).set(outer);
+    sendOutboxMessage(uid, outer){
+	this.database.ref('web-rtc/offers/outbox/' + uid +'/'+ outer.messId).set(outer);
     }
     
     subscribeInnerMessages(uid): Observable<any>{
@@ -146,9 +146,9 @@ export class DatabaseService implements OnDestroy{
 	});
     }
     
-    subscribeOuterMessages(uid): Observable<any>{
+    subscribeOutboxMessages(uid): Observable<any>{
 	return new Observable(observer => {
-	    this.database.ref('web-rtc/offers/outers/' + uid).on('value', messages => {
+	    this.database.ref('web-rtc/offers/outbox/' + uid).on('value', messages => {
 		let mess = Object.values(messages.val() || {});
 		if(mess.length){
 		    Promise.all(mess.map(async (m : any) => {
@@ -164,9 +164,12 @@ export class DatabaseService implements OnDestroy{
 	    })
 	});
     }
+    public deleteAppUser(uid){
+	return this.database.ref('/users/' + uid).set(null);
+    }
     
     public checkCreateUser(user) :Promise<Contact | null>{
-	//Производит проверку существования внутреннего пользователя базы данныз-
+	//Производит проверку существования внутреннего пользователя базы данных-
 	//т.е. пользователя базы адаптированного под контакт
 	return new Promise((res, rej) => {
 	    let ref = this.database.ref('/users/' + user.uid);

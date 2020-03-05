@@ -142,7 +142,7 @@ export class SettingsComponent implements OnInit,  OnDestroy {
 		  },
 		  {
 		      type: 0,
-		      disabled: false,
+		      disabled: true,
 		      optionName: 'Ограничение контактов',
 		      value: this.settingsDef.contactRestriction[parseInt(window.localStorage.getItem('contactRestriction'))].text,
 		      options: this.settingsDef.contactRestriction,

@@ -9,7 +9,6 @@ const routes: Routes = [
 	    {path : 'password', loadChildren : ()=> import('../authorization/password/password.module').then(m => m.PasswordModule), data : {type : 'password'}},
 	    {path : 'phone', loadChildren : ()=> import('../authorization/phone/phone.module').then(m => m.PhoneModule), data : {type : 'phone'}},
 	    {path : 'sms', loadChildren : ()=> import('../authorization/sms/sms.module').then(m => m.SmsModule), data : {type : 'sms'}},
-	    {path : 'anonymous', loadChildren : ()=> import('../authorization/anonymous/anonymous.component').then(m => m.AnonymousComponent), data : {type : 'anonymous'}},
 	    {path : "", pathMatch : 'full', redirectTo: 'start-authorization'},
 	    {path : "**", pathMatch : 'full', redirectTo: 'start-authorization'},
 	]}

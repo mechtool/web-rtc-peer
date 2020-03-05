@@ -85,7 +85,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 	     that.database.sendDescriptor(desc);
 	 }else {
 	     that.webRtcService.sendOffer(webRtcConnectionContext) ;
-	     that.database.sendOuterMessage(that.appContext.appUser.uid, {data : Date.now(), to : desc.contact.uid,  messId : desc.messId});
+	     that.database.sendOutboxMessage(that.appContext.appUser.uid, {data : Date.now(), to : desc.contact.uid,  messId : desc.messId});
 	 }
 	 if(desc.type.indexOf('offers') > -1){
 	     that.setAnswerListener(webRtcConnectionContext);
@@ -183,7 +183,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 			      webRtcConnectionContext.descriptor = new Offer({
 				  type: (webRtcContext.uid === this.appContext.appUser.uid ? 'offers/explicit' : 'offers/implicit'),
 				  action: 'offered',
-				  contact: this.checkContact(contact),
+				  contact: contact,
 				  uid: this.appContext.appUser.uid,
 				  wid: webRtcContext.wid,
 				  receivers: initiator ? webRtcContext.receivers.value : [contact],
@@ -200,7 +200,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 			      webRtcConnectionContext.descriptor = new Answer({
 				  type : 'answers',
 				  active : true,
-				  contact : this.checkContact(contact),
+				  contact : contact,
 				  uid :  webRtcContext.desc.uid,
 				  descId : desc ? desc.messId : webRtcContext.desc.messId,
 				  wid : webRtcContext.wid,
@@ -221,7 +221,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 			   if(descriptor){
 			      let candidate = new Candidate({
 				   wid : descriptor.wid,
-				   contact :  this.checkContact(contact),
+				   contact :  contact ,
 				   date : Date.now(),
 				   sender : this.appContext.user.value,
 				   descId : descriptor.messId,
@@ -304,15 +304,8 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 	      }
 	  })
       }
-     // messageContacts.findIndex(cont => cont.uid === this.appContext.appUser.uid) > 1 && this.setImplicitListener(webRtcConnectionContext);
       this.appContext.appChangeRef.markForCheck();
   }
-  //Функция-заглушка проверяет присутствия значения свойст контакта, поскольку из базы данных приходят контакты с незаполненными некоторыми свойствами
-    //todo Обязательно убрать эту заглушку
-    checkContact(contact){
-       contact.statusColor = contact.statusColor || '';
-       return contact;
-    }
   
     setDescriptor(pcConnection, desc){
       //Установить предложение / ответ

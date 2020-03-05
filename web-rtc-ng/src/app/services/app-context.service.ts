@@ -1,8 +1,8 @@
 import {ChangeDetectorRef, Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {BehaviorSubject, Subject} from "rxjs";
 import {isPlatformBrowser} from "@angular/common";
-import {AnnouncementContext, Contact, PopupContext, WebRtcContext, WebRtcContexts} from "../Classes/Classes";
-import {NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
+import {AnnouncementContext, Contact, PopupContext, WebRtcContexts} from "../Classes/Classes";
+import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +29,7 @@ export class AppContextService {
     //Коллекция входящих сообщений, получаемая с сервера при старте приложения
     public innerMessages : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
     //Коллекция исходящих сообщений, получаемая с сервера при старте приложения
-    public outerMessages : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+    public outboxMessages : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
     //Пользователь приложения (реактивная форма)
     public user : BehaviorSubject< any > = new BehaviorSubject(new Contact({name : 'Unknown'}));
     // Пользователь приложения (не реактивная форма)
@@ -66,6 +66,8 @@ export class AppContextService {
     public offline = {off : false, autonomously : false};
     //Массив задержек отображения диалогов перед закрытием
     public dialogDelay = [20000, 30000, 40000];
+    //Идентификатор временного пользователя, полученный из SMS
+    public smsUid = undefined;
     
     constructor(
 	@Inject(PLATFORM_ID) private platformId: Object,
@@ -87,7 +89,6 @@ export class AppContextService {
 		    this.routeLoading = true;
 		    break;
 		}
-	 
 		case event instanceof NavigationEnd:
 		case event instanceof NavigationCancel:
 		case event instanceof NavigationError : {

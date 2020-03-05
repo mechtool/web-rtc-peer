@@ -15,7 +15,7 @@
 	<mat-tab-group mat-stretch-tabs class="messages-container-tabs" (focusChange)="focusChange()">
 		<mat-tab label="Исходящие">
 			<div class="outer">
-				<app-message *ngFor="let message of this.appContext.outerMessages | async ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index, message :message})"></app-message>
+				<app-message *ngFor="let message of this.appContext.outboxMessages | async ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index, message :message})"></app-message>
 			</div>
 		</mat-tab>
 		<mat-tab label="Принятые">

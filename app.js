@@ -6,6 +6,7 @@ var bodyParser = require('body-parser') ;
 var compression = require('compression');
 var debug = require('debug')('stun-turn-heroku:server');
 var http = require('http');
+var https = require('https');
 var Turn = require('node-turn');
 var cors = require('cors');
 var querystring = require('querystring');
@@ -87,21 +88,41 @@ app.get('*.*', express.static(DIST_FOLDER, {
 		}
 	}
 }));
-
+//Управление данных для отправки sms сообщений
+app.post('/send/sms', (req, res)=>{
+	let body = req.body,
+		icon = 'https://firebasestorage.googleapis.com/v0/b/web-rtc-peer.appspot.com/o/general%2Ficons%2Funnamed.png?alt=media&token=321af7e7-b979-48d6-ba99-04ce26b1ba8f';
+	https.get(encodeURI(`https://smsc.ru/sys/send.php?login=sovizer&psw=siwa3475&phones=${body.phone}&mes=Видео вызов https://web-rtc-peer.herokuapp.com?uid=${body.to}&sender=${body.sender}&fileurl=${icon}&time=0&fmt=3`), (resp)=>{
+		//Проблема в реализации функциональности передачи SMS  сообщений,
+		//в качестве сигнализации при входящем вызове удаленного узла :
+		//На сервисах отправки SMS не проходят ссылки  без заключения бесплатного договора
+		// от имени юридического лица или ИП, и тогда будут проходить ссылки. Реализация ПРИОСТАНОВЛЕНА.
+		//todo Реализовать анализ ответа,
+		// ответ пользователю в зависимости от результата и убрать заглушку
+		if(true){
+			setAccount({account : db.ref(`/sms/${body.from}`), date : body.date, sum : -3.000});
+		}
+	});
+	res.status(200).end();
+}) ;
+function setAccount(prop){
+	//Списание средств со счета пользователя
+	prop.account.once('value', res => {
+		let val = res.val() || {payments : {}, sum : 0};
+		val.payments[prop.date] = prop.sum;
+		val.sum = Object.values(val.payments).reduce((pr, cur)=> (parseFloat(pr) + parseFloat(cur)).toFixed(2)) ;
+		prop.account.set(val);
+	});
+	//----------конец списания---------------------
+}
 //Уведомление о принятом платеже
 app.post('/payment-notification', (req, resp)=>{
 	  if(!req.body['test_notification']){
 	  	let amount = req.body['amount'],
-			mess = req.body['label'].split('/'),
-			account = db.ref(`/sms/${mess[0]}`);
+			mess = req.body['label'].split('/');
 	  	//uid/sum/current/date(milliseconds)
 		  console.log(mess);
-		  account.once('value', res => {
-		  	let val = res.val() || {payments : {}, sum : 0};
-		  	val.payments[mess[3]] = amount ;
-		  	val.sum = Object.values(val.payments).reduce((pr, cur)=> (parseFloat(pr) + parseFloat(cur)).toFixed(2)) ;
-			account.set(val);
-		  });
+		  setAccount({account : db.ref(`/sms/${mess[0]}`), date : mess[3], sum :  amount}) ;
 	  }
 	  resp.status(200).end();
 });

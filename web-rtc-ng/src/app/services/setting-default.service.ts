@@ -7,7 +7,7 @@ import {AppContextService} from "./app-context.service";
 export class SettingDefaultService {
     
     //Режим вызова
-    public callModel = [{text : 'Sms'}, {text : 'Push'}];
+    public callModel = [{text : 'Sms', disabled : true}, {text : 'Push'}];
     //Обновления
     public update = [{text : 'Проверять и обновлять'}, {text : 'Проверять'}, {text : 'Не проверять'}];
     public contactRestriction = [{text : '1'}, {text : 'Auto'}] ;
@@ -27,7 +27,7 @@ export class SettingDefaultService {
 	    //Установка настройки использования библиотеки оповещений
 	    let appColorClass      =  window.localStorage.getItem('appColorClass'),
 		callModel          = window.localStorage.getItem('callModel'),
-		update             = window.localStorage.getItem('callModel'),
+		update             = window.localStorage.getItem('update'),
 		videoinput         = window.localStorage.getItem('videoinput') ,
 		audioinput         = window.localStorage.getItem('audioinput'),
 		audiooutput        = window.localStorage.getItem('audiooutput'),
