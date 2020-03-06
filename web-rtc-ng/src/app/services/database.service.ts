@@ -139,7 +139,7 @@ export class DatabaseService implements OnDestroy{
     
     subscribeInnerMessages(uid): Observable<any>{
 	return new Observable(observer => {
-	    this.database.ref('web-rtc/offers/explicit/' + uid).on('value', messages => {
+	    this.database.ref('web-rtc/offers/explicit/' + uid).orderByChild('date').on('value', messages => {
 		let mess = messages.val() || {};
 		observer.next(Object.values(mess));
 	    })

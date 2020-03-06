@@ -29,8 +29,4 @@ export class ColorThemeService {
         //Получения цвета приложения по имени свойства объекта цвета: backgroundColor , color , light
         return this.colorItems.filter(color => color.colorClass === this.appContext.appColorClass.value)[0][type];
     }
-    getLightColor(){
-    
-    }
-    
 }

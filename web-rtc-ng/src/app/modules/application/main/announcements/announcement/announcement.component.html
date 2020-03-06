@@ -4,8 +4,10 @@
 			<div class="date-block">{{context.date | date :'short' : '' : 'ru'}}</div>
 			<div class="contains" [innerHTML]="this.sanitizer.bypassSecurityTrustHtml(context.content)"></div>
 		</div>
-		<app-incoming-call-announcement *ngSwitchCase="1" [context]="context"></app-incoming-call-announcement>
+		<app-incoming-call-announcement  *ngSwitchCase="1" [context]="context"></app-incoming-call-announcement>
 		<app-no-answer *ngSwitchCase="2" [context]="context"></app-no-answer>
 		<app-update-announcement *ngSwitchCase="3" [context]="context"></app-update-announcement>
+		<span class="example-spacer"></span>
+		<div class="active-mark" [style.backgroundColor]="this.context.active ? '#3941aa': '#d1d1d1'"></div>
 	</div>
 </div>

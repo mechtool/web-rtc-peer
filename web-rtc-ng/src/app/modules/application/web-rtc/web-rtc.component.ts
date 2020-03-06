@@ -85,7 +85,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 	     that.database.sendDescriptor(desc);
 	 }else {
 	     that.webRtcService.sendOffer(webRtcConnectionContext) ;
-	     that.database.sendOutboxMessage(that.appContext.appUser.uid, {data : Date.now(), to : desc.contact.uid,  messId : desc.messId});
+	     that.database.sendOutboxMessage(that.appContext.appUser.uid, {date : Date.now(), to : desc.contact.uid,  messId : desc.messId});
 	 }
 	 if(desc.type.indexOf('offers') > -1){
 	     that.setAnswerListener(webRtcConnectionContext);

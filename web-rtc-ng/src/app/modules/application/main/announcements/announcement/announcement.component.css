@@ -1,5 +1,9 @@
+:host{
+    display: block;
+    cursor : pointer;
+}
 .announcement-container{
-    padding: 10px;
+    padding: 8px;
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -9,7 +13,9 @@
     margin-right: 8px;
     white-space: nowrap;
 }
-
-.announcement-container:hover{
-    background-color: #ececec;;
+.active-mark{
+    width: 10px;
+    height: 10px;
+    border-radius: 50% 50%;
+    margin-right: 10px;
 }

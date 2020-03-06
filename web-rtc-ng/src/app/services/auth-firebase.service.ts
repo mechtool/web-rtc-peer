@@ -111,7 +111,7 @@ export class AuthFirebaseService {
 	//Получение всех исходящих сообщений пользователя
 	//Получение всех входящих сообщений пользователя
 	this.database.subscribeOutboxMessages(this.appContext.appUser.uid).subscribe(mess => {
-	    this.appContext.outboxMessages.next(mess)
+	    this.appContext.outboxMessages.next(mess.sort((a,b)=> a.date - b.date))
 	}) ;
 	//Инициализация сервиса web-rtc после проверки разрешений
 	this.webRtcService.initialize();
