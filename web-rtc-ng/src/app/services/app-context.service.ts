@@ -26,8 +26,10 @@ export class AppContextService {
     public webRtcContexts : WebRtcContexts = new WebRtcContexts();
     //аппаратные средства : видеокамера, микрофон, динамики
     public hardware : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
-    //Коллекция входящих сообщений, получаемая с сервера при старте приложения
-    public incomingMessages : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+    //Коллекция входящих пропущенных сообщений,получаемая с сервера при старте приложения
+    public incomingAcceptedMessages : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+    //Коллекция входящих принятых сообщений, получаемая с сервера при старте приложения
+    public incomingMissingMessages : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
     //Коллекция исходящих сообщений, получаемая с сервера при старте приложения
     public outgoingMessages : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
     //Пользователь приложения (реактивная форма)

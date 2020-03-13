@@ -20,12 +20,12 @@
 		</mat-tab>
 		<mat-tab label="Принятые">
 			<div class="accepted">
-				<app-message  *ngFor="let message of this.appContext.incomingMessages | async  ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index , message :message})"></app-message>
+				<app-message  *ngFor="let message of this.appContext.incomingAcceptedMessages | async  ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index , message :message})"></app-message>
 			</div>
 		</mat-tab>
 		<mat-tab label="Пропущенные">
 			<div class="skipped">
-				<app-message  *ngFor="let message of this.appContext.incomingMessages | async  ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index, message :message})"></app-message>
+				<app-message  *ngFor="let message of this.appContext.incomingMissingMessages | async  ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index, message :message})"></app-message>
 			</div>
 		</mat-tab>
 	</mat-tab-group>

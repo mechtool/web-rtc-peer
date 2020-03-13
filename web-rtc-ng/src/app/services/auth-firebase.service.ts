@@ -105,9 +105,13 @@ export class AuthFirebaseService {
 	    this.appContext.contacts.next(conts)
 	});
 	//Получение всех входящих сообщений пользователя
-	this.database.subscribeIncomingMessages().subscribe(mess => {
-	    this.appContext.incomingMessages.next(mess);
-	}) ;
+	this.database.subscribeIncomingMessages().subscribe((mess : any[]) => {
+	    let accepted = mess.filter(m => /accepted/.test(m.action)),
+		ignored = mess.filter(m => /ignored|denied|offered/.test(m.action));
+	    
+	    this.appContext.incomingAcceptedMessages.next(accepted);
+	    this.appContext.incomingMissingMessages.next(ignored);
+	});
 	//Получение всех исходящих сообщений пользователя
 	//Получение всех входящих сообщений пользователя
 	this.database.subscribeOutgoingMessages().subscribe(mess => {

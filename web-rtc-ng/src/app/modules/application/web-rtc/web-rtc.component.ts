@@ -320,9 +320,9 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 	  //Если принимается явное предложение, создаем сообщение в области входящих сообщений
 	  if(desc.type === 'offers/explicit'){
 	      //Изменение входящего сообщения
-	      this.database.changeMessage('/messages/incoming/'+ this.appContext.appUser.uid +'/'+ desc.wid + '/action', 'accepted');
+	      this.database.changeMessage('/messages/incoming/'+ this.appContext.appUser.uid +'/'+ desc.wid, {action :'accepted'});
 	      //Пользователь  принял предложение - записываем это в область исходящих сообщений
-	      this.database.changeMessage('/messages/outgoing/'+ desc.sender.uid +'/'+ desc.wid + '/actions/'+ desc.contact.uid, 'accepted') ;
+	      this.database.changeMessage('/messages/outgoing/'+ desc.sender.uid +'/'+ desc.wid + '/actions', {[desc.contact.uid] :'accepted'}) ;
 	  }
       }
       /*          //Снятие признака активности принятого предложения/ответа
