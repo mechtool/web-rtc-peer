@@ -11,7 +11,7 @@ export class SettingDefaultService {
     //Обновления
     public update = [{text : 'Проверять и обновлять'}, {text : 'Проверять'}, {text : 'Не проверять'}];
     public contactRestriction = [{text : '1'}, {text : 'Auto'}] ;
-    public callSave =  [{text : 'Не сохранять'}, {text : 'Запись экрана'}, {text: 'Запись потоков'}, {text : 'Не поддерживается', disabled : true}] ;
+    public callSave =  [{text : 'Не сохранять'}, {text : 'Сохранять'}, {text : 'Не поддерживается', disabled : true}] ;
     public stunTurn =  [{text : 'Default'}, {text : 'Host'}, {text : 'Xirsys'}] ;
     public dialogDelay =  [{text : '20 сек'}, {text : '30 сек'},{text : '40 сек'}] ;
     //время активности дескриптора, после которого дескриптор не может быть получен из базы данных
@@ -49,7 +49,7 @@ export class SettingDefaultService {
 	    optimizeCall  || window.localStorage.setItem('optimizeCall', 'false');
 	    contactRestriction  || window.localStorage.setItem('contactRestriction', '0');
 	    stunTurn      || window.localStorage.setItem('stunTurn', '0') ;
-	    callSave      || window.localStorage.setItem('callSave',  'MediaRecorder' in window ? '0' : '3');
+	    callSave      || window.localStorage.setItem('callSave',  'MediaRecorder' in window ? '0' : '2');
 	    dialogDelay   || window.localStorage.setItem('dialogDelay', '0');
 	    callTime      || window.localStorage.setItem('callTime', '0');
 	    descriptorExpiration || window.localStorage.setItem('descriptorExpiration', '0');

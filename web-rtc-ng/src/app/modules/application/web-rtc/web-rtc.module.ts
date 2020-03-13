@@ -13,7 +13,7 @@ import {GeneralModule} from "../../general/general.module";
   declarations: [
       WebRtcComponent,
       VideoChannelComponent,
-      WebRtcContextComponent
+      WebRtcContextComponent,
   ],
   imports: [
     CommonModule,

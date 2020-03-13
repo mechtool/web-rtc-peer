@@ -4,6 +4,7 @@ import {FirebaseService} from "./firebase.service";
 import {Contact} from "../Classes/Classes";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
+let uuid = require('uuid/v1');
 
 @Injectable({
   providedIn: 'root'
@@ -133,34 +134,41 @@ export class DatabaseService implements OnDestroy{
 	//Удаление или запись новых или измененных
 	return this.database.ref(options.contactURL).update(options.value);
     }
-    sendOutboxMessage(uid, outer){
-	this.database.ref('web-rtc/offers/outbox/' + uid +'/'+ outer.messId).set(outer);
+    sendOutgoingMessage(mess){
+        //Для каждого контакта создается входящее сообщение, которое будет видно ему
+	//и которое он сможет удалить
+        mess.receivers.forEach(cont => {
+            this.sendIncomingMessage({type : 'incoming', path : '/messages/incoming/'+ cont.uid +'/'+ mess.wid, sender :  mess.sender , messId : uuid(), receivers : mess.receivers, date : mess.date, wid : mess.wid, contact : cont, action : 'offered'})
+	}) ;
+       this.database.ref(mess.path).set(mess);
     }
     
-    subscribeInnerMessages(uid): Observable<any>{
+    sendIncomingMessage(mess){
+	this.database.ref(mess.path).set(mess);
+    }
+    
+    changeMessage(path, date){
+        this.database.ref(path).update(date);
+    }
+    
+    subscribeIncomingMessages(): Observable<any>{
 	return new Observable(observer => {
-	    this.database.ref('web-rtc/offers/explicit/' + uid).orderByChild('date').on('value', messages => {
-		let mess = messages.val() || {};
-		observer.next(Object.values(mess));
+	    this.database.ref( '/messages/incoming/'+ this.appContext.appUser.uid).orderByChild('date').on('value', messages => {
+		let val : any =  messages.val();
+		if(val){
+		    observer.next(Object.values(val).sort((a :any, b : any)=> a.date - b.date ).reverse());
+		}else observer.next([]);
 	    })
 	});
     }
     
-    subscribeOutboxMessages(uid): Observable<any>{
+    subscribeOutgoingMessages(): Observable<any>{
 	return new Observable(observer => {
-	    this.database.ref('web-rtc/offers/outbox/' + uid).on('value', messages => {
-		let mess = Object.values(messages.val() || {});
-		if(mess.length){
-		    Promise.all(mess.map(async (m : any) => {
-			return await this.database.ref('web-rtc/offers/explicit/'+ m.to +'/'+m.messId).once('value').then(messages => {
-			    return messages.val();
-			})
-		    })).then(res => {
-			observer.next(res) ;
-		    });
-		}else{
-		    observer.next(mess);
-		}
+	    this.database.ref('/messages/outgoing/' + this.appContext.appUser.uid).on('value', messages => {
+	        let val : any =  messages.val();
+	        if(val){
+	            observer.next(Object.values(val).sort((a :any, b : any)=> a.date - b.date ).reverse());
+		}else observer.next([]);
 	    })
 	});
     }

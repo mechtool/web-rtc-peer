@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Inject, Input, OnInit, PLATFORM_ID} from '@angular/core';
 import {WebRtcContext} from "../../../../Classes/Classes";
 
 @Component({
@@ -11,9 +11,10 @@ export class WebRtcContextComponent implements OnInit {
     public localToolbar = false;
     @Input() public context : WebRtcContext;
     
-    constructor() { }
+    constructor(@Inject(PLATFORM_ID) private platformId: Object) { }
 
   ngOnInit() {
+
   }
 
   handleView(type){

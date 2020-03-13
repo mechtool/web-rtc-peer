@@ -8,24 +8,24 @@
 		<button mat-icon-button class="toolbar-button open-trigger" matTooltip="Открыть"  [disabled]="buttons[1].disabled" (click)="openMessage()">
 			<mat-icon [svgIcon]="buttons[1].icon"></mat-icon>
 		</button>
-		<button mat-icon-button class="toolbar-button delete-contact" matTooltip="Удалить" (click)="onDeleteMessage()" [disabled]="buttons[2].disabled">
+		<button mat-icon-button class="toolbar-button delete-contact" matTooltip="Удалить" (click)="onDeleteMessage(matTabGroup.selectedIndex)" [disabled]="buttons[2].disabled">
 			<mat-icon [svgIcon]="buttons[2].icon" ></mat-icon>
 		</button>
 	</mat-toolbar>
-	<mat-tab-group mat-stretch-tabs class="messages-container-tabs" (focusChange)="focusChange()">
+	<mat-tab-group #matTabGroup mat-stretch-tabs class="messages-container-tabs" (focusChange)="focusChange()">
 		<mat-tab label="Исходящие">
 			<div class="outer">
-				<app-message *ngFor="let message of this.appContext.outboxMessages | async ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index, message :message})"></app-message>
+				<app-message *ngFor="let message of this.appContext.outgoingMessages | async ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index, message :message})"></app-message>
 			</div>
 		</mat-tab>
 		<mat-tab label="Принятые">
 			<div class="accepted">
-				<app-message  *ngFor="let message of this.appContext.innerMessages | async  ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index , message :message})"></app-message>
+				<app-message  *ngFor="let message of this.appContext.incomingMessages | async  ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index , message :message})"></app-message>
 			</div>
 		</mat-tab>
 		<mat-tab label="Пропущенные">
 			<div class="skipped">
-				<app-message  *ngFor="let message of this.appContext.innerMessages | async  ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index, message :message})"></app-message>
+				<app-message  *ngFor="let message of this.appContext.incomingMessages | async  ; let index = index" [style.backgroundColor]="getNeededColor(index)" [context]="message" (click)="onClickMessage({event : $event, index : index, message :message})"></app-message>
 			</div>
 		</mat-tab>
 	</mat-tab-group>

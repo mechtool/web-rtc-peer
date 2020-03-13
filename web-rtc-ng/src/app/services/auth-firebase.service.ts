@@ -105,13 +105,13 @@ export class AuthFirebaseService {
 	    this.appContext.contacts.next(conts)
 	});
 	//Получение всех входящих сообщений пользователя
-	this.database.subscribeInnerMessages(this.appContext.appUser.uid).subscribe(mess => {
-	    this.appContext.innerMessages.next(mess)
+	this.database.subscribeIncomingMessages().subscribe(mess => {
+	    this.appContext.incomingMessages.next(mess);
 	}) ;
 	//Получение всех исходящих сообщений пользователя
 	//Получение всех входящих сообщений пользователя
-	this.database.subscribeOutboxMessages(this.appContext.appUser.uid).subscribe(mess => {
-	    this.appContext.outboxMessages.next(mess.sort((a,b)=> a.date - b.date))
+	this.database.subscribeOutgoingMessages().subscribe(mess => {
+	    this.appContext.outgoingMessages.next(mess);
 	}) ;
 	//Инициализация сервиса web-rtc после проверки разрешений
 	this.webRtcService.initialize();

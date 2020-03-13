@@ -3,6 +3,8 @@ import {AppContextService} from "../../../../../services/app-context.service";
 import {isPlatformBrowser} from "@angular/common";
 import {ColorThemeService} from "../../../../../services/color-theme.service";
 import {BehaviorSubject} from "rxjs";
+import {DatabaseService} from "../../../../../services/database.service";
+import { Offer} from "../../../../../Classes/Classes";
 
 @Component({
   selector: 'app-messages',
@@ -16,6 +18,7 @@ export class MessagesComponent implements OnInit {
     
     constructor(
         public colorThemeService : ColorThemeService,
+        public database : DatabaseService,
         public appContext : AppContextService,
 		@Inject(PLATFORM_ID) public platformId: Object
     ) { }
@@ -40,7 +43,9 @@ export class MessagesComponent implements OnInit {
 	: this.getNeededColor(prop.index);
 	if(active) value.push(prop.message);
 	else{
-	    value = value.filter(mess => mess.messId !== prop.message.messId) ;
+	    value = value.filter(mess => {
+	        return mess.messId !== prop.message.messId
+	    }) ;
 	}
 	
 	this.activeMessages.next(value);
@@ -66,7 +71,13 @@ export class MessagesComponent implements OnInit {
     openMessage(){
     
     }
-    onDeleteMessage(){
-        
+    onDeleteMessage(index){
+        this.activeMessages.value.forEach((mess : Offer) => {
+	    mess.sourceUrl && this.database.storage.ref(mess.sourceUrl).delete();
+	    //Удаление из коллекции outbox
+	    this.database.database.ref('/messages/outgoing/' + this.appContext.appUser.uid + '/'+ mess.wid).set(null);
+	});
+        //Отчистка активных сообщений
+	this.activeMessages.next([]) ;
     }
 }

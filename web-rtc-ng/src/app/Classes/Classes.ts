@@ -95,6 +95,7 @@ export class Offer extends Descriptor{
     public stun : string;
     public action : string;
     public descId : string;
+    public sourceUrl : string ;
     
     constructor(offer){
 	super(offer) ;
@@ -102,6 +103,7 @@ export class Offer extends Descriptor{
 	this.type = offer.type || '' ;   //explicit/implicit
 	this.stun = offer.stun || '';
 	this.descId = offer.descId;
+	this.sourceUrl = offer.sourceUrl || '';
 	this.action = offer.action || 'offered'; //denied-отказано /ignored- не принято/offered- предложено/accepted - принят
     }
 }
@@ -127,7 +129,7 @@ export class Message  {
     messageType  : string  = '';// video/ text/ audio
     ext : string = ''; //расширение файла сообщения
     sourceUrl : string = '';//адрес ресурса если он кудато записан
-    acton : string = ''; //результат действия
+    action : string = ''; //результат действия
     text : string = '';
     messId  : string = '';
     sender : any;
@@ -138,7 +140,7 @@ export class Message  {
 	this.messageType = message.messageType;
 	this.ext = message.ext;
 	this.sourceUrl = message.sourceUrl;
-	this.acton = message.action;
+	this.action = message.action;
 	this.messId = message.messId;
 	this.sender = message.sender;
 	this.text = message.text;
@@ -235,7 +237,22 @@ export class WebRtcContexts{
     }
     
     deleteAllContexts(){
+	//Очистить все таймауты (На тот случай, если пользователь запустил соединение
+	// и тут же его отменил, что бы после отмены соединения не проверялось предложение на
+	// предмет состояния вызова)
+        this.contexts.value.forEach(cont => {
+            for(let key in cont.webRtcConnections){
+               clearContextTimeouts(cont.webRtcConnections[key]) ;
+	    }
+	}) ;
 	this.contexts = new BehaviorSubject([]);
+	
+	function clearContextTimeouts(webRtcConnectionContext){
+	    if(webRtcConnectionContext.timeout){
+		window.clearTimeout(webRtcConnectionContext.timeout);
+		webRtcConnectionContext.timeout = undefined;
+	    }
+	}
     }
 }
 
@@ -251,6 +268,7 @@ export class WebRtcContext{
     //Локальный поток для установки его в peerConnection
     public localStream ? : any;
     public extra ?  : any;
+    public messageUrl : string;
     
     constructor(options){
 	
@@ -262,6 +280,7 @@ export class WebRtcContext{
 	this.desc = options.desc || undefined;
 	this.localStream = options.localStream || undefined;
 	this.extra = options.extra || {};
+	this.messageUrl = options.messageUrl || '';
     }
 }
 

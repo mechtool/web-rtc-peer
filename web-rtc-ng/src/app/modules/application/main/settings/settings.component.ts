@@ -48,13 +48,16 @@ export class SettingsComponent implements OnInit,  OnDestroy {
 		  {type: 5, optionName: 'Цветовая тема'},
 		  {
 		      type: 0,
-		      optionName: 'Модель вызова ',
+		      optionName: 'Модель вызова',
 		      value: this.settingsDef.callModel[parseInt(window.localStorage.getItem('callModel'))].text,
 		      options: this.settingsDef.callModel,
 		      listener: (event) => {
-			  window.localStorage.setItem('callModel', (this.settingsDef.callModel.findIndex(model => {
+		          if(event.disabled) return false;
+		          let index = this.settingsDef.callModel.findIndex(model => {
 			      return model.text === event.text;
-			  }) + ''));
+			  }) ;
+		          this.settings.additional[4].disabled.next(!!index)  ;
+			  window.localStorage.setItem('callModel', (index+''));
 		      }
 		  },
 		  {
@@ -130,7 +133,7 @@ export class SettingsComponent implements OnInit,  OnDestroy {
 		  },
 		  {
 		      type: 0,
-		      disabled: window.localStorage.getItem('callSave') === '3',
+		      disabled: window.localStorage.getItem('callSave') === '2',
 		      optionName: 'Сохранение вызова',
 		      value: this.settingsDef.callSave[parseInt(window.localStorage.getItem('callSave'))].text,
 		      options: this.settingsDef.callSave,
@@ -142,7 +145,7 @@ export class SettingsComponent implements OnInit,  OnDestroy {
 		  },
 		  {
 		      type: 0,
-		      disabled: true,
+		      disabled: false,
 		      optionName: 'Ограничение контактов',
 		      value: this.settingsDef.contactRestriction[parseInt(window.localStorage.getItem('contactRestriction'))].text,
 		      options: this.settingsDef.contactRestriction,
@@ -185,7 +188,7 @@ export class SettingsComponent implements OnInit,  OnDestroy {
 		      }
 		  },
 		  {
-		      type: 4, optionName: 'Настройка SMS', icon: 'outgoing', text: 'Настройка SMS', disabled : false ,  listener: () => {
+		      type: 4, optionName: 'Настройка SMS', icon: 'outgoing', text: 'Настройка SMS', disabled : new BehaviorSubject(!!parseInt(window.localStorage.getItem('callModel'))) ,  listener: () => {
 			this.router.navigate(['application','main','sms']).catch(err => console.log(err));
 		      }
 		  },

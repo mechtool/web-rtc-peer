@@ -27,9 +27,9 @@ export class AppContextService {
     //аппаратные средства : видеокамера, микрофон, динамики
     public hardware : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
     //Коллекция входящих сообщений, получаемая с сервера при старте приложения
-    public innerMessages : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+    public incomingMessages : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
     //Коллекция исходящих сообщений, получаемая с сервера при старте приложения
-    public outboxMessages : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+    public outgoingMessages : BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
     //Пользователь приложения (реактивная форма)
     public user : BehaviorSubject< any > = new BehaviorSubject(new Contact({name : 'Unknown'}));
     // Пользователь приложения (не реактивная форма)

@@ -47,6 +47,7 @@ export class WebRtcService implements OnDestroy{
 	  uid : descriptor.uid,
 	  desc : descriptor,
 	  sender : descriptor.sender,
+	  messageUrl : '/web-rtc/offers/explicit/'+ this.appContext.appUser.uid +'/'+ descriptor.messId,
 	  receivers : new BehaviorSubject(descriptor.receivers),
       });
       this.appContext.webRtcContexts.addContext(webRtcContext);
@@ -89,6 +90,10 @@ export class WebRtcService implements OnDestroy{
 		   vc.stream.value && vc.stream.value.getTracks().forEach(track => track.stop());
 		   webRtcConnectionContext.pcConnection && webRtcConnectionContext.pcConnection.destroy();
 		   webRtcContext.videoCollection.splice(i, 1);
+		   //Очистить все таймауты (На тот случай, если пользователь запустил соединение
+		   // и тут же его отменил, что бы после отмены соединения не проверялось предложение на
+		   // предмет состояния вызова)
+		   WebRtcService.clearContextTimeouts(webRtcConnectionContext);
 	       }
 	       //Идентификатор контакта определен - прервать цикл на удалении только одного соединения
 	      if(exactly) break;
@@ -146,7 +151,6 @@ export class WebRtcService implements OnDestroy{
 	    //Снятие пульсации
 	    local.className.pulse = false;
 	    //todo Можно останавливать звуковой файл вызова.
-	    
 	}
     }
   
@@ -177,10 +181,10 @@ export class WebRtcService implements OnDestroy{
 	    offer = webRtcConnectionContext.descriptor;
 	//Если нужно дублировать вызов отправкой оповещения - запускаем оповещение ,
 	//иначе, проверяем находиться ли пользователь в сети, и если нет, то запускаем оповещение
-	if(JSON.parse(window.localStorage.getItem('duplicateCall'))) send(false);
+	if(JSON.parse(window.localStorage.getItem('duplicateCall'))) return send(false);
 	else{
-	    this.database.getUserOnline(offer.contact.uid).then(onlineSnap =>{
-		send.bind(this, onlineSnap.val())();
+	    return this.database.getUserOnline(offer.contact.uid).then(onlineSnap =>{
+		return send.bind(this, onlineSnap.val())();
 	    })
 	}
 	
@@ -189,7 +193,7 @@ export class WebRtcService implements OnDestroy{
 	    if(!online){
 	        let contact = offer.contact;
 	        switch (window.localStorage.getItem('callModel')) {
-		    case '0' : { //зежим отправки sms
+		    case '0' : { //режим отправки sms
 		        // Если контакт присутствует в списке контактов пользователя
 			that.appContext.contacts.value.some(cont => cont.uid === contact.uid) ? that.pushNotificationService.sendNotification(offer) : that.sms.sendSms(offer);
 		    	}
@@ -225,7 +229,11 @@ export class WebRtcService implements OnDestroy{
 				that.database.setDescriptorOptions({descriptor : offer, data : {action : 'ignored', active : false}});
 				//Изменить значение свойства action в дескрипторе
 				offer.action = 'ignored';
-				text = 'Вызов пропущен контактом.'
+				text = 'Вызов пропущен контактом.' ;
+				//Пользователь  не принял предложение - записываем это в область входящих сообщений
+				that.database.changeMessage('/messages/incoming/'+ offer.contact.uid +'/'+ offer.wid + '/action', offer.action) ;
+				//Пользователь  не принял предложение - записываем это в область исходящих сообщений
+				that.database.changeMessage('/messages/outgoing/'+ offer.sender.uid +'/'+ offer.wid + '/actions/'+ offer.contact.uid, offer.action) ;
 			    }
 			    else if(/denied/.test(action)) {
 				text = 'Вызов прерван контактом.';
@@ -235,6 +243,7 @@ export class WebRtcService implements OnDestroy{
 				text = 'Вызов принят контактом.' ;
 				offer.action = 'accepted';
 			    }
+			    
 			    //Установка уведомление для страницы уведомлений
 			    that.setAnnouncement(new PopupContext({
 				desc : offer,

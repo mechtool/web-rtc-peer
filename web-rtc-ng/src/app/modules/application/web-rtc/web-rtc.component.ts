@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnDestroy, OnInit} from '@angular/core';
 import {AppContextService} from "../../../services/app-context.service";
 import {NavigationStart, Router, RouterEvent} from "@angular/router";
 import {filter} from "rxjs/operators";
-import {Answer, Candidate, Descriptor, Offer, VideoContext, WebRtcConnectionContext} from "../../../Classes/Classes";
+import {Answer, Candidate, Offer, VideoContext, WebRtcConnectionContext} from "../../../Classes/Classes";
 import {BehaviorSubject, Subject} from "rxjs";
 import {WebRtcService} from "../../../services/web-rtc.service";
 import {DatabaseService} from "../../../services/database.service";
@@ -84,8 +84,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
           if(/answers|offers\/implicit/.test(desc.type)){
 	     that.database.sendDescriptor(desc);
 	 }else {
-	     that.webRtcService.sendOffer(webRtcConnectionContext) ;
-	     that.database.sendOutboxMessage(that.appContext.appUser.uid, {date : Date.now(), to : desc.contact.uid,  messId : desc.messId});
+	     that.webRtcService.sendOffer(webRtcConnectionContext);
 	 }
 	 if(desc.type.indexOf('offers') > -1){
 	     that.setAnswerListener(webRtcConnectionContext);
@@ -252,6 +251,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 				  /answers|offers\/implicit/.test(desc.type) && this.database.sendDescriptor(desc).then(()=> {
 				      console.log('Сборка кандидатов завершена. Кандидаты отправлены.') ;
 				  }).catch(this.onError);
+				  //Отправка явного дескриптора
 				  /offers\/explicit/.test(desc.type) && this.webRtcService.sendOffer(webRtcConnectionContext);
 				  //Установка обработчика приема ответа, если отправлен дескриптор предложения
 				  desc.type.indexOf('offers') > -1 && this.setAnswerListener(webRtcConnectionContext);
@@ -315,7 +315,15 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 	  this.database.deleteDescriptor({descriptor : desc}).then(()=>{}).catch(err =>  this.onError(err));
       }else{
           //Снятие признака активности принятого предложения
-	  this.database.setDescriptorOptions({descriptor: desc, data : {active: false, action: 'accepted'}}).then(res => {}).catch(err => this.onError(err));
+	  this.database.setDescriptorOptions({descriptor: desc, data : {active: false, action: 'accepted'}}).then(res => {
+	  }).catch(err => this.onError(err));
+	  //Если принимается явное предложение, создаем сообщение в области входящих сообщений
+	  if(desc.type === 'offers/explicit'){
+	      //Изменение входящего сообщения
+	      this.database.changeMessage('/messages/incoming/'+ this.appContext.appUser.uid +'/'+ desc.wid + '/action', 'accepted');
+	      //Пользователь  принял предложение - записываем это в область исходящих сообщений
+	      this.database.changeMessage('/messages/outgoing/'+ desc.sender.uid +'/'+ desc.wid + '/actions/'+ desc.contact.uid, 'accepted') ;
+	  }
       }
       /*          //Снятие признака активности принятого предложения/ответа
 	  this.database.setDescriptorOptions({descriptor: desc, data :  /answers/.test(desc.type) ? {active: false} : {active: false, action: 'accepted'}}).then(res => {}).catch(err => this.onError(err));

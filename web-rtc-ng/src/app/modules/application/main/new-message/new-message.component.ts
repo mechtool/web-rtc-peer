@@ -6,6 +6,8 @@ import {ApplicationComponent} from "../../application.component";
 import {ColorThemeService} from "../../../../services/color-theme.service";
 import {Router} from "@angular/router";
 import {WebRtcService} from "../../../../services/web-rtc.service";
+import {DatabaseService} from "../../../../services/database.service";
+let uuid = require('uuid/v1');
 
 @Component({
   selector: 'app-new-message',
@@ -30,6 +32,7 @@ export class NewMessageComponent implements OnInit {
 	public applicationComponent : ApplicationComponent,
 	public webRtcService : WebRtcService,
 	public colorThemeService : ColorThemeService,
+	public database : DatabaseService,
 	public router : Router,
     ) {}
     
@@ -76,7 +79,12 @@ export class NewMessageComponent implements OnInit {
     
     onStartCall(){
 	//todo Проверить длинну коллекции контекстов и при необходимости удалить имеющийся
-	this.webRtcService.startWebRtc({uid : this.appContext.appUser.uid, receivers : this.messageContacts.value, sender : this.appContext.appUser}) ;
+	let wid = uuid();
+	this.webRtcService.startWebRtc({uid : this.appContext.appUser.uid, receivers : this.messageContacts.value, wid : wid, sender : this.appContext.appUser, messageUrl : '/web-rtc/offers/outbox/' + this.appContext.appUser.uid +'/'+ wid}).then(res => {
+	    //todo messages
+	    this.database.sendOutgoingMessage({type : 'outgoing', path : '/messages/outgoing/'+ this.appContext.appUser.uid +'/'+ wid, sender :  this.appContext.appUser , date : Date.now(), wid : wid, receivers : this.messageContacts.value, messId : uuid()});
+	    
+	}) ;
     }
     
     onDeleteItems(){
