@@ -134,16 +134,13 @@ export class DatabaseService implements OnDestroy{
 	//Удаление или запись новых или измененных
 	return this.database.ref(options.contactURL).update(options.value);
     }
-
-    sendRecordedStream(opts : {options : any, messageUrl : string, blob : Blob}){
     
-    }
     sendMessage(mess){
 	this.database.ref(mess.path).set(mess);
     }
     
-    changeMessage(path, date){
-        this.database.ref(path).update(date);
+    changeMessage(path, data){
+        this.database.ref(path).update(data);
     }
     
     subscribeIncomingMessages(): Observable<any>{

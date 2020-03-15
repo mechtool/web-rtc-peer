@@ -15,7 +15,7 @@
 	</mat-toolbar>
 	<div class="main-video-container">
 		<mat-spinner *ngIf="!this.videoContext.className.active"></mat-spinner>
-		<video #videoElement class="video-element" (loadeddata)="onLoadedData()" [ngClass]="videoContext.className" (ended)="onEnded()" [srcObject]="videoContext.stream | async"  autoplay playsinline ></video>
+		<video #videoElement class="video-element" (loadeddata)="onLoadedData(videoElement)" [ngClass]="videoContext.className" (ended)="onEnded()" [srcObject]="videoContext.stream | async"  autoplay playsinline ></video>
 	</div>
 	<mat-toolbar class="bottom-toolbar" [ngClass]="videoContext.className" *ngIf="this.toolbarVisibility">
 		<div class="bottom-peer-block" *ngIf="!videoContext.local">

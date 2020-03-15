@@ -80,11 +80,18 @@ export class NewMessageComponent implements OnInit {
     onStartCall(){
 	//todo Проверить длинну коллекции контекстов и при необходимости удалить имеющийся
 	let wid = uuid();
-	this.webRtcService.startWebRtc({uid : this.appContext.appUser.uid, receivers : this.messageContacts.value, wid : wid, sender : this.appContext.appUser, messageUrl : '/messages/'+ this.appContext.appUser.uid +'/'+ wid}).then(res => {
-	let outgoing = {type : 'outgoing', path : '/messages/'+ this.appContext.appUser.uid +'/'+ wid, sender :  this.appContext.appUser , date : Date.now(), wid : wid, receivers : this.messageContacts.value, messId : uuid()},
+	this.webRtcService.startWebRtc(
+	    {
+		uid : this.appContext.appUser.uid,
+		receivers : this.messageContacts.value,
+		wid : wid,
+		sender : this.appContext.appUser,
+		messageUrl : '/messages/'+ this.appContext.appUser.uid +'/'+ wid
+	    }).then(res => {
+	let outgoing = {type : 'outgoing', path : '/messages/'+ this.appContext.appUser.uid +'/'+ wid, sender :  this.appContext.appUser , date : Date.now(), wid : wid, receivers : this.messageContacts.value, messId : uuid(), metadata : {[this.appContext.appUser.uid] : {visual : {[Date.now()] : this.appContext.localVideoAudio}}}},
 	    receivers = outgoing.receivers;
 	[outgoing].concat(receivers.map((cont) => {
-		return {type : 'incoming', path : '/messages/'+ cont.uid +'/'+ outgoing.wid, sender :  outgoing.sender , messId : uuid(), receivers : receivers, date : outgoing.date, wid : outgoing.wid, contact : cont, action : 'offered'}})).forEach(m =>
+		return {type : 'incoming', path : '/messages/'+ cont.uid +'/'+ outgoing.wid, sender :  outgoing.sender , messId : uuid(), receivers : receivers, date : outgoing.date, wid : outgoing.wid, contact : cont, action : 'offered', metadata : {} }})).forEach(m =>
 	    this.database.sendMessage(m)) ;
     	})
     }

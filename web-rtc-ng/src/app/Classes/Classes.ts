@@ -139,7 +139,7 @@ export class Message  {
     constructor(message){
 	this.date = message.date;
 	this.actions = message.action || {};
-	this.metadata = message.metadata || {} ;
+	this.metadata = message.metadata || '' ;
 	this.messId = message.messId;
 	this.sender = message.sender;
 	this.receivers = message.receivers;
@@ -291,6 +291,7 @@ export class VideoContext{
     public local : boolean ;
     public dataChannel : any;
     public settings : any;
+    public videoElement  : any;
     public  messageUrl : string;
     
     constructor(options){
