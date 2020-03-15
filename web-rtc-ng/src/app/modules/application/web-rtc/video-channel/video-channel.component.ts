@@ -4,6 +4,7 @@ import {AppContextService} from "../../../../services/app-context.service";
 import {WebRtcService} from "../../../../services/web-rtc.service";
 import {StatusColorsService} from "../../../../services/status-colors.service";
 import {WebRtcContextComponent} from "../web-rtc-context/web-rtc-context.component";
+import {StreamRecorderService} from "../../../../services/stream-recorder.service";
 
 @Component({
   selector: 'app-video-channel',
@@ -23,6 +24,7 @@ export class VideoChannelComponent implements OnInit, OnDestroy {
       public webRtcService : WebRtcService,
       public statusColor : StatusColorsService,
       public changeRef : ChangeDetectorRef,
+      public streamRecorderService : StreamRecorderService,
       public webRtcContext : WebRtcContextComponent) {
   }
 
@@ -74,7 +76,6 @@ export class VideoChannelComponent implements OnInit, OnDestroy {
 	}
 	//Отправить данные об изменении значений настроек всем удаленным каналам
 	if(message) {
-	    //todo сделать это свойство реактивным для передачи настроек локального контекста всем удаленным контекстам
 	    this.appContext.localVideoAudio = message;
 	    this.webRtcService.sendDataMessages(this.videoContext.wid, this.appContext.appUser.uid, message) ;
 	}
@@ -100,11 +101,17 @@ export class VideoChannelComponent implements OnInit, OnDestroy {
     onLoadedData(){
       //Делаем текущий контекст активным
 	this.videoContext.className.active = true;
+	//Старт записи активного потока, если установлены настройки сохранения вызова
+	parseInt(window.localStorage.getItem('callSave')) === 1 && this.streamRecorderService.startRecodeStream({uid : this.videoContext.contact.value.uid, mediaRecorders : this.webRtcContext.mediaRecorders, stream : this.videoContext.stream.value, local : this.videoContext.local, messageUrl : this.videoContext.messageUrl});
+	//Если запущен не локальный видеоконтекст - установить классы локальному контексту, для принятия локальных размеров
 	this.videoContext.local || this.webRtcService.checkVideoContexts(this.videoContext);
     }
     onEnded(){
       //Делаем текущей контекст не активный
 	this.videoContext.className.active = false;
+	//Остановка записи активного потока, если она производилась
+	let recorderStream = this.streamRecorderService[this.videoContext.contact.value.uid];
+	recorderStream && recorderStream.mediaRecorder.stop();
 	//Проверяем количество активных контекстов
 	this.webRtcService.checkVideoContexts(this.videoContext);
     }

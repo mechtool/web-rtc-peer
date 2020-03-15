@@ -134,16 +134,11 @@ export class DatabaseService implements OnDestroy{
 	//Удаление или запись новых или измененных
 	return this.database.ref(options.contactURL).update(options.value);
     }
-    sendOutgoingMessage(mess){
-        //Для каждого контакта создается входящее сообщение, которое будет видно ему
-	//и которое он сможет удалить
-        mess.receivers.forEach(cont => {
-            this.sendIncomingMessage({type : 'incoming', path : '/messages/incoming/'+ cont.uid +'/'+ mess.wid, sender :  mess.sender , messId : uuid(), receivers : mess.receivers, date : mess.date, wid : mess.wid, contact : cont, action : 'offered'})
-	}) ;
-       this.database.ref(mess.path).set(mess);
-    }
+
+    sendRecordedStream(opts : {options : any, messageUrl : string, blob : Blob}){
     
-    sendIncomingMessage(mess){
+    }
+    sendMessage(mess){
 	this.database.ref(mess.path).set(mess);
     }
     
@@ -153,7 +148,7 @@ export class DatabaseService implements OnDestroy{
     
     subscribeIncomingMessages(): Observable<any>{
 	return new Observable(observer => {
-	    this.database.ref( '/messages/incoming/'+ this.appContext.appUser.uid).orderByChild('date').on('value', messages => {
+	    this.database.ref( '/messages/'+ this.appContext.appUser.uid).orderByChild('type').equalTo('incoming').on('value', messages => {
 		let val : any =  messages.val();
 		if(val){
 		    observer.next(Object.values(val).sort((a :any, b : any)=> a.date - b.date ).reverse());
@@ -164,7 +159,7 @@ export class DatabaseService implements OnDestroy{
     
     subscribeOutgoingMessages(): Observable<any>{
 	return new Observable(observer => {
-	    this.database.ref('/messages/outgoing/' + this.appContext.appUser.uid).on('value', messages => {
+	    this.database.ref('/messages/' + this.appContext.appUser.uid).orderByChild('type').equalTo('outgoing').on('value', messages => {
 	        let val : any =  messages.val();
 	        if(val){
 	            observer.next(Object.values(val).sort((a :any, b : any)=> a.date - b.date ).reverse());

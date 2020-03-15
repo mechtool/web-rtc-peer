@@ -4,7 +4,7 @@ import {isPlatformBrowser} from "@angular/common";
 import {ColorThemeService} from "../../../../../services/color-theme.service";
 import {BehaviorSubject} from "rxjs";
 import {DatabaseService} from "../../../../../services/database.service";
-import { Offer} from "../../../../../Classes/Classes";
+import {Message, Offer} from "../../../../../Classes/Classes";
 
 @Component({
   selector: 'app-messages',
@@ -38,8 +38,7 @@ export class MessagesComponent implements OnInit {
 	    value = this.activeMessages.value,
 	    target = prop.event.currentTarget;
 	target.classList.toggle('active');
-	target.style.backgroundColor = (active = target.classList.contains('active')) ?
-	    this.colorThemeService.getThemeColor('highlight')
+	target.style.backgroundColor = (active = target.classList.contains('active')) ? this.colorThemeService.getThemeColor('highlight')
 	: this.getNeededColor(prop.index);
 	if(active) value.push(prop.message);
 	else{
@@ -72,10 +71,9 @@ export class MessagesComponent implements OnInit {
     
     }
     onDeleteMessage(index){
-        this.activeMessages.value.forEach((mess : Offer) => {
-	    mess.sourceUrl && this.database.storage.ref(mess.sourceUrl).delete();
+        this.activeMessages.value.forEach((mess : Message) => {
 	    //Удаление из коллекции outbox
-	    this.database.database.ref('/messages/outgoing/' + this.appContext.appUser.uid + '/'+ mess.wid).set(null);
+	    this.database.database.ref(mess.path).set(null);
 	});
         //Отчистка активных сообщений
 	this.activeMessages.next([]) ;

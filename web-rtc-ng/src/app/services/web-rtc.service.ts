@@ -47,7 +47,6 @@ export class WebRtcService implements OnDestroy{
 	  uid : descriptor.uid,
 	  desc : descriptor,
 	  sender : descriptor.sender,
-	  messageUrl : '/web-rtc/offers/explicit/'+ this.appContext.appUser.uid +'/'+ descriptor.messId,
 	  receivers : new BehaviorSubject(descriptor.receivers),
       });
       this.appContext.webRtcContexts.addContext(webRtcContext);

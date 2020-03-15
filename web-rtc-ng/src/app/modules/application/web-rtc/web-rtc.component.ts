@@ -144,6 +144,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 		      wid: webRtcContext.wid,
 		      contact: new BehaviorSubject(local ? this.appContext.appUser : contact),
 		      channelClass : local ? 'local' : "remote",
+		      messageUrl : webRtcContext.desc.messageUrl,
 		      className: local ? {
 			  [contact.uid + ' local video-context']: true,
 			  active: false,
@@ -185,6 +186,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 				  contact: contact,
 				  uid: this.appContext.appUser.uid,
 				  wid: webRtcContext.wid,
+				  messageUrl : (webRtcContext.uid === this.appContext.appUser.uid ? '/messages/'+ contact.uid +'/'+ webRtcContext.wid : ''),
 				  receivers: initiator ? webRtcContext.receivers.value : [contact],
 				  sender: this.appContext.appUser,
 				  stun: initiator ? window.localStorage.getItem('stunTurn') : webRtcContext.desc.stun,
@@ -320,9 +322,15 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 	  //Если принимается явное предложение, создаем сообщение в области входящих сообщений
 	  if(desc.type === 'offers/explicit'){
 	      //Изменение входящего сообщения
-	      this.database.changeMessage('/messages/incoming/'+ this.appContext.appUser.uid +'/'+ desc.wid, {action :'accepted'});
+	      [  //Изменение сообщения, предназначенного для текущего пользователя
+		  {path : '/messages/'+ this.appContext.appUser.uid +'/'+ desc.wid, data : {action :'accepted'}},
+		  //Изменение сообщения инициализатора
+		  {path : '/messages/'+ desc.sender.uid +'/'+ desc.wid + '/actions', data : {[desc.contact.uid] :'accepted'}}
+	          ].forEach(mess => {
 	      //Пользователь  принял предложение - записываем это в область исходящих сообщений
-	      this.database.changeMessage('/messages/outgoing/'+ desc.sender.uid +'/'+ desc.wid + '/actions', {[desc.contact.uid] :'accepted'}) ;
+	      this.database.changeMessage(mess.path, mess.data);
+	      })
+
 	  }
       }
       /*          //Снятие признака активности принятого предложения/ответа

@@ -22,6 +22,7 @@ import {WebRtcService} from "./services/web-rtc.service";
 import {GlobalErrorHandler} from "./services/error-handler.service";
 import {DatePipe} from "@angular/common";
 import {SmsService} from "./services/sms.service";
+import {StreamRecorderService} from "./services/stream-recorder.service";
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import {SmsService} from "./services/sms.service";
       WebRtcService,
       DatePipe,
       SmsService,
+      StreamRecorderService,
     
     {provide: ErrorHandler, useClass: GlobalErrorHandler},
   ],

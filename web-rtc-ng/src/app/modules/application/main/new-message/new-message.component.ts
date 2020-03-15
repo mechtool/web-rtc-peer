@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {BehaviorSubject} from "rxjs";
-import {Contact, WebRtcContext} from "../../../../Classes/Classes";
+import {Contact, Message, WebRtcContext} from "../../../../Classes/Classes";
 import {AppContextService} from "../../../../services/app-context.service";
 import {ApplicationComponent} from "../../application.component";
 import {ColorThemeService} from "../../../../services/color-theme.service";
@@ -80,11 +80,13 @@ export class NewMessageComponent implements OnInit {
     onStartCall(){
 	//todo Проверить длинну коллекции контекстов и при необходимости удалить имеющийся
 	let wid = uuid();
-	this.webRtcService.startWebRtc({uid : this.appContext.appUser.uid, receivers : this.messageContacts.value, wid : wid, sender : this.appContext.appUser, messageUrl : '/web-rtc/offers/outbox/' + this.appContext.appUser.uid +'/'+ wid}).then(res => {
-	    //todo messages
-	    this.database.sendOutgoingMessage({type : 'outgoing', path : '/messages/outgoing/'+ this.appContext.appUser.uid +'/'+ wid, sender :  this.appContext.appUser , date : Date.now(), wid : wid, receivers : this.messageContacts.value, messId : uuid()});
-	    
-	}) ;
+	this.webRtcService.startWebRtc({uid : this.appContext.appUser.uid, receivers : this.messageContacts.value, wid : wid, sender : this.appContext.appUser, messageUrl : '/messages/'+ this.appContext.appUser.uid +'/'+ wid}).then(res => {
+	let outgoing = {type : 'outgoing', path : '/messages/'+ this.appContext.appUser.uid +'/'+ wid, sender :  this.appContext.appUser , date : Date.now(), wid : wid, receivers : this.messageContacts.value, messId : uuid()},
+	    receivers = outgoing.receivers;
+	[outgoing].concat(receivers.map((cont) => {
+		return {type : 'incoming', path : '/messages/'+ cont.uid +'/'+ outgoing.wid, sender :  outgoing.sender , messId : uuid(), receivers : receivers, date : outgoing.date, wid : outgoing.wid, contact : cont, action : 'offered'}})).forEach(m =>
+	    this.database.sendMessage(m)) ;
+    	})
     }
     
     onDeleteItems(){

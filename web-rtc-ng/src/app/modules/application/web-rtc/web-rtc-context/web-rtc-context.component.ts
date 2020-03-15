@@ -8,6 +8,7 @@ import {WebRtcContext} from "../../../../Classes/Classes";
 })
 export class WebRtcContextComponent implements OnInit {
 
+    public mediaRecorders = {};
     public localToolbar = false;
     @Input() public context : WebRtcContext;
     

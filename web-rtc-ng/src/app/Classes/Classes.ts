@@ -95,7 +95,7 @@ export class Offer extends Descriptor{
     public stun : string;
     public action : string;
     public descId : string;
-    public sourceUrl : string ;
+    public messageUrl : string ;
     
     constructor(offer){
 	super(offer) ;
@@ -103,7 +103,7 @@ export class Offer extends Descriptor{
 	this.type = offer.type || '' ;   //explicit/implicit
 	this.stun = offer.stun || '';
 	this.descId = offer.descId;
-	this.sourceUrl = offer.sourceUrl || '';
+	this.messageUrl = offer.messageUrl || '';
 	this.action = offer.action || 'offered'; //denied-отказано /ignored- не принято/offered- предложено/accepted - принят
     }
 }
@@ -126,25 +126,25 @@ export class Answer extends Descriptor{
 export class Message  {
     
     date : number = Date.now();
-    messageType  : string  = '';// video/ text/ audio
-    ext : string = ''; //расширение файла сообщения
-    sourceUrl : string = '';//адрес ресурса если он кудато записан
-    action : string = ''; //результат действия
-    text : string = '';
+    type  : string  = '';
+    actions : any;
     messId  : string = '';
     sender : any;
     receivers : any;
+    path : string;
+    wid : string;
+    metadata : any;
+    contact : Contact;
     
     constructor(message){
 	this.date = message.date;
-	this.messageType = message.messageType;
-	this.ext = message.ext;
-	this.sourceUrl = message.sourceUrl;
-	this.action = message.action;
+	this.actions = message.action || {};
+	this.metadata = message.metadata || {} ;
 	this.messId = message.messId;
 	this.sender = message.sender;
-	this.text = message.text;
 	this.receivers = message.receivers;
+	this.wid = message.wid || '';
+	this.contact =  message.contact || undefined;
     }
 }
 export class PopupContext{
@@ -268,7 +268,6 @@ export class WebRtcContext{
     //Локальный поток для установки его в peerConnection
     public localStream ? : any;
     public extra ?  : any;
-    public messageUrl : string;
     
     constructor(options){
 	
@@ -280,7 +279,6 @@ export class WebRtcContext{
 	this.desc = options.desc || undefined;
 	this.localStream = options.localStream || undefined;
 	this.extra = options.extra || {};
-	this.messageUrl = options.messageUrl || '';
     }
 }
 
@@ -293,6 +291,7 @@ export class VideoContext{
     public local : boolean ;
     public dataChannel : any;
     public settings : any;
+    public  messageUrl : string;
     
     constructor(options){
 	this.wid = options.wid;
@@ -302,6 +301,7 @@ export class VideoContext{
 	this.className = options.className;
 	this.local = options.local || false;
 	this.dataChannel = options.dataChannel || undefined;
+	this. messageUrl = options. messageUrl || '' ;
 	this.settings = options.settings || {type : 'settings', video : 1, audio : 1};
     }
 }
