@@ -230,9 +230,9 @@ export class WebRtcService implements OnDestroy{
 				offer.action = 'ignored';
 				text = 'Вызов пропущен контактом.' ;
 				//Пользователь  не принял предложение - записываем это в область входящих сообщений
-				that.database.changeMessage('/messages/'+ offer.contact.uid +'/'+ offer.wid + '/actions' , {[offer.contact.uid] : offer.action}) ;
+				that.database.changeMessage('/messages/'+ offer.contact.uid +'/'+ offer.wid + '/actions' + offer.contact.uid , offer.action) ;
 				//Пользователь  не принял предложение - записываем это в область исходящих сообщений
-				that.database.changeMessage('/messages/'+ offer.sender.uid +'/'+ offer.wid + '/actions', {[offer.contact.uid] : offer.action}) ;
+				that.database.changeMessage('/messages/'+ offer.sender.uid +'/'+ offer.wid + '/actions' + offer.contact.uid, offer.action) ;
 			    }
 			    else if(/denied/.test(action)) {
 				text = 'Вызов прерван контактом.';
