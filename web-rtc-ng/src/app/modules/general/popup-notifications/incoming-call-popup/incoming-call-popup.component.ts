@@ -36,7 +36,7 @@ export class IncomingCallPopupComponent implements OnInit {
 	this.context.desc && this.database.setDescriptorOptions({descriptor : this.context.desc, data : {active : false,  action : action}} ) ;
 	//todo
 	//Пользователь явно/не явно не принял предложение - записываем это в область входящих сообщений
-	this.database.changeMessage('/messages/'+ this.appContext.appUser.uid +'/'+ this.context.desc.wid, {action : action}) ;
+	this.database.changeMessage('/messages/'+ this.appContext.appUser.uid +'/'+ this.context.desc.wid + '/actions/'+ this.appContext.appUser.uid, action) ;
 	this.popupComponent.onCancel(this.context);
     }
     
