@@ -129,7 +129,10 @@ export class VideoChannelComponent implements OnInit, OnDestroy {
     stopRecording(){
 	//Остановка записи активного потока, если она производилась
 	let recorderStream = this.webRtcContext.mediaRecorders[this.videoContext.contact.value.uid];
-	recorderStream && recorderStream.mediaRecorder.stop();
+	if(recorderStream){
+	    recorderStream.mediaRecorder.stop();
+	    delete this.webRtcContext.mediaRecorders[this.videoContext.contact.value.uid];
+	}
     }
     
     onEnded(){
