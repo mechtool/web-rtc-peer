@@ -106,8 +106,8 @@ export class AuthFirebaseService {
 	});
 	//Получение всех входящих сообщений пользователя
 	this.database.subscribeIncomingMessages().subscribe((mess : any[]) => {
-	    let accepted = mess.filter(m => /accepted/.test(m.action)),
-		ignored = mess.filter(m => /ignored|denied|offered/.test(m.action));
+	    let accepted = mess.filter(m => /accepted/.test(m.actions[this.appContext.appUser.uid] || '')),
+		ignored = mess.filter(m => /ignored|denied|offered/.test(m.actions[this.appContext.appUser.uid] || ''));
 	    
 	    this.appContext.incomingAcceptedMessages.next(accepted);
 	    this.appContext.incomingMissingMessages.next(ignored);

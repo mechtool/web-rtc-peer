@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ErrorHandler } from '@angular/core';
- //Сервис обработки ошибок недоступности блоков кода для лэша приложения.
+ //Сервис обработки ошибок недоступности блоков кода для кэша приложения.
 //Подключение сервиса находиться в файле app.module :  providers: [{provide: ErrorHandler, useClass: GlobalErrorHandler}]
 //ChunkLoadError: Loading chunk ... failed
 @Injectable()
