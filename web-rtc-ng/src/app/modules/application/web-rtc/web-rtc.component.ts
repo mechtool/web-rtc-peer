@@ -325,7 +325,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 	      [  //Изменение сообщения, предназначенного для текущего пользователя
 		  {path : '/messages/'+ this.appContext.appUser.uid +'/'+ desc.wid + '/actions' + desc.contact.uid, data : 'accepted'},
 		  //Изменение сообщения инициализатора
-		  {path : '/messages/'+ desc.sender.uid +'/'+ desc.wid + '/actions'+ desc.contact.uid, data : 'accepted'}
+		  {path : '/messages/'+ desc.sender.uid +'/'+ desc.wid + '/actions/'+ desc.contact.uid, data : 'accepted'}
 	          ].forEach(mess => {
 	      //Пользователь  принял предложение - записываем это в область исходящих сообщений
 	      this.database.changeMessage(mess.path, mess.data);
