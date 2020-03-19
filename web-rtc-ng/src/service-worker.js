@@ -1,5 +1,5 @@
 importScripts('ngsw-worker.js');
-let version = '1.0.33';
+let version = '1.0.3';
 let channel = new BroadcastChannel('sw-messages');
 channel.addEventListener('message', event => {
 	if(event.data.type === 'version'){
