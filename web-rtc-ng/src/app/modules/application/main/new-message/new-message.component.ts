@@ -103,7 +103,7 @@ export class NewMessageComponent implements OnInit {
 		return res;
 	    })(),
 	    messId : uuid(),
-	    metadata : {[this.appContext.appUser.uid] : {visual : {[Date.now()] : this.appContext.localVideoAudio}}}},
+	    metadata : window.localStorage.getItem('callSave') === '1' ? {[this.appContext.appUser.uid] : {visual : {[Date.now()] : this.appContext.localVideoAudio}}} : {}},
 	    receivers = outgoing.receivers;
 	[outgoing].concat(receivers.map((cont) => {
 		return {
