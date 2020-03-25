@@ -60,7 +60,7 @@ export class WebRtcService implements OnDestroy{
       let desc = d.val();
       if(desc) {
           this.appContext.setPopups({
-	      type : true,
+	      add : true,
 	      popup : new PopupContext({
 		  type : 1,
 		  text : 'Входящий вызов.',
@@ -274,7 +274,7 @@ export class WebRtcService implements OnDestroy{
 		})){
 		    //Отправить оповещение пользователю о том, что ни один из контактов не
 		    //отвелил. Вызов оказался не принятым.
-		    that.appContext.setPopups({ type : true, popup : new PopupContext({
+		    that.appContext.setPopups({ add : true, popup : new PopupContext({
 			    type : 2,
 			    active : true,
 			    text : 'Контакты не ответили.',

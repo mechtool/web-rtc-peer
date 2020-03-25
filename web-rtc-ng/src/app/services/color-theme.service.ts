@@ -29,4 +29,31 @@ export class ColorThemeService {
         //Получения цвета приложения по имени свойства объекта цвета: backgroundColor , color , light
         return this.colorItems.filter(color => color.colorClass === this.appContext.appColorClass.value)[0][type];
     }
+    
+    getNeededColor(index){
+	return 0 === index % 2 ? this.getThemeColor('even') : this.getThemeColor('odd')
+    }
+    
+    onActiveRow(prop){
+	let target = prop.event.currentTarget,
+	    contactRestriction = window.localStorage.getItem('contactRestriction'); //0 - 1 ; 1 - auto
+	target.classList.toggle('active');
+	let active =  target.classList.contains('active');
+	if(active){
+	    //Если условия соблюдены
+	    if((contactRestriction == '0' && Object.keys(this.appContext.activeContacts).length < 1) || contactRestriction == '1'){
+	    }else{
+		document.querySelectorAll('div.table-contact').forEach((cont :HTMLElement, inx) => {
+		    cont.style.backgroundColor = this.getNeededColor(inx);
+		});
+		this.appContext.activeContacts = {};
+		//Выдать уведомление о невозможности добавления контакта
+		/*	      console.log('Невозможно добавить контакт. Превышает ограничение добавления контактов.')  ;
+			      return false;*/
+	    }
+	}
+	target.style.backgroundColor = active ? this.getThemeColor('highlight') : this.getNeededColor(prop.index);
+	
+	prop.activatedContact.emit({contact : prop.contact, add : active}) ;
+    }
 }

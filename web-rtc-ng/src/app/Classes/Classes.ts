@@ -130,7 +130,7 @@ export class Message  {
     actions : any;
     messId  : string = '';
     sender : any;
-    receivers : any;
+    receivers : any[];
     path : string;
     wid : string;
     metadata : any;

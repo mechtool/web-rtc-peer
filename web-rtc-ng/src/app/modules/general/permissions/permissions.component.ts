@@ -5,6 +5,7 @@ import {PushNotificationService} from "../../../services/push-notification.servi
 import {isPlatformBrowser, Location} from "@angular/common";
 import {AuthFirebaseService} from "../../../services/auth-firebase.service";
 import {AppContextService} from "../../../services/app-context.service";
+import {Contact} from "../../../Classes/Classes";
 
 @Component({
   selector: 'app-permissions',
@@ -47,7 +48,7 @@ export class PermissionsComponent implements OnInit, OnDestroy {
     }
     
     onClickOverlay($event){
-	 $event.target.classList.contains('permissions-container') && this.appContext.notifications.some(note => note.state === 'iconSelection') &&  (this.appContext.notifications = []);
+	 $event.target.classList.contains('permissions-container') && this.appContext.notifications.some(note => /iconSelection|sub-messages/.test(note.state)) &&  (this.appContext.notifications = []);
     }
     
     onChangeStatus(perm, event){
@@ -96,6 +97,15 @@ export class PermissionsComponent implements OnInit, OnDestroy {
     }
     
     onClickDenied(){}
+    
+    onActivatedContact(option : {contact : Contact, add : boolean}){
+	//При активации контакта, проверять ограничение на количество контактов
+	if(option.add) {
+	    //Добавить контакт
+	    this.appContext.activeContacts[option.contact.uid] = option.contact ;
+	}
+	else delete this.appContext.activeContacts[option.contact.uid];
+    }
     
     async onClickPermission(item){
 	

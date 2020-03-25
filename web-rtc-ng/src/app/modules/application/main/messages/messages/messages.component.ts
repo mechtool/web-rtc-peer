@@ -1,20 +1,24 @@
-import {Component, Inject, OnInit, PLATFORM_ID} from '@angular/core';
+import {Component, Inject, PLATFORM_ID} from '@angular/core';
 import {AppContextService} from "../../../../../services/app-context.service";
-import {isPlatformBrowser} from "@angular/common";
 import {ColorThemeService} from "../../../../../services/color-theme.service";
 import {BehaviorSubject} from "rxjs";
 import {DatabaseService} from "../../../../../services/database.service";
-import {Message, Offer} from "../../../../../Classes/Classes";
+import {Message} from "../../../../../Classes/Classes";
 
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.css']
 })
-export class MessagesComponent implements OnInit {
-
-    public buttons = [];
+export class MessagesComponent  {
+    
     public activeMessages = new BehaviorSubject([]);
+    public messageTabs = [
+	{label : 'Исходящие', className : 'outer', collection : this.appContext.outgoingMessages} ,
+	{label : 'Принятые', className : 'accepted', collection : this.appContext.incomingAcceptedMessages} ,
+	{label : 'Пропущенные', className : 'skipped', collection : this.appContext.incomingMissingMessages} ,
+    ];
+    
     
     constructor(
         public colorThemeService : ColorThemeService,
@@ -23,16 +27,7 @@ export class MessagesComponent implements OnInit {
 		@Inject(PLATFORM_ID) public platformId: Object
     ) { }
 
-  ngOnInit() {
-      if (isPlatformBrowser(this.platformId)) {
-	  this.buttons = [{icon : 'video', disabled : false},{icon : 'replay', disabled : false}, {icon : "base_clear", disabled : false}];
-	  this.activeMessages.subscribe(messages =>{
-	     this.buttons.forEach((button, inx )=> {
-	          button.disabled = inx < 2 ? messages.length !== 1 : !messages.length ;
-	     })
-	  })
-      }
-  }
+
     onClickMessage(prop){
 	let active,
 	    value = this.activeMessages.value,
@@ -63,13 +58,7 @@ export class MessagesComponent implements OnInit {
 	return 0 === index % 2 ? this.colorThemeService.getThemeColor('even') : this.colorThemeService.getThemeColor('odd')
     }
     
-    contactCall(){
     
-    }
-    
-    openMessage(){
-    
-    }
     onDeleteMessage(index){
         this.activeMessages.value.forEach((mess : Message) => {
 	    //Удаление из коллекции outbox

@@ -5,7 +5,7 @@ import { ApplicationRoutingModule } from './application-routing.module';
 import { ApplicationComponent } from './application.component';
 import {GeneralModule} from "../general/general.module";
 import {MaterialModule} from "../material/material.module";
-import {PopupNotificationsComponent} from "../general/popup-notifications/popup-notifications.component";
+import { VideoPlayerComponent } from './video-player/video-player.component';
 
 
 @NgModule({

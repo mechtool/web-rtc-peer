@@ -1,7 +1,7 @@
 import {ChangeDetectorRef, Inject, Injectable, PLATFORM_ID} from '@angular/core';
 import {BehaviorSubject, Subject} from "rxjs";
 import {isPlatformBrowser} from "@angular/common";
-import {AnnouncementContext, Contact, PopupContext, WebRtcContexts} from "../Classes/Classes";
+import {AnnouncementContext, Contact, Message, PopupContext, WebRtcContexts} from "../Classes/Classes";
 import { NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from "@angular/router";
 
 @Injectable({
@@ -42,6 +42,8 @@ export class AppContextService {
     public statusColor  : BehaviorSubject<string> = new BehaviorSubject<string>('#8d8d8d');
     //контакты помеченные пользователем как активные
     public activeContacts = {};
+    //Содержит сообщение для воспроизведения
+    public activeMessage : Message;
     //Баланс SMS пользователя
     public smsBalance = new BehaviorSubject(0);
     //Настройки только локального контекста для передачи удаленным контекстам
@@ -115,12 +117,12 @@ export class AppContextService {
 	});
     }
     
-    setPopups(option : {type : boolean , popup : PopupContext, index? : number}){
+    setPopups(option : {add : boolean , popup : PopupContext, index? : number}){
 	//true - добавить, false - удалить по индексу
 	//При установке оповещений нужно контролировать количество в коллекции, и если больше определенного
 	//значения (5), то у далять элементы коллекции С КОНЦА
-	let popups = this.popups.value;
-	option.type ? popups.unshift(option.popup) : popups.splice(option.index, 1) ;
+	let popups =  this.popups.value;
+	option.add ? popups.unshift(option.popup) : popups.splice(option.index, 1) ;
 	this.popups.next(popups.filter((popup, inx) => inx < 5));
     }
     

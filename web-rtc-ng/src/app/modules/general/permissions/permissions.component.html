@@ -30,6 +30,7 @@
 				</div>
 			</div>
 			<app-icons-selection *ngSwitchCase="'iconSelection'" [context]="item.context" ></app-icons-selection>
+			<app-sub-messages *ngSwitchCase="'sub-messages'" [context]="item.context" (activatedContact)="onActivatedContact($event)"></app-sub-messages>
 		</div>
 	</div>
 </div>

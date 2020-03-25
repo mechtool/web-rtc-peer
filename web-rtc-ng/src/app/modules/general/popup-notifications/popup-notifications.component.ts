@@ -36,7 +36,7 @@ export class PopupNotificationsComponent implements OnInit {
 	let index = this.appContext.popups.value.findIndex(incoming => incoming.uid === context.uid);
 	//Удаление входящего вызова из коллекции для удалении его с экрана пользователя
 	if(index > -1){
-	    this.appContext.setPopups({type : false, popup : undefined, index : index});
+	    this.appContext.setPopups({add : false, popup : undefined, index : index});
 	}
 	//Обновление интерфейса
 	this.appContext.appChangeRef.detectChanges();

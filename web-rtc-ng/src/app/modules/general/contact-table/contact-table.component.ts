@@ -11,11 +11,9 @@ import {AppContextService} from "../../../services/app-context.service";
 })
 export class ContactTableComponent {
     
-    public contactRestriction ;
     @Input() public context :  BehaviorSubject<Contact[]> ;
     @Output() public activatedContact : EventEmitter<any> = new EventEmitter<any>();
   constructor(
-      public appContext : AppContextService,
       public colorThemeService : ColorThemeService) {
   }
     
@@ -24,25 +22,7 @@ export class ContactTableComponent {
     }
     
     onClickTableRow($event, index, contact){
-      let target = $event.currentTarget;
-      this.contactRestriction = window.localStorage.getItem('contactRestriction'); //0 - 1 ; 1 - auto
-      target.classList.toggle('active');
-      let active =  target.classList.contains('active');
-      if(active){
-	  //Если условия соблюдены
-	  if((this.contactRestriction == '0' && Object.keys(this.appContext.activeContacts).length < 1) || this.contactRestriction == '1'){
-	  }else{
-	      document.querySelectorAll('div.table-contact').forEach((cont :HTMLElement, inx) => {
-	          cont.style.backgroundColor = this.getNeededColor(inx);
-	      });
-	      this.appContext.activeContacts = {};
-	      //Выдать уведомление о невозможности добавления контакта
-/*	      console.log('Невозможно добавить контакт. Превышает ограничение добавления контактов.')  ;
-	      return false;*/
-	  }
-      }
-	target.style.backgroundColor = active ? this.colorThemeService.getThemeColor('highlight') : this.getNeededColor(index);
-	this.activatedContact.emit({contact : contact, add : active}) ;
+      this.colorThemeService.onActiveRow({event : $event, index :index, contact :contact, activatedContact : this.activatedContact}) ;
     }
 
 }

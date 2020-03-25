@@ -64,7 +64,7 @@ export class SwUpdateService {
 	    extra : {timeout : false, icon : 'attention'}
 	});
 	this.appContext.setPopups({
-	    type: true,
+	    add : true,
 	    popup : popup
 	});
     }

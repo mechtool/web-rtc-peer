@@ -29,7 +29,8 @@
     width: 80%;
     max-width: 400px;
 }
-.permission-block.iconSelection{
+.permission-block.iconSelection,
+.permission-block.sub-messages{
     width: initial;
 }
 .permission-block:first-child{

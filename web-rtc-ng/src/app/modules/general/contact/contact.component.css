@@ -2,7 +2,9 @@
 :host-context(mat-option) .web-indicator,
 :host-context(.table-row) .web-indicator,
 :host-context(.container-setting) .web-indicator,
-:host-context(.incoming-call-body) .web-indicator{
+:host-context(.incoming-call-body) .web-indicator,
+:host-context(.sub-messages-container) .web-indicator,
+:host-context(.video-block-toolbar) .web-indicator{
     display: none;
 }
 :host-context(.video-context) .contact-name{
@@ -43,7 +45,8 @@
 
 @media (max-width: 400px) {
     :host-context(.main-toolbar) .contact-name,
-    :host-context(.top-toolbar) .contact-name{
+    :host-context(.top-toolbar) .contact-name,
+    :host-context(.video-block-toolbar) .contact-name{
          display: none;
     }
 }

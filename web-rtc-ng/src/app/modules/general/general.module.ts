@@ -16,7 +16,7 @@ import { IncomingCallPopupComponent } from './popup-notifications/incoming-call-
 import { UpdatePopupComponent } from './popup-notifications/update-popup/update-popup.component';
 import { OfflineComponent } from './offline/offline.component';
 import { OuterToolbarComponent } from './outer-toolbar/outer-toolbar.component';
-import {OutletContext} from "@angular/router";
+import {SubMessagesComponent} from "./sub-messages/sub-messages.component";
 
 @NgModule({
   declarations: [
@@ -33,6 +33,8 @@ import {OutletContext} from "@angular/router";
       UpdatePopupComponent,
       OfflineComponent,
       OuterToolbarComponent,
+      SubMessagesComponent,
+      
   ],
     exports: [
 	ColorThemeComponent,
@@ -46,6 +48,7 @@ import {OutletContext} from "@angular/router";
 	NoAnswerPopupComponent,
 	OfflineComponent,
 	OuterToolbarComponent,
+	SubMessagesComponent,
     ],
   imports: [
     CommonModule,
