@@ -9,7 +9,6 @@ import {DatabaseService} from "../../../services/database.service";
 import {StatusColorsService} from "../../../services/status-colors.service";
 declare var SimplePeer: import('simple-peer').SimplePeer;
 
-
 @Component({
   selector: 'app-web-rtc',
   templateUrl: './web-rtc.component.html',
