@@ -12,6 +12,7 @@ import {Message} from "../../../../../Classes/Classes";
 })
 export class MessagesComponent  {
     
+    public overlaySpinner = false;
     public activeMessages = new BehaviorSubject([]);
     public messageTabs = [
 	{label : 'Исходящие', className : 'outer', collection : this.appContext.outgoingMessages} ,
