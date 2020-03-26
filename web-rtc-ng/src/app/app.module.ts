@@ -23,6 +23,7 @@ import {GlobalErrorHandler} from "./services/error-handler.service";
 import {DatePipe} from "@angular/common";
 import {SmsService} from "./services/sms.service";
 import {StreamRecorderService} from "./services/stream-recorder.service";
+import {VideoPlayerResolverService} from "./services/video-player-resolver.service";
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import {StreamRecorderService} from "./services/stream-recorder.service";
       DatePipe,
       SmsService,
       StreamRecorderService,
+      VideoPlayerResolverService,
     
     {provide: ErrorHandler, useClass: GlobalErrorHandler},
   ],

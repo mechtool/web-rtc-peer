@@ -21,9 +21,7 @@ export class ApplicationComponent implements OnInit, OnDestroy {
       private route : ActivatedRoute){}
     
     ngOnInit() {
-	this.route.data.subscribe((data: { serverData: any[] }) => {
-	
-	});
+	this.route.data.subscribe((data: { serverData: any[] }) => {});
     }
     getState(outlet){
 	return outlet.activatedRouteData.type;

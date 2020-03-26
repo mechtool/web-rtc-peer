@@ -88,6 +88,7 @@ app.get('*.*', express.static(DIST_FOLDER, {
 		}
 	}
 }));
+
 //Управление данных для отправки sms сообщений
 app.post('/send/sms', (req, res)=>{
 	let body = req.body,
