@@ -62,8 +62,13 @@ export class MessagesComponent  {
     
     onDeleteMessage(index){
         this.activeMessages.value.forEach((mess : Message) => {
-	    //Удаление из коллекции outbox
-	    this.database.database.ref(mess.path).set(null);
+	    //Удаление из коллекции database
+	    this.database.database.ref(mess.path).set(null).then(()=>{
+		//удаление из storege
+		mess.metadata && Object.values(mess.metadata).forEach((meta : any) => {
+		    this.database.storage.ref(meta.storagePath).delete();
+		}) ;
+	    })
 	});
         //Отчистка активных сообщений
 	this.activeMessages.next([]) ;
