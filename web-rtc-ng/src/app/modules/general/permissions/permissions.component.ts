@@ -84,11 +84,10 @@ export class PermissionsComponent implements OnInit, OnDestroy {
     }
     
     ngOnInit() {
+        let that = this;
         //Установка заставки
-	this.subscriptions.push(this.appContext.checkPermissions.subscribe(res => {
-	     if(res){
-	         this.initialize();
-	     }
+	this.subscriptions.push(this.appContext.checkPermissions.subscribe(function(res)  {
+	  	res && that.initialize();
 	 }));
     }
     
