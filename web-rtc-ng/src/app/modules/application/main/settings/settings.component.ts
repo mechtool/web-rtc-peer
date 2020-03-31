@@ -37,7 +37,8 @@ export class SettingsComponent implements OnInit,  OnDestroy {
   }
   
   getHardware(type){
-      return this.appContext.hardware.value.filter(hard => {return type === hard.kind});
+      let f = this.appContext.hardware.value.filter(hard => {return type === hard.kind});
+      return f.length ? f : [JSON.parse(window.localStorage.getItem(type))];
   }
   
   ngOnInit(){
@@ -72,7 +73,7 @@ export class SettingsComponent implements OnInit,  OnDestroy {
 		  {
 		      type: 0,
 		      optionName: 'Аудио вход',
-		      options: this.getHardware('audioinput'),
+		      options: this.getHardware('audioinput') ,
 		      value: JSON.parse(window.localStorage.getItem('audioinput')).text,
 		      listener: (option) => {
 			  window.localStorage.setItem('audioinput', JSON.stringify(option));

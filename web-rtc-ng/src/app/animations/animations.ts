@@ -45,3 +45,4 @@ export const notificationAppearance = trigger('notificationAppearance', [
 	],  { optional: true })
     ])
 ])  ;
+

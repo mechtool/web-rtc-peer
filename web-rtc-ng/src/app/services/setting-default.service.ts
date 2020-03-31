@@ -61,9 +61,9 @@ export class SettingDefaultService {
 			return hard.kind === type ;
 		    })
 		})){
-		    videoinput || window.localStorage.setItem('videoinput', JSON.stringify(hardware.find(el => el.kind === 'videoinput')));
-		    audioinput  || window.localStorage.setItem('audioinput', JSON.stringify(hardware.find(el => el.kind === 'audioinput')));
-		    audiooutput || window.localStorage.setItem('audiooutput', JSON.stringify(hardware.find(el => el.kind === 'audiooutput')));
+		    videoinput || window.localStorage.setItem('videoinput', JSON.stringify(hardware.find(el => el.kind === 'videoinput') || {'text' : 'Нет данных', 'disabled' : true}));
+		    audioinput  || window.localStorage.setItem('audioinput', JSON.stringify(hardware.find(el => el.kind === 'audioinput') || {'text' : 'Нет данных', 'disabled' : true}));
+		    audiooutput || window.localStorage.setItem('audiooutput', JSON.stringify(hardware.find(el => el.kind === 'audiooutput')  || {'text' : 'Нет данных', 'disabled' : true}));
 		    
 		}else{
 		    //Выдать предупреждение о том, что нет аппаратного средства или средств
