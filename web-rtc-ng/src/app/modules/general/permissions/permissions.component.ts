@@ -25,7 +25,15 @@ export class PermissionsComponent implements OnInit, OnDestroy {
         public pushService : PushNotificationService,
         public location : Location,
         public changeRef : ChangeDetectorRef,
-	@Inject(PLATFORM_ID) private platformId: Object) { }
+	@Inject(PLATFORM_ID) private platformId: Object) {
+	
+        if(isPlatformBrowser(this.platformId)) {
+	    //Установка заставки
+	    this.subscriptions.push(this.appContext.checkPermissions.subscribe((res) => {
+		res && this.initialize();
+	    }));
+	}
+    }
  
 	ngOnDestroy(): void {
         	this.subscriptions.forEach(sub => sub.unsubscribe());
@@ -64,8 +72,7 @@ export class PermissionsComponent implements OnInit, OnDestroy {
     
     
     initialize(){
-	if(isPlatformBrowser(this.platformId)){
-	    if(window.location.hostname.indexOf('localhost') < 0) {
+        if(window.location.hostname.indexOf('localhost') < 0) {
 		this.queryPermissions().then((result: any[]) => {
 		    //Происходит перебор элементов и если элемент имеет блокирующий статус
 		    //он получает наибольший индекс для первейшего отображения пользователю.
@@ -80,15 +87,10 @@ export class PermissionsComponent implements OnInit, OnDestroy {
 	        //снятие заставки
 		this.authFirebase.afterPermissions();
 	    }
-	}
     }
     
     ngOnInit() {
-        let that = this;
-        //Установка заставки
-	this.subscriptions.push(this.appContext.checkPermissions.subscribe(function(res)  {
-	  	res && that.initialize();
-	 }));
+
     }
     
     onError(err){
