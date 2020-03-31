@@ -30,7 +30,10 @@ export class PermissionsComponent implements OnInit, OnDestroy {
         if(isPlatformBrowser(this.platformId)) {
 	    //Установка заставки
 	    this.subscriptions.push(this.appContext.checkPermissions.subscribe((res) => {
-		res && this.initialize();
+	        //Не работает оператор subscribe => res (вместо значения возвращает undefined),
+		// хотя в arguments[0] значение есть . Делаю костыль, который можно потом снять
+		//res && this.initialize();
+		this.appContext.checkPermissions.value && this.initialize();
 	    }));
 	}
     }
