@@ -47,12 +47,19 @@ export class PermissionsComponent implements OnInit, OnDestroy {
 	   navigator.permissions.query({name : 'notifications'}).then(res => {
 	       let perm = {name : 'notifications', state : res.state, disabled : false};
 	       res.onchange = (event)=> this.onChangeStatus.bind(this, perm, event)();
-	       return perm
+	       return perm;
+	   }).catch(err => {
+	       console.log(err) ;
+	       return  {name : 'notifications', state : 'prompt', disabled : false} ;
 	   }),
 	   navigator.permissions.query({name : 'camera'}).then(res => {
 	       let perm = {name : 'camera', state : res.state, disabled : false} ;
 	       res.onchange = (event)=> this.onChangeStatus.bind(this, perm, event)();
-	       return perm
+	       return perm ;
+	   }).catch(err => {
+	       console.log(err);
+	       return {name : 'camera', state : 'prompt', disabled : false};
+	    
 	   }),
 	  Promise.resolve({name : 'push', state : this.swPush.isEnabled ? 'push' : 'noPush'}) ,
        ]);
@@ -73,9 +80,8 @@ export class PermissionsComponent implements OnInit, OnDestroy {
 	this.appContext.appChangeRef.detectChanges();
     }
     
-    
     initialize(){
-        if(window.location.hostname.indexOf('localhost') < 0) {
+        if(window.location.hostname.indexOf('localhost') < 0 ) {
 		this.queryPermissions().then((result: any[]) => {
 		    //Происходит перебор элементов и если элемент имеет блокирующий статус
 		    //он получает наибольший индекс для первейшего отображения пользователю.

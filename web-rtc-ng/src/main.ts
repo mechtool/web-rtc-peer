@@ -10,6 +10,16 @@ if (environment.production) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  platformBrowserDynamic().bootstrapModule(AppModule)
-  .catch(err => console.error(err));
+  platformBrowserDynamic().bootstrapModule(AppModule).then(()=>{
+      if ('serviceWorker' in navigator) {
+/*	  navigator.serviceWorker.register('service-worker.js', {
+	      scope: './'
+	  }).then((registration) =>{}).catch (function (error) {
+	      // Произошла ошибка при регистрации Service Worker.
+	      // Файл service-worker.js может быть недоступным или содержать ошибки синтаксиса.
+	  });*/
+      } else {
+	  // Данный браузер не поддерживает Service Worker.
+      }
+  }).catch(err => console.error(err));
 });

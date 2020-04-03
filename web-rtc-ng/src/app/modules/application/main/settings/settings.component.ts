@@ -201,8 +201,7 @@ export class SettingsComponent implements OnInit,  OnDestroy {
 		  {
 		      type: 4, optionName: 'Проверить разрешения', icon: 'check-permissions', text: 'Проверить разрешения', disabled : new BehaviorSubject(false), listener: async () => {
 			  await this.pushService.checkSubscription();
-			  await navigator.mediaDevices.getUserMedia({audio: true, video: true})
-			      .then(stream => {
+			  await navigator.mediaDevices.getUserMedia({audio: true, video: true}).then(stream => {
 			      stream.getTracks().forEach(tr => tr.stop());
 			  }).catch(err => {
 			      console.log('Пользователь отклонил разрешение на использование камеры и микрофона.')
