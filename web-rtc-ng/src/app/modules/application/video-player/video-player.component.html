@@ -1,0 +1,10 @@
+<div class="video-player-container" >
+	<div class="video-metadata-container" *ngFor="let metadata of this.activeVideoBlocks | async" [ngClass]="metadata.className" >
+		<app-video-block [context]="metadata"></app-video-block>
+	</div>
+</div>
+<div class="video-player-stop" *ngIf="this.stopActive" (click)="onClickOverlay($event)">
+	<div class="stop-block-round" (click)="onClickButton()" >
+		<mat-icon class="video-stop" svgIcon="video-stop" ></mat-icon>
+	</div>
+</div>

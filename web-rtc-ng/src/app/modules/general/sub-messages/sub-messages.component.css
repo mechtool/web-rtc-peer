@@ -1,0 +1,21 @@
+:host{
+    display: block;
+    min-width: 250px;
+}
+:host /deep/ img.contact-img{
+    width: 40px;
+    height: 40px;
+}
+.sub-messages-container{
+    padding: 20px;
+}
+app-contact{
+    cursor: pointer;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.choose-button{
+    width: 100%;
+    margin-top: 8px;
+}

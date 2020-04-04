@@ -1,0 +1,26 @@
+<div class="message-container" >
+	<img class="contact-img" alt="Изображение контакта" *ngFor="let cont of this.activeContacts; let inx = index;" [src]="cont.photoURL" (error)="onErrorContactImg($event)" [style.backgroundColor]="cont.imgColor" [style.z-index]="-inx" >
+	<div class="main-text">
+		<div class="date">{{context.date | date:'short' : '+03' :'ru'}}</div>
+		<div class="name-block">
+			<ng-container [ngSwitch]="contactNames.length">
+				<ng-container *ngSwitchCase="1">
+					<div class="contact-name" *ngFor="let name of contactNames">{{name}}</div>
+				</ng-container>
+				<ng-container *ngSwitchDefault>
+					<div class="contact-name">{{contactNames.length + (contactNames.length <= 4 ? ' контакта' : ' контактов')}}</div>
+				</ng-container>
+			</ng-container>
+		</div>
+	</div>
+	<span class="example-spacer"></span>
+	<button mat-icon-button class="toolbar-button open-trigger" matTooltip="Вызвать"  (click)="callContact()">
+		<mat-icon class="videoIcon" svgIcon="video" ></mat-icon>
+	</button>
+	<ng-container *ngIf="this.downloaded">
+		<button mat-icon-button class="toolbar-button open-trigger" matTooltip="Открыть" (click)="openMessage()"  >
+			<mat-icon svgIcon="replay" class="replayIcon"></mat-icon>
+		</button>
+	</ng-container>
+	<mat-icon class="message-mark" [svgIcon]="svgIcon"></mat-icon>
+</div>

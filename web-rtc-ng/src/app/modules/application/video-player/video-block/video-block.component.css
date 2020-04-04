@@ -1,0 +1,48 @@
+div.video-block-container.local.active.fixed{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 200px;
+    height: 200px;
+    z-index: 5;
+}
+
+div.video-block-container{
+    display: flex;
+    align-items: center;
+     justify-content: center;
+    flex-direction: row;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    transition: all 300ms ;
+}
+.active-video-block{
+    width: 100%;
+    height: 100%;
+}
+.video-block-toolbar{
+    z-index: 6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: transparent;
+    color: white;
+}
+
+video.video-element{
+    position: absolute;
+    z-index: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 50%;
+}
+.video-block-spinner{
+    position: absolute;
+}
+:host-context(div.video-metadata-container.local.active.fixed) /deep/ .contact-name{
+    display: none;
+}

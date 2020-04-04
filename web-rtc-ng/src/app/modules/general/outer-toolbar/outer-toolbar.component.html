@@ -1,0 +1,11 @@
+<div class="outer-toolbar-block">
+	<div class="main-block">
+		<app-contact [context]="this.appContext.user | async"></app-contact>
+		<span class="example-spacer"></span>
+		<button mat-mini-fab class="close-view"  (click)="onOpenView()" >
+			<mat-icon svgIcon="close-view" ></mat-icon>
+		</button>
+	</div>
+<!--	<mat-icon svgIcon="notifications" [matBadge]="this.localBadge" [matBadgeColor]="'accent'" matBadgeSize="small"></mat-icon>-->
+
+</div>

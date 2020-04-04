@@ -1,0 +1,18 @@
+:host{
+    position: absolute;
+    z-index: 8;
+    left: 10px;
+    bottom: 10px;
+}
+.main-block {
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+button{
+    background-color: transparent!important;
+    color: #fff!important;
+}
+
+

@@ -1,0 +1,72 @@
+.sms-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+}
+mat-toolbar.sms-toolbar{
+    overflow: hidden!important;
+    transition: 300ms;
+}
+.sms-header{
+    font-size: 18px!important;
+}
+.sms-content{
+    flex: 1 1 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.smsPaymentGroup{
+    max-width: 400px;
+    min-width: 200px;
+    width: 70%;
+    padding: 24px;
+    background-color: #eaeaea;
+    box-shadow: 0 0 20px #d5d5d5;
+}
+.sum-block,
+.payment-way-block,
+.balance-block,
+.summary,
+mat-radio-group{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.summary{
+    margin-top: 10px;
+}
+
+.balance-block{
+    margin-bottom: 16px;
+}
+.sms-content span{
+    margin-right: 8px;
+}
+.sunFormField{
+    width: 120px;
+}
+.balance-sum{
+    font-size: 20px!important;
+}
+
+.button-block{
+    margin-top: 24px;
+}
+.submit-button{
+    width: 100%;
+}
+img{
+    width: 32px;
+    height: 32px;
+}
+.number-money{
+    font-size: 18px !important;
+}
+
+@media (max-height: 350px) {
+    mat-toolbar.sms-toolbar{
+        height: 0!important;
+    }
+}

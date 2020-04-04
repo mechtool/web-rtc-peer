@@ -1,0 +1,13 @@
+<div class="video-block-container" [ngClass]="context.className">
+	<mat-spinner class="video-block-spinner" *ngIf="!this.startBlock"></mat-spinner>
+	<div class="active-video-block" *ngIf="context.className.active" >
+		<mat-toolbar class="video-block-toolbar">
+			<app-contact [context]="this.context.contact"></app-contact>
+			<span class="example-spacer"></span>
+			<mat-icon [svgIcon]="video"></mat-icon>
+			<mat-icon [svgIcon]="audio"></mat-icon>
+		</mat-toolbar>
+		<video class="video-element" autoplay playsinline (loadeddata)="onLoadedData()" (ended)="onEnded()" (error)="onErrorVideo($event)" [src]="context.src">
+		</video>
+	</div>
+</div>

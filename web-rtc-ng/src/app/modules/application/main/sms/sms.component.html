@@ -1,0 +1,52 @@
+<div class="sms-container">
+	<mat-toolbar class="sms-toolbar" [color]="'primary'">
+		<span class="sms-header">SMS Уведомления</span>
+		<span class="example-spacer"></span>
+		<span class="current-balance">Баланс : {{this.appContext.smsBalance | async}} руб.</span>
+	</mat-toolbar>
+	<mat-card class="sms-content">
+		<form #form method="POST" class="smsPaymentGroup" [formGroup]="this.smsPaymentGroup" action="https://money.yandex.ru/quickpay/confirm.xml">
+			<div class="payment-way-block">
+				<div class="way-block-text">Способ перевода</div>
+				<mat-radio-group aria-label="Select an option" formControlName="paymentType">
+					<mat-radio-button value="PC" [checked]="true" >
+						<img alt="Яндекс деньги" src="/assets/app-shell/yandex.png">
+					</mat-radio-button>
+					<mat-radio-button value="AC" >
+						<img alt="Банковской картой" src="/assets/app-shell/cards.png">
+					</mat-radio-button>
+				</mat-radio-group>
+			</div>
+			<div class="sum-block">
+				<span class="sum-block-text">Сумма перевода</span>
+				<mat-form-field class="sunFormField" appearance="fill">
+					<mat-label>Сумма</mat-label>
+					<input matInput maxlength="6" formControlName="sumControl" (keydown)="onKeyDown($event)">
+					<span matSuffix>&#8381;</span>
+					<mat-error *ngIf="smsPaymentGroup.get('sumControl').hasError('required')">Обязательный</mat-error>
+					<mat-error *ngIf="smsPaymentGroup.get('sumControl').hasError('min')">Минимально 10 руб.</mat-error>
+				</mat-form-field>
+			</div>
+			<div class="summary">
+				<div class="left-block">
+					<span class="summary-name">Итого с комиссией ({{this.comm[this.smsPaymentGroup.get('paymentType').value]}})</span>
+					<span class="summary-text number-money" >{{(+this.smsPaymentGroup.get('sumControl').value - (this.smsPaymentGroup.get('sumControl').value * (this.parseFloat(this.comm[this.smsPaymentGroup.get('paymentType').value]) / 100))).toFixed(2)}}</span>руб.</div>
+				<div  class="current-balance">Баланс : <span class="number-money">{{this.appContext.smsBalance | async}}</span>руб.</div>
+			</div>
+			<input type="hidden" name="paymentType" [value]="this.smsPaymentGroup.get('paymentType').value">
+			<input type="hidden" name="receiver" value="41001510819857">
+			<input type="hidden" name="formcomment" [value]="'Оплата SMS трафика : ' + this.smsPaymentGroup.get('sumControl').value">
+			<input type="hidden" name="short-dest" [value]="'Оплата SMS трафика : ' + this.smsPaymentGroup.get('sumControl').value">
+			<!--uid/sum/current/date(milliseconds)-->
+			<input type="hidden" name="label" [value]="this.appContext.appUser.uid +'/'+this.smsPaymentGroup.get('sumControl').value +'/'+this.appContext.smsBalance.value + '/' + now">
+			<input type="hidden" name="quickpay-form" value="donate">
+			<input type="hidden" name="targets" value="Оплата SMS трафика">
+			<input type="hidden" name="sum" [value]="this.smsPaymentGroup.get('sumControl').value">
+			<input type="hidden" name="comment" [value]="">
+			<input type="hidden" name="successURL" value="https://web-rtc-peer.herokuapp.com/application/main/sms">
+			<div class="button-block">
+				<button class="submit-button" mat-flat-button [disabled]="this.smsPaymentGroup.invalid"  [color]="'primary'" type="submit" (click)="form.submit()">Перевести</button>
+			</div>
+		</form>
+	</mat-card>
+</div>

@@ -1,0 +1,9 @@
+<mat-toolbar color="primary">
+	<div class="update-text" >Выбор контакта вызова</div>
+</mat-toolbar>
+<div class="sub-messages-container">
+	<div class="contact-container" *ngFor="let contact of context.contacts; let inx = index" (click)="onClickContact({event : $event, contact : contact, index : inx})">
+		<app-contact [context]="contact"></app-contact>
+	</div>
+	<button class="choose-button" mat-flat-button color="primary" [disabled]="this.disableButton" (click)="onChoose()">Выбрать</button>
+</div>
