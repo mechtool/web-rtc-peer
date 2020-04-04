@@ -3,6 +3,11 @@
     margin: 0;
     z-index: initial;
 }
+:host /deep/ mat-icon.mat-icon-no-color,
+:host /deep/ mat-icon.go-update,
+:host /deep/ no-answer-container mat-icon{
+    font-size: 32px;
+}
 
 
 

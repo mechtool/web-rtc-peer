@@ -332,9 +332,6 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 
 	  }
       }
-      /*          //Снятие признака активности принятого предложения/ответа
-	  this.database.setDescriptorOptions({descriptor: desc, data :  /answers/.test(desc.type) ? {active: false} : {active: false, action: 'accepted'}}).then(res => {}).catch(err => this.onError(err));
-      * */
       
       (async ()=> {
 	  //Проверить кандидаты

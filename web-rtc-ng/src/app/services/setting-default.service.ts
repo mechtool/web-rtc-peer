@@ -42,7 +42,7 @@ export class SettingDefaultService {
 		dialogDelay          = window.localStorage.getItem('dialogDelay');
 	    
 	    appColorClass || window.localStorage.setItem('appColorClass', 'second-theme' );
-	    callModel     || window.localStorage.setItem('callModel', '0');
+	    callModel     || window.localStorage.setItem('callModel', '1');
 	    update        || window.localStorage.setItem('update',  '0');
 	    contactEdit   || window.localStorage.setItem('contactEdit', 'false');
 	    duplicateCall || window.localStorage.setItem('duplicateCall', 'false');

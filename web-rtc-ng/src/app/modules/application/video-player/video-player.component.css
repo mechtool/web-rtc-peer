@@ -35,12 +35,13 @@ div.stop-block-round{
     background-color: rgba(255, 255, 255, 0.45);
 }
 
-mat-icon.video-stop{
-    width: 48px;
-    height: 48px;
+div.video-stop{
+    width: 24px;
+    height: 24px;
     top: 0;
-    color: #b00000;
+    background-color: #b00000;
 }
+
 .stop-block-round{
     animation: buttonEscalation 200ms forwards;
 }
