@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import {BehaviorSubject} from "rxjs";
-import {Contact, Message, WebRtcContext} from "../../../../Classes/Classes";
+import {Contact, Message, Offer, PopupContext, WebRtcContext} from "../../../../Classes/Classes";
 import {AppContextService} from "../../../../services/app-context.service";
 import {ApplicationComponent} from "../../application.component";
 import {ColorThemeService} from "../../../../services/color-theme.service";
 import {Router} from "@angular/router";
 import {WebRtcService} from "../../../../services/web-rtc.service";
 import {DatabaseService} from "../../../../services/database.service";
+import has = Reflect.has;
 let uuid = require('uuid/v1');
 
 @Component({
@@ -104,7 +105,7 @@ export class NewMessageComponent implements OnInit {
 	    })(),
 	    messId : uuid(),
 	    metadata : window.localStorage.getItem('callSave') === '1' ? {[this.appContext.appUser.uid] : {visual : {[Date.now()] : this.appContext.localVideoAudio}}} : {}},
-	    receivers = outgoing.receivers;
+		receivers = outgoing.receivers;
 	[outgoing].concat(receivers.map((cont) => {
 		return {
 		    type : 'incoming',
@@ -118,6 +119,88 @@ export class NewMessageComponent implements OnInit {
 		    actions :{[cont.uid] : 'offered'},
 		    metadata : {} }})).forEach(m =>
 	    this.database.sendMessage(m)) ;
+	    //Сообщение отправлено, нужно установить тайаут для проверки ответов удаленных пиров
+	    //Установка таймаута ответа контакта:
+	    //Для каждого явного предложения устанавливается таймаут, по прошествии которого проверяется
+	    //состояние предложения по свойству action. Если оно denied/offered,
+	    // тогда пользователю отображается уведомление на страницу уведомлений
+	    //о том, что контакт прервал/проигнорировал вызов.
+	    // НО ТОЛЬКО ОДИН POPUP ОТОБРАЖАЕТСЯ ПОЛЬЗОВАТЕЛЮ И  ТОЛЬКО ДЛЯ ПОСЛЕДНЕГО
+	    //ПРЕДЛОЖЕНИЯ, ЕСЛИ ВСЕ КОНТАКТЫ В ВЫЗОВЕ НЕ ПРИНЯЛИ СВОИХ ПРЕДЛОЖЕНИЙ
+	    //Если свойство - offered, его значение меняется на ignored
+	    this.appContext.webRtcContexts.getContext(wid).extra.timeout = setTimeout(()=>{
+		    let hasAccepted = false,
+			webRtcContext = this.appContext.webRtcContexts.getContext(wid);
+		    if(webRtcContext.extra.timeout){
+			for(let key in webRtcContext.extra.actions){
+			    let text, action = webRtcContext.extra.actions[key],
+				offer = webRtcContext.webRtcConnections[key].descriptor as Offer;
+			    if(/ignored|offered/.test(action)) {
+				text = 'Вызов пропущен контактом!';
+				//Изменить значение свойства action на ignored в базе
+				this.database.setDescriptorOptions({descriptor : offer, data : {action : 'ignored', active : false}});
+				//Изменить значение свойства action в дескрипторе
+				offer.action = 'ignored';
+				text = 'Вызов пропущен контактом.' ;
+				//Пользователь  не принял предложение - записываем это в область входящих сообщений
+				this.database.changeMessage('/messages/'+ offer.contact.uid +'/'+ offer.wid + '/actions' , {[offer.contact.uid] :offer.action}) ;
+				//Пользователь  не принял предложение - записываем это в область исходящих сообщений
+				this.database.changeMessage('/messages/'+ offer.sender.uid +'/'+ offer.wid + '/actions' , {[offer.contact.uid] : offer.action}) ;
+			    }
+			    else if(/interrupted/.test(action)){
+				text = 'Вызов прерван инициатором.';
+				hasAccepted = true;
+				offer.action = 'interrupted';
+			    }
+			    else if(/denied/.test(action)) {
+				text = 'Вызов прерван контактом.';
+				offer.action = 'denied';
+			    }else if(/accepted/.test(action)) {
+				//Вызов принят
+				hasAccepted = true;
+				text = 'Вызов принят контактом.' ;
+				offer.action = 'accepted';
+			    }
+			    
+			    //Установка уведомление для страницы уведомлений
+			    this.webRtcService.setAnnouncement(new PopupContext({
+				desc : offer,
+				text : text,
+				type : 2,
+				active : true,
+				contact : this.appContext.searchMessageContacts([offer.contact])[0]
+			    }));
+			    //Обновление интерфейса
+			    this.appContext.appChangeRef.markForCheck();
+			}
+			//Отчистка таймаута
+			clearTimeout(webRtcContext.extra.timeout);
+			webRtcContext.extra.timeout = undefined;
+			
+			if(!hasAccepted) {
+			    //Отправить оповещение пользователю о том, что ни один из контактов не
+			    //отвелил. Вызов оказался не принятым.
+			    this.appContext.setPopups({
+				add: true, popup: new PopupContext({
+				    type: 2,
+				    active: true,
+				    text: 'Контакты не ответили.',
+				    contact: {photoURL: '/assets/app-shell/error_outline-24px.svg', imgColor: 'transparent', name: 'Вызов завершен.'},
+				    listener: () => {
+					//Запуск функции завершения вызова видеосообщения
+					this.webRtcService.stopVideoChannel(webRtcContext.videoCollection[0]);
+				    },
+				    extra: {timeout: true, icon: 'attention'}
+				})
+			    }) ;
+			    //Снятие индикации вызова соединения
+			    webRtcContext.videoCollection.filter(video => video.local)[0].className.pulse = false;
+			    //Обновление интерфейса
+			    this.appContext.appChangeRef.markForCheck();
+			}
+		    }
+		
+	    }, this.appContext.dialogDelay[parseInt(window.localStorage.getItem('callTime'))]);
     	})
     }
     

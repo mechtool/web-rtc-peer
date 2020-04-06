@@ -1,7 +1,7 @@
 import {Injectable, NgZone, OnDestroy} from '@angular/core';
 import {DatabaseService} from "./database.service";
 import {AppContextService} from "./app-context.service";
-import {Offer, PopupContext, WebRtcContext} from "../Classes/Classes";
+import { PopupContext, WebRtcContext} from "../Classes/Classes";
 import {Router} from "@angular/router";
 import {PushNotificationService} from "./push-notification.service";
 import {BehaviorSubject} from "rxjs";
@@ -39,22 +39,41 @@ export class WebRtcService implements OnDestroy{
 	})
   }
   
-  async startWebRtc(descriptor){
+  async startWebRtc(descriptor) {
+      
+      let that = this;
       //todo Удалить имеющийся вызов перед инициализацией нового
-      //Создается новый контекст WebRtc
-      let webRtcContext = new WebRtcContext({
-	  wid  : descriptor.wid,
-	  uid : descriptor.uid,
-	  desc : descriptor,
-	  sender : descriptor.sender,
-	  receivers : new BehaviorSubject(descriptor.receivers),
-      });
-      this.appContext.webRtcContexts.addContext(webRtcContext);
-      this.appContext.contextId = webRtcContext.wid;
-      //Запускаем компонент web-rtc
-       this.router.navigateByUrl('/application/web-rtc');
+    
+      //todo Задача: Перед самым запуском нового контекста webRtc, для не инициализатора возникает необходимость
+      // проверки полученного дескриптора навозможность отмены вызова инициализатором. Для этого необходимо получить статус активности
+      // дескриптора инициатора
+      
+      if (descriptor.desc) {
+          this.database.database.ref(`web-rtc/${descriptor.type}/${descriptor.appUser.uid}/${descriptor.messId}/action`).once('value').then(actionSnap => {
+	  if(/offered/.test(actionSnap.val())) startContext() ;
+	  else interruptConnection();
+	  }
+      )} else startContext();
+      
+      function startContext(){
+	  //Создается новый контекст WebRtc
+	  let webRtcContext = new WebRtcContext({
+	      wid  : descriptor.wid,
+	      uid : descriptor.uid,
+	      desc : descriptor,
+	      sender : descriptor.sender,
+	      receivers : new BehaviorSubject(descriptor.receivers),
+	  });
+	  that.appContext.webRtcContexts.addContext(webRtcContext);
+	  that.appContext.contextId = webRtcContext.wid;
+	  //Запускаем компонент web-rtc
+	  that.router.navigateByUrl('/application/web-rtc');
+      }
+    
+      function interruptConnection(){
+         //Соединение прервано инициатором - выдать предупреждение пользователю и закрыть соединение
+      }
   }
-  
   
   setPopup(d){
       let desc = d.val();
@@ -89,16 +108,31 @@ export class WebRtcService implements OnDestroy{
 		   vc.stream.value && vc.stream.value.getTracks().forEach(track => track.stop());
 		   webRtcConnectionContext.pcConnection && webRtcConnectionContext.pcConnection.destroy();
 		   webRtcContext.videoCollection.splice(i, 1);
-		   //Очистить все таймауты (На тот случай, если пользователь запустил соединение
-		   // и тут же его отменил, что бы после отмены соединения не проверялось предложение на
-		   // предмет состояния вызова)
-		   WebRtcService.clearContextTimeouts(webRtcConnectionContext);
 	       }
 	       //Идентификатор контакта определен - прервать цикл на удалении только одного соединения
 	      if(exactly) break;
 	    }
 	    //Идентификатор контакта неопределен - закрыть все соединения
 	    if(!conUid){
+		//Очистить таймаут (На тот случай, если пользователь запустил соединение
+		// и тут же его отменил, что бы после отмены соединения не проверялось предложение на
+		// предмет состояния вызовов)
+		// Вторая часть: При отмене вызова, когда удаленный пир еще не ответил, возникает необходимость
+		//сбросить метку активности с предложения и/или с кандидатов, или удалить кандидаты
+		if(webRtcContext.extra.timeout){
+/*		    clearTimeout(webRtcContext.extra.timeout);
+		    webRtcContext.extra.timeout = undefined;*/
+		}
+		//Продолжение второй части: первая часть web-rtc-component setOfferContactListener() 126
+		//Анализ работы метода в указанной строке : если значение существует, значит, удаленный пир среагировал на соединение
+		//, иначе изменяем значения свойств предложения
+		for(let key in webRtcContext.extra.actions){
+		    let elem = webRtcContext.extra.actions[key];
+		    if(/offered/.test(elem.action)){  //elem.action elem.url
+		       this.database.database.ref(elem.url).update({action : 'interrupted'})
+		    }
+		}
+	 
 		//Очистить коллекцию контекстов
 		this.appContext.webRtcContexts.deleteAllContexts();
 		//Очистить локальные настройки
@@ -206,91 +240,7 @@ export class WebRtcService implements OnDestroy{
 	    await that.database.sendDescriptor(offer).then(res => {
 		console.log('Предложение отправлено контакту '+ offer.contact.uid);
 	    }).catch(that.onError);
-
-	    //Установка таймаута ответа контакта:
-		//Для каждого явного предложения устанавливается таймаут, по прошествии которого проверяется
-		//состояние предложения по свойству action. Если оно denied/offered,
-		// тогда пользователю отображается уведомление на страницу уведомлений
-		//о том, что контакт прервал/проигнорировал вызов.
-		// НО ТОЛЬКО ОДИН POPUP ОТОБРАЖАЕТСЯ ПОЛЬЗОВАТЕЛЮ И  ТОЛЬКО ДЛЯ ПОСЛЕДНЕГО
-		//ПРЕДЛОЖЕНИЯ, ЕСЛИ ВСЕ КОНТАКТЫ В ВЫЗОВЕ НЕ ПРИНЯЛИ СВОИХ ПРЕДЛОЖЕНИЙ
-		//Если свойство - offered, его значение меняется на ignored
-		webRtcConnectionContext.timeout = window.setTimeout(()=> {
-		    if(webRtcConnectionContext.timeout){
-			//Подписка на изменение свойства предложения action
-			let ref = `web-rtc/${offer.type}/${offer.contact.uid}/${offer.messId}/action`;
-			//Подписка на изменение статуса свойства action (пользователь ответил, или отклонил вызов)
-			that.database.getRef(ref).once('value').then( actionSnap => {
-			    let action = actionSnap.val(), text = '';
-			    if(/ignored|offered/.test(action)) {
-				text = 'Вызов пропущен контактом!';
-				//Изменить значение свойства action на ignored в базе
-				that.database.setDescriptorOptions({descriptor : offer, data : {action : 'ignored', active : false}});
-				//Изменить значение свойства action в дескрипторе
-				offer.action = 'ignored';
-				text = 'Вызов пропущен контактом.' ;
-				//Пользователь  не принял предложение - записываем это в область входящих сообщений
-				that.database.changeMessage('/messages/'+ offer.contact.uid +'/'+ offer.wid + '/actions' , {[offer.contact.uid] :offer.action}) ;
-				//Пользователь  не принял предложение - записываем это в область исходящих сообщений
-				that.database.changeMessage('/messages/'+ offer.sender.uid +'/'+ offer.wid + '/actions' , {[offer.contact.uid] : offer.action}) ;
-			    }
-			    else if(/denied/.test(action)) {
-				text = 'Вызов прерван контактом.';
-				offer.action = 'denied';
-			    }else if(/accepted/.test(action)) {
-			        //Вызов принят
-				text = 'Вызов принят контактом.' ;
-				offer.action = 'accepted';
-			    }
-			    
-			    //Установка уведомление для страницы уведомлений
-			    that.setAnnouncement(new PopupContext({
-				desc : offer,
-				text : text,
-				type : 2,
-				active : true,
-				contact : that.appContext.searchMessageContacts([offer.contact])[0]
-			    }));
-			    //Обновление интерфейса
-			    that.appContext.appChangeRef.markForCheck();
-			    //Отчистка таймаута
-			    WebRtcService.clearContextTimeouts(webRtcConnectionContext) ;
-			    //Проверка предложений на предмет ответов контактов
-			    checkOffers();
-			});
-		    }
-		} , that.appContext.dialogDelay[parseInt(window.localStorage.getItem('callTime'))]
-	    )
 	}
 	
-	function checkOffers() {
-	    //Проверка на существование принятых предложений контактами
-	    //Если таких предложений нет, и текущее предложение является последним в списке отправленных
-	    //тогда направляем пользователю всплывающее оповещение о том, что ни один из контактов не принял предложение.
-	    let webRtcContext : WebRtcContext = that.appContext.webRtcContexts.getContext(offer.wid);
-	    if(webRtcContext){
-		if(Object.values(webRtcContext.webRtcConnections).every(connection => {
-		    return !connection.descriptor || /ignored|denied/.test((connection.descriptor as Offer).action) ;
-		})){
-		    //Отправить оповещение пользователю о том, что ни один из контактов не
-		    //отвелил. Вызов оказался не принятым.
-		    that.appContext.setPopups({ add : true, popup : new PopupContext({
-			    type : 2,
-			    active : true,
-			    text : 'Контакты не ответили.',
-			    contact : {photoURL : '/assets/app-shell/error_outline-24px.svg', imgColor : 'transparent', name : 'Вызов завершен.'},
-			    listener : ()=>{
-				//Запуск функции завершения вызова видеосообщения
-				that.stopVideoChannel(webRtcContext.videoCollection[0]);
-			    },
-			    extra : {timeout : true, icon : 'attention'}
-			})});
-		    //Снятие индикации вызова соединения
-		    webRtcContext.videoCollection.filter(video => video.local)[0].className.pulse = false;
-		    //Обновление интерфейса
-		    that.appContext.appChangeRef.markForCheck();
-		}
-	    }
-	}
     }
 }

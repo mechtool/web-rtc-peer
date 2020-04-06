@@ -202,7 +202,6 @@ export class WebRtcConnectionContext{
     public descriptor : Answer | Offer;
     public candidates : any[];
     public webRtcContext : WebRtcContext;
-    public timeout : number;
     
     constructor(options){
 	this.uid  = options.uid;
@@ -211,7 +210,6 @@ export class WebRtcConnectionContext{
 	this.descriptor = options.descriptor || undefined;
 	this.candidates = options.candidates || [];
 	this.webRtcContext = options.webRtcContext || undefined;
-	this.timeout = options.timeout || undefined;
     }
 }
 
@@ -237,22 +235,7 @@ export class WebRtcContexts{
     }
     
     deleteAllContexts(){
-	//Очистить все таймауты (На тот случай, если пользователь запустил соединение
-	// и тут же его отменил, что бы после отмены соединения не проверялось предложение на
-	// предмет состояния вызова)
-        this.contexts.value.forEach(cont => {
-            for(let key in cont.webRtcConnections){
-               clearContextTimeouts(cont.webRtcConnections[key]) ;
-	    }
-	}) ;
 	this.contexts = new BehaviorSubject([]);
-	
-	function clearContextTimeouts(webRtcConnectionContext){
-	    if(webRtcConnectionContext.timeout){
-		window.clearTimeout(webRtcConnectionContext.timeout);
-		webRtcConnectionContext.timeout = undefined;
-	    }
-	}
     }
 }
 

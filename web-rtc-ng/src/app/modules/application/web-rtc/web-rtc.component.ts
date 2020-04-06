@@ -18,6 +18,8 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
     
     public progress = true;
     public subscriptions = [];
+    //Адреса пиров, которым посылаем явные предложения, для того, что бы при завершении вызова снять обработчики событий
+    public offerChangedUrls = [];
     //Получение настроек
     public duplicateCall = JSON.parse(window.localStorage.getItem('duplicateCall'));
     public optimizeCall =  JSON.parse(window.localStorage.getItem('optimizeCall'));
@@ -54,6 +56,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
     
     ngOnDestroy(): void {
       this.subscriptions.forEach(sub => sub.unsubscribe());
+      this.offerChangedUrls.forEach(url => this.database.getRef(url).off());
   }
     
     //Обработчик ответов и неявных предложений
@@ -83,9 +86,19 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
           if(/answers|offers\/implicit/.test(desc.type)){
 	     that.database.sendDescriptor(desc);
 	 }else {
-	     that.webRtcService.sendOffer(webRtcConnectionContext);
+	     that.webRtcService.sendOffer(webRtcConnectionContext).then(res => {
+		 //Установка обработчиков изменение статуса приема предложения.
+		 //Если статус приема предложения изменился, значит удаленный пир с ним контактировал различным образом
+		 //(принял/отклонил/пропустил). Это обработчик нам сигнализирует об этом, что поможет в определении нетронутых
+		 //предложений при отказе инициатора от вызова, в момент, когда удаленный пир еще не поднял трубку.
+		 // Обработчик срабатывает при контакте удаленного пира с предложением, что не требует проверки этого явно.
+		 //Результат проверяется сразу при необходимости.
+		 that.setOfferContactListener(webRtcConnectionContext);
+	     });
 	 }
-	 if(desc.type.indexOf('offers') > -1){
+	 
+          if(desc.type.indexOf('offers') > -1){
+              //Установка обработчиков получения ответов
 	     that.setAnswerListener(webRtcConnectionContext);
 	 }
      }
@@ -108,6 +121,15 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 	     }));
 	 }) ;
 	return newCandidates;
+    }
+    
+    setOfferContactListener(webRtcConnectionContext){
+        let url = '/web-rtc/offers/explicit/'+ webRtcConnectionContext.uid;
+        this.offerChangedUrls.push(url);
+	this.database.getRef(url).orderByChild('messId').equalTo(webRtcConnectionContext.descriptor.messId).on('value', function(webRtcConnectionContext, snap){
+	    let val = snap.val();
+	    val && (webRtcConnectionContext.webRtcContext.extra['actions'] = {[webRtcConnectionContext.uid] : {action : (Object.values(val)[0] as Offer).action , url : url + '/' + webRtcConnectionContext.descriptor.messId}});
+	}.bind(this, webRtcConnectionContext));
     }
     
     setAnswerListener(webRtcConnectionContext){
@@ -294,7 +316,10 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 		  //Закрыто текущее соединение
 		  webRtcConnectionContext.pcConnection.on('close', (event) => {}) ;
 		  //Ошибка в соединениии
-		  webRtcConnectionContext.pcConnection.on('error', (err) => {});
+		  webRtcConnectionContext.pcConnection.on('error', (err) => {
+		      this.onError(err);
+		      return true;
+		  });
 		  //Установка удаленного дескриптора - явного предложения
 		  if(!initiator && contactIndex === 0){
 		      let d = desc || webRtcContext.desc ;
@@ -365,10 +390,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 		pcConnection.signal({candidate : candidate.desc});
 		//Удаление кандидата из базы после его получения
 		that.database.deleteDescriptor({descriptor : candidate}).then(()=>{}).catch(err =>  that.onError(err));
-		//Снятие активности дескриптора
-/*		that.database.setDescriptorOptions({descriptor: candidate, data: {active: false}}).then(async res => {
 
-		}).catch(err => that.onError(err));*/
 	    }) ;
 	    res();
 	}

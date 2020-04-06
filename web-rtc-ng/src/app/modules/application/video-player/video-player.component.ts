@@ -14,6 +14,7 @@ import {BehaviorSubject} from "rxjs";
 })
 export class VideoPlayerComponent implements OnInit {
 
+    public timeout;
     public dataLoaded = false;
     public stopActive = false;
     public activeVideoBlocks = new BehaviorSubject([]);
@@ -60,21 +61,26 @@ export class VideoPlayerComponent implements OnInit {
     }
 
     onClickOverlay($event){
-	this.stopActive = false ;
+        this.checkTimeout(this.timeout);
 	$event.stopPropagation();
-	this.changeRef.detectChanges();
     }
     
     onClickButton(){
 	this.router.navigateByUrl('/application/main/messages') ;
     }
+
+    checkTimeout(t){
+	this.timeout && clearTimeout(t);
+	this.timeout = undefined;
+	this.stopActive = false;
+	this.changeRef.detectChanges();
+    }
     
     onClickHost(){
         if(!this.stopActive){
             this.stopActive = true ;
-	    let t = setTimeout(()=> {
-	        clearTimeout(t);
-	        this.stopActive = false;
+	    this.timeout = setTimeout(()=> {
+		this.checkTimeout(this.timeout);
 	    }, 4000);
 	}
     }
