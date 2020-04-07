@@ -34,7 +34,7 @@ import {VideoPlayerResolverService} from "./services/video-player-resolver.servi
 	AppRoutingModule,
 	HttpClientModule,
 	BrowserAnimationsModule,
-	ServiceWorkerModule.register('service-worker.js', { enabled: true, /*registrationStrategy : 'registerImmediately' ,*/ scope : './' }),
+	ServiceWorkerModule.register('service-worker.js', { enabled: true, registrationStrategy : 'registerImmediately' , scope : './' }),
 	MaterialModule,
 	GeneralModule,
     ],
