@@ -49,8 +49,9 @@ export class WebRtcService implements OnDestroy{
       // дескриптора инициатора
       
       if (descriptor.desc) {
-          this.database.database.ref(`web-rtc/${descriptor.type}/${descriptor.appUser.uid}/${descriptor.messId}/action`).once('value').then(actionSnap => {
-	  if(/offered/.test(actionSnap.val())) startContext() ;
+          this.database.database.ref(`/web-rtc/${descriptor.type}/${this.appContext.appUser.uid}/${descriptor.messId}/action`).once('value').then(actionSnap => {
+	  let val = actionSnap.val();
+	  if(val && /offered/.test(val)) startContext() ;
 	  else interruptConnection();
 	  }
       )} else startContext();
@@ -128,8 +129,15 @@ export class WebRtcService implements OnDestroy{
 		//, иначе изменяем значения свойств предложения
 		for(let key in webRtcContext.extra.actions){
 		    let elem = webRtcContext.extra.actions[key];
-		    if(/offered/.test(elem.action)){  //elem.action elem.url
-		       this.database.database.ref(elem.url).update({action : 'interrupted'})
+		    if(/offered/.test(elem.action)){ //elem.action elem.url
+		        //Удаление предложения прерванного вызова
+		       this.database.database.ref(elem.url).remove();
+		       //Удаление всех кандидатов прерванного вызова
+		       let urlArr = elem.url.split('/');
+		       this.database.database.ref('/web-rtc/candidates/' + urlArr[urlArr.length - 2]).orderByChild('descId').equalTo(urlArr[urlArr.length - 1]).once('value').then(res => {
+			    res.forEach(item => {item.ref.remove()}) ;
+	     
+		       })
 		    }
 		}
 	 

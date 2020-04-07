@@ -30,13 +30,15 @@ export class IncomingCallPopupComponent implements OnInit {
     }
     onCancel(action){
         //Удаление обработчика, если признаки отказа
-	if(/denied|ignored/.test(action)){this.context.listener = undefined}
+	if(/denied|ignored/.test(action)){
+	    this.context.listener = undefined;
+	    //Пользователь только неявного предложения его не принял  - записываем это в область входящих сообщений
+	    // Явный прием сообщения передается ТОЛЬКО после проверки на возможность отправляющей стороны завершить сообщение ДО поднятие трубки принимающей стороной
+	    this.database.changeMessage('/messages/'+ this.appContext.appUser.uid +'/'+ this.context.desc.wid + '/actions',{[this.appContext.appUser.uid ]: action}) ;
+	    //Снятие признака активности предложения в базе данных
+	    this.context.desc && this.database.setDescriptorOptions({descriptor : this.context.desc, data : {active : false,  action : action}} ) ;
+	}
 	this.removeTimeOut();
-	//Снятие признака активности предложения в базе данных
-	this.context.desc && this.database.setDescriptorOptions({descriptor : this.context.desc, data : {active : false,  action : action}} ) ;
-	//todo
-	//Пользователь явно/не явно не принял предложение - записываем это в область входящих сообщений
-	this.database.changeMessage('/messages/'+ this.appContext.appUser.uid +'/'+ this.context.desc.wid + '/actions',  {[this.appContext.appUser.uid ]: action}) ;
 	this.popupComponent.onCancel(this.context);
     }
     

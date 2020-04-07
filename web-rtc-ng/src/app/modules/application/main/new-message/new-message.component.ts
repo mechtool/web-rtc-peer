@@ -133,7 +133,7 @@ export class NewMessageComponent implements OnInit {
 			webRtcContext = this.appContext.webRtcContexts.getContext(wid);
 		    if(webRtcContext.extra.timeout){
 			for(let key in webRtcContext.extra.actions){
-			    let text, action = webRtcContext.extra.actions[key],
+			    let text, action = webRtcContext.extra.actions[key].action,
 				offer = webRtcContext.webRtcConnections[key].descriptor as Offer;
 			    if(/ignored|offered/.test(action)) {
 				text = 'Вызов пропущен контактом!';
