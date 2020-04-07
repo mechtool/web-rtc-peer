@@ -334,14 +334,17 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
   }
   
     setDescriptor(pcConnection, desc){
+      let that = this;
       //Установить предложение / ответ
       pcConnection.signal(desc.desc);
       if(/answers/.test(desc.type)){
 	  //Удаление принятого ответа из базы после его получения
-	  this.database.deleteDescriptor({descriptor : desc}).then(()=>{}).catch(err =>  this.onError(err));
+	  deleteDesc(desc);
       }else{
           //Снятие признака активности принятого предложения
-	  this.database.setDescriptorOptions({descriptor: desc, data : {active: false, action: 'accepted'}}).then(res => {
+	  this.database.setDescriptorOptions({descriptor: desc, data : {active: false, action: 'accepted'}}).then(res =>{
+	      //Удаление из базы принятого дескриптора. Такой подход нужен для того, чтобы первая запись меняла статус действия и снимала активность, для согласования внутренних отслеживаний принятий удаленных дескрипторов. Вторая фаза - это удаление уже помеченного дескриптора.
+	      deleteDesc(desc);
 	  }).catch(err => this.onError(err));
 	  //Если принимается явное предложение, создаем сообщение в области входящих сообщений
 	  if(desc.type === 'offers/explicit'){
@@ -354,7 +357,6 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 	      //Пользователь  принял предложение - записываем это в область исходящих сообщений
 	      this.database.changeMessage(mess.path, mess.data);
 	      })
-
 	  }
       }
       
@@ -365,6 +367,10 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
 	  //Установка/проверка кандидатов
 	  await this.checkCandidates(desc, pcConnection);
       })();
+      
+      function deleteDesc(desc){
+	  that.database.deleteDescriptor({descriptor : desc}).then(()=>{}).catch(err =>  that.onError(err));
+      }
   }
   
   //Запос кандидатов с сервера
