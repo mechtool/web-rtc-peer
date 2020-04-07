@@ -15,7 +15,7 @@ import {Contact} from "../../../Classes/Classes";
         notificationAppearance
     ],
 })
-export class PermissionsComponent implements OnInit, OnDestroy {
+export class PermissionsComponent implements OnDestroy {
     
     public subscriptions = [];
     constructor(
@@ -96,10 +96,6 @@ export class PermissionsComponent implements OnInit, OnDestroy {
 	        //снятие заставки
 		this.authFirebase.afterPermissions();
 	    }
-    }
-    
-    ngOnInit() {
-
     }
     
     onError(err){
