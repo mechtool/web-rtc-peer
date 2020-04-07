@@ -14,8 +14,6 @@ export class SettingDefaultService {
     public callSave =  [{text : 'Не сохранять'}, {text : 'Сохранять'}, {text : 'Не поддерживается', disabled : true}] ;
     public stunTurn =  [{text : 'Default'}, {text : 'Host'}, {text : 'Xirsys'}] ;
     public dialogDelay =  [{text : '20 сек'}, {text : '30 сек'},{text : '40 сек'}] ;
-    //время активности дескриптора, после которого дескриптор не может быть получен из базы данных
-    public descriptorExpiration =  [{text : '180 сек'}, {text : '240 сек'},{text : '300 сек'}] ;
     //Продолжительность вызова контакта, после которого происходит изменение статуса предложения на "Не принятое"
     public callTime =  [{text : '20 сек'}, {text : '30 сек'},{text : '40 сек'}] ;
     
@@ -38,7 +36,6 @@ export class SettingDefaultService {
 		stunTurn           =  window.localStorage.getItem('stunTurn') ,
 		callSave           = window.localStorage.getItem('callSave'),
 		callTime           = window.localStorage.getItem('callTime'),
-		descriptorExpiration = window.localStorage.getItem('descriptorExpiration'),
 		dialogDelay          = window.localStorage.getItem('dialogDelay');
 	    
 	    appColorClass || window.localStorage.setItem('appColorClass', 'second-theme' );
@@ -52,7 +49,6 @@ export class SettingDefaultService {
 	    callSave      || window.localStorage.setItem('callSave',  'MediaRecorder' in window ? '0' : '2');
 	    dialogDelay   || window.localStorage.setItem('dialogDelay', '0');
 	    callTime      || window.localStorage.setItem('callTime', '0');
-	    descriptorExpiration || window.localStorage.setItem('descriptorExpiration', '0');
 	    
 	    this.appContext.hardware.subscribe(hardware => {
 		let types = ['videoinput', 'audioinput'];

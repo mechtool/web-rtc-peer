@@ -222,20 +222,6 @@ export class SettingsComponent implements OnInit,  OnDestroy {
 			  this.database.getRef('/web-rtc').set(null);
 		      }
 		  },
-	      ],
-	      service: [
-		  //время активности дескриптора, после которого дескриптор не может быть получениз базы данных
-		  {
-		      type: 0,
-		      optionName: 'Активность дескриптора',
-		      value: this.settingsDef.descriptorExpiration[parseInt(window.localStorage.getItem('descriptorExpiration'))].text,
-		      options: this.settingsDef.descriptorExpiration,
-		      listener: (event) => {
-			  window.localStorage.setItem('descriptorExpiration', (this.settingsDef.descriptorExpiration.findIndex(model => {
-			      return model.text === event.text;
-			  }) + ''));
-		      }
-		  },
 	      ]
 	  };
    
