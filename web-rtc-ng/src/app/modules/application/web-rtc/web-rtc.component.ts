@@ -128,7 +128,7 @@ export class WebRtcComponent implements OnInit, OnDestroy, AfterViewInit {
         this.offerChangedUrls.push(url);
 	this.database.getRef(url).orderByChild('messId').equalTo(webRtcConnectionContext.descriptor.messId).on('value', function(webRtcConnectionContext, snap){
 	    let val = snap.val();
-	    val && (webRtcConnectionContext.webRtcContext.extra['actions'] = {[webRtcConnectionContext.uid] : {action : (Object.values(val)[0] as Offer).action , url : url + '/' + webRtcConnectionContext.descriptor.messId}});
+	    val && (webRtcConnectionContext.webRtcContext.extra.actions[webRtcConnectionContext.uid] = {action : (Object.values(val)[0] as Offer).action , url : url + '/' + webRtcConnectionContext.descriptor.messId});
 	}.bind(this, webRtcConnectionContext));
     }
     

@@ -250,7 +250,7 @@ export class WebRtcContext{
     public videoCollection ? : VideoContext[];
     //Локальный поток для установки его в peerConnection
     public localStream ? : any;
-    public extra ?  : any;
+    public extra ? : {actions : any, timeout : any};
     
     constructor(options){
 	
@@ -261,7 +261,7 @@ export class WebRtcContext{
 	this.sender = options.sender;
 	this.desc = options.desc || undefined;
 	this.localStream = options.localStream || undefined;
-	this.extra = options.extra || {};
+	this.extra = options.extra || {actions : {}, timeout : undefined};
     }
 }
 
