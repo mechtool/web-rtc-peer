@@ -137,11 +137,11 @@ export class NewMessageComponent implements OnInit {
 				offer = webRtcContext.webRtcConnections[key].descriptor as Offer;
 			    if(/ignored|offered/.test(action)) {
 				text = 'Вызов пропущен контактом!';
-				//Изменить значение свойства action на ignored в базе
-				this.database.setDescriptorOptions({descriptor : offer, data : {action : 'ignored', active : false}});
 				//Изменить значение свойства action в дескрипторе
 				offer.action = 'ignored';
 				text = 'Вызов пропущен контактом.' ;
+				//Изменить значение свойства action на ignored в базе
+				this.database.setDescriptorOptions({descriptor : offer, data : {action : 'ignored', active : false}});
 				//Пользователь  не принял предложение - записываем это в область входящих сообщений
 				this.database.changeMessage('/messages/'+ offer.contact.uid +'/'+ offer.wid + '/actions' , {[offer.contact.uid] :offer.action}) ;
 				//Пользователь  не принял предложение - записываем это в область исходящих сообщений

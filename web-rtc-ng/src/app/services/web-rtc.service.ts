@@ -129,7 +129,7 @@ export class WebRtcService implements OnDestroy{
 		//, иначе изменяем значения свойств предложения
 		for(let key in webRtcContext.extra.actions){
 		    let elem = webRtcContext.extra.actions[key];
-		    if(/offered/.test(elem.action)){ //elem.action elem.url
+		    if(/offered|ignored/.test(elem.action)){ //elem.action elem.url
 		        //Удаление предложения прерванного вызова
 		       this.database.database.ref(elem.url).remove();
 		       //Удаление всех кандидатов прерванного вызова
@@ -149,7 +149,6 @@ export class WebRtcService implements OnDestroy{
 		this.ngZone.run(() => {
 		    this.router.navigateByUrl('/application/main/new-message');
 		});
-	    
 	    }
 	}
     }

@@ -26,7 +26,10 @@ export class IncomingCallPopupComponent implements OnInit {
 	public popupComponent : PopupNotificationsComponent,
     ) {}
     removeTimeOut(){
-	this.context.extra && this.context.extra.timeout && window.clearTimeout(this.context.extra.timeId);
+	if(this.context.extra && this.context.extra.timeout){
+	    window.clearTimeout(this.context.extra.timeId);
+	    this.context.extra.timeId = false;
+	}
     }
     onCancel(action){
         //Удаление обработчика, если признаки отказа
@@ -36,7 +39,20 @@ export class IncomingCallPopupComponent implements OnInit {
 	    // Явный прием сообщения передается ТОЛЬКО после проверки на возможность отправляющей стороны завершить сообщение ДО поднятие трубки принимающей стороной
 	    this.database.changeMessage('/messages/'+ this.appContext.appUser.uid +'/'+ this.context.desc.wid + '/actions',{[this.appContext.appUser.uid ]: action}) ;
 	    //Снятие признака активности предложения в базе данных
-	    this.context.desc && this.database.setDescriptorOptions({descriptor : this.context.desc, data : {active : false,  action : action}} ) ;
+	    if(this.context.desc) {
+	        this.database.setDescriptorOptions({descriptor : this.context.desc, data : {active : false,  action : action}}).then(res => {
+	            //todo Закоментировано (временно) по причине не глубокой продуманности логического потока.
+		    // Этот функционал дублируется с функционалом вызывающей стороны метод сервиса wed-rtc.service stopVideoChannel(videoContext);
+	            //Удаление дескриптора из базы данных
+/*		    this.database.database.ref(`web-rtc/${this.context.desc.type}/${this.context.desc.contact.uid}/${this.context.desc.messId}`).remove().then(()=> {
+			//Удаление кандидатов
+			this.database.database.ref('/web-rtc/candidates/' + this.appContext.appUser.uid).orderByChild('descId').equalTo(this.context.desc.messId).once('value').then(res => {
+			    res.forEach(item => {item.ref.remove()}) ;
+			
+			})
+		    });*/
+		})
+	    }
 	}
 	this.removeTimeOut();
 	this.popupComponent.onCancel(this.context);
@@ -53,8 +69,8 @@ export class IncomingCallPopupComponent implements OnInit {
 	//Запуск таймера удаления уведомления, на случай, если пользователь оставит его без внимание,
 	//оно должно быть удалено авоматически.
 	if(this.context.extra && this.context.extra.timeout) {
-	    this.context.extra.timeId = window.setTimeout(()=>{
+	    this.context.extra['timeId'] = window.setTimeout(()=>{
 		this.onCancel('ignored');
-	    }, this.appContext.dialogDelay[parseInt(window.localStorage.getItem('dialogDelay'))]);//диапазон отображения диалогов
+	    }, this.appContext.dialogDelay[parseInt(window.localStorage.getItem('dialogDelay'))] - 10);//диапазон отображения диалогов
 	}  }
 }
